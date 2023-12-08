@@ -1,0 +1,10 @@
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+"\eOA": history-search-backward
+"\eOB": history-search-forward
+
+# Ignore case on auto-completion
+set show-all-if-ambiguous on
+
+# Show auto-completion list automatically, without double tab
+set completion-ignore-case on
