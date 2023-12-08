@@ -1,0 +1,23 @@
+{{ if (and (not .ephemeral) (not .headless)) -}}
+
+  #!/bin/bash
+
+  echo -- Running run_onchange_after_configure-gnome.sh.tmpl --
+
+  set -eufo pipefail
+
+  fc-cache
+
+  gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+  gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+
+  # Resizes with Alt+RightClick
+  # https://unix.stackexchange.com/questions/28514/how-to-get-altright-mouse-to-resize-windows-again
+  gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
+  gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Alt>'
+
+  profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/${profile}/ preserve-working-directory never
+
+
+{{ end }}
