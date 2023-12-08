@@ -1,0 +1,51 @@
+{{/* Parts taken from: https://github.com/oizik/dotfiles/blob/master/.chezmoi.toml.tmpl */}}
+
+{{- $docker := false -}}{{/* true if this machine should have Docker installed */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
+
+{{- $osID := .chezmoi.os -}}
+{{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
+{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+{{- end -}}
+
+{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
+{{-   $ephemeral = true -}}
+{{-   $headless = true -}}
+{{- end -}}
+
+{{- $hostname := .chezmoi.hostname -}}
+
+{{/* work around unreliable hostname on darwin */}}
+{{- if eq .chezmoi.os "darwin" -}}
+{{-   $hostname := output "scutil" "--get" "ComputerName" | trim -}}
+{{- end -}}
+
+{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
+{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
+
+{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
+{{-   $ephemeral = true -}}
+{{-   $headless = true -}}
+{{- end -}}
+
+
+{{- $personal := false -}}
+{{- if contains "noodle" $hostname -}}
+{{-   $personal = true -}}
+{{- end -}}
+
+{{- $email := "gary@jarrel.com.au" -}}
+
+[data]
+    docker = {{ $docker }}
+    email = {{ $email | quote }}
+    ephemeral = {{ $ephemeral }}
+    headless = {{ $headless }}
+    hostname = {{ $hostname | quote }}
+    osid = {{ $osID | quote }}
+    personal = {{ $personal }}
+
