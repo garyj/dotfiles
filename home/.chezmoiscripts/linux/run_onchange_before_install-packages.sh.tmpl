@@ -1,0 +1,51 @@
+{{ if eq .osid "linux-debian" "linux-raspbian" "linux-ubuntu" -}}
+
+  {{ $packages := list
+      "bat"
+      "build-essential"
+      "curl"
+      "direnv"
+      "emacs"
+      "exa"
+      "fd-find"
+      "fzf"
+      "git"
+      "git-lfs"
+      "jq"
+      "libfuse2"
+      "openssh-server"
+      "ripgrep"
+      "shellcheck"
+      "units"
+      "zsh"
+      "zoxide" -}}
+
+  {{ if eq .osid "linux-ubuntu" -}}
+    {{   $packages = mustAppend $packages "btop" -}}
+  {{ end -}}
+
+  {{ if not .headless -}}
+    {{   $packages = mustAppend $packages "xclip" -}}
+  {{ end -}}
+
+  {{ if and .personal (eq .osid "linux-ubuntu") -}}
+    {{   $packages = concat $packages (list "gdal-bin" "libgeos-dev" "libproj-dev" "postgis" "postgresql" "qgis") -}}
+  {{ end -}}
+
+
+  {{ $sudo := "sudo " -}}
+  {{ if eq .chezmoi.username "root" -}}
+    {{   $sudo = "" -}}
+  {{ end -}}
+
+  #!/bin/bash
+
+  set -eufo pipefail
+
+  echo -- Running run_onchange_before_install-packages.sh.tmpl ---
+
+  {{ $sudo }}apt-get update
+  {{ $sudo }}apt-get install -y {{ $packages | join " " }}
+
+
+{{ end }}
