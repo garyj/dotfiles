@@ -1,0 +1,70 @@
+#!/bin/bash
+#
+# git prepare-commit-msg hook for automatically prepending an issue key
+# from the start of the current branch name to commit messages.
+# based on: https://bitbucket.org/atlassian/workspace/snippets/qedp7d
+# takses into account Conventional Commits
+# https://www.conventionalcommits.org/en/v1.0.0/#specification
+#
+# For the time being the use of ! in message does not work
+# it results in error: bash:  : unrecognized history modifier
+# so commit message like fix(api)!: authentication is now required to get toke
+# will not work becuase of !: in the message
+
+
+# check if commit is merge commit or a commit ammend
+if [ $2 = "merge" ] || [ $2 = "commit" ]; then
+    exit
+fi
+
+ISSUE_KEY=`git branch | grep -o "\* \(.*/\)*[A-Z]\{2,\}-[0-9]\+" | grep -o "[A-Z]\{2,\}-[0-9]\+"`
+if [ $? -ne 0 ]; then
+    # no issue key in branch, use the default message
+    exit
+fi
+
+# lets also check if we already have the ISSUE_KEY
+# in the commit message so that we do not double add
+if grep -q "$ISSUE_KEY" "$1"; then exit 0; fi
+
+
+# issue key matched from branch prefix
+# try to find a column and insert after column
+# so a commit message like fix: broken link
+# woud become fix: ISS-123 broken link
+# if $ISSUE_KEY = ISS-123
+# below command will return exit code 0 on success
+# or code 42 if no subsitution was made
+#
+# ONLY the first occurance of : is replaced
+# https://stackoverflow.com/questions/148451/how-to-use-sed-to-replace-only-the-first-occurrence-in-a-file
+#
+# Exit codes are set up using Branching and Flow Control
+# https://askubuntu.com/questions/1036912/how-do-i-get-the-exit-status-when-using-the-sed-command
+# https://www.gnu.org/software/sed/manual/sed.html#Branching-and-flow-control
+
+
+# START section that insert issue key after column
+# sed -i -e "0,/:/{s/:/: $ISSUE_KEY/}; t; q42" $1
+
+# # get sed exist code
+# status=$?
+
+# # check if the file had an ISSUE_KEY
+# # meaning sed was successfull
+# # and exit if this is the case.
+# if grep -q "$ISSUE_KEY" "$1"; then exit 0; fi
+
+# # if code is 0, then issue key has been successfully inserted
+# [ $status -eq 0 ] && exit 0
+
+# # if code is 42 meaning there was no : in the commit message
+# # and no subsitution was made
+# # then simply prepend the ISSUE key to the commit message
+# # [ $status -eq 42 ] && sed -i -e "1s/^/$ISSUE_KEY /" $1 && exit 0
+
+# # below would APPEND issue key to commit message
+# [ $status -eq 42 ] && sed -i -e "1s/$/ [$ISSUE_KEY]/" $1
+# END section that insert issue key after column
+
+sed -i -e "1s/$/ $ISSUE_KEY/" $1
