@@ -125,6 +125,11 @@ fi
 
 ### Gary Customizations Start
 
+ulimit -S -n 65535
+
+# umask to make sure that only user has access to new files
+umask 077
+
 export EDITOR=emacs
 export USERID=$(id -u)
 export GROUPID=$(id -g)
