@@ -89,12 +89,6 @@ end
 
 local bindings = {
   [{'alt'}] = {
-    -- window tiling using arrows to halfs of screen
-    ['left'] = moveFrontmostWindow(grid.leftHalf),
-    ['right'] = moveFrontmostWindow(grid.rightHalf),
-    ['up'] = moveFrontmostWindow(grid.topHalf),
-    ['down'] = moveFrontmostWindow(grid.bottomHalf),
-
     -- applications
     [';'] = launchOrFocus('GitKraken'),
     ['\''] = executeScript('/opt/homebrew/bin/code -n'),
@@ -102,6 +96,7 @@ local bindings = {
     ['c'] = launchNewInstance('Calculator'),
     ['d'] = executeScript('open $HOME/Downloads'),
     ['e'] = executeScript('open $HOME'),
+    ['f'] = launchNewInstance('Firefox Developer Edition'),
     ['g'] = launchNewInstance('Google Chrome'),
     ['p'] = executeScript('open $HOME/Pictures'),
     ['w'] = launchOrFocus('Microsoft Remote Desktop Beta'),
@@ -109,6 +104,11 @@ local bindings = {
   },
   [{'alt', 'cmd'}] = {
     ['a'] = launchOrFocus('Activity Monitor'),
+     -- window tiling using arrows to halfs of screen
+    ['left'] = moveFrontmostWindow(grid.leftHalf),
+    ['right'] = moveFrontmostWindow(grid.rightHalf),
+    ['up'] = moveFrontmostWindow(grid.topHalf),
+    ['down'] = moveFrontmostWindow(grid.bottomHalf),
   },
   [{'cmd'}] = {
     ['f1'] = moveFrontmostWindow(grid.fullScreen),
@@ -116,15 +116,30 @@ local bindings = {
   }
 }
 
-hs.hotkey.bind({"alt"}, "T", function()
-  hs.execute('open -n -a "/Applications/Google Chrome.app"')
-end)
-
 for modifier, keyActions in pairs(bindings) do
   for key, action in pairs(keyActions) do
     hs.hotkey.bind(modifier, tostring(key), action)
   end
 end
+
+local SkyRocket = hs.loadSpoon("SkyRocket")
+
+sky = SkyRocket:new({
+  -- Opacity of resize canvas
+  opacity = 0.6,
+
+  -- Which modifiers to hold to move a window?
+  moveModifiers = {'alt'},
+
+  -- Which mouse button to hold to move a window?
+  moveMouseButton = 'left',
+
+  -- Which modifiers to hold to resize a window?
+  resizeModifiers = {'alt'},
+
+  -- Which mouse button to hold to resize a window?
+  resizeMouseButton = 'right',
+})
 
 --
 -- Switch spaces in unison between 3 displays
