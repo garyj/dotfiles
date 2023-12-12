@@ -1,0 +1,57 @@
+#!/bin/bash
+{{ $installCommand := "brew install " -}}
+
+{{ if contains "linux" .osid}}
+{{ if ne .chezmoi.username "root" -}}
+{{ $installCommand = "sudo apt install -y " -}}
+{{ else -}}
+{{ $installCommand = "apt install -y " -}}
+{{ end -}}
+{{ end -}}
+
+echo "Installing Python & Stuff"
+
+# Check if Python is installed
+if command -v python >/dev/null 2>&1 || command -v python3 >/dev/null 2>&1; then
+  echo "Python is already installed."
+else
+  echo "Installing Python."
+  {{- if contains "linux" .osid}}
+  {{ $installCommand }} python3
+  {{ else }}
+  {{ $installCommand }} python
+  {{ end -}}
+
+fi
+
+# Install Pyenv
+if [ -d "$HOME/.pyenv" ]; then
+  echo "Pyenv is already installed."
+else
+  echo "Installing Pyenv."
+  curl https://pyenv.run | bash
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
+
+# Install Pipx
+if command -v pipx >/dev/null 2>&1; then
+  echo "Pipx is already installed."
+else
+  echo "Installing Pipx."
+  {{ $installCommand }} pipx
+  pipx ensurepath
+fi
+
+# Install Poetry
+if command -v poetry >/dev/null 2>&1; then
+  echo "Poetry is already installed."
+else
+  echo "Installing Poetry."
+  pipx install poetry
+  # Going to make an assumption that Oh My Zsh is installed and ZSH_CUSTOM is set to $HOME/.oh-my-zsh/custom
+  # And the plugin is enabled --- https://python-poetry.org/docs/#oh-my-zsh
+  {{ $pluginDir := "/.oh-my-zsh/custom/plugins/poetry/" -}}
+  mkdir -p {{ .chezmoi.homeDir -}} {{- $pluginDir }}
+  poetry completions zsh > {{- .chezmoi.homeDir -}} {{- $pluginDir -}}_poetry
+fi

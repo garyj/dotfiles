@@ -134,6 +134,21 @@ export USERID=$(id -u)
 export GROUPID=$(id -g)
 
 export PATH=$HOME/bin:$HOME/.local/bin:$HOME/bin/installers:$HOME/bin/old:/usr/local/bin:$PATH
+
+{{- $paths := list }}
+{{- $homeDir := .chezmoi.homeDir }}
+{{- range $_, $relPath := list "bin" "bin/installers" "go/bin" ".cargo/bin" ".local/bin" }}
+{{    $path := joinPath $homeDir $relPath }}
+{{-   if stat $path }}
+{{-     $paths = mustAppend $paths $path }}
+{{-   end }}
+{{- end }}
+
+{{- if $paths }}
+export PATH={{ toStrings $paths | join ":" }}:$PATH
+{{- end }}
+
+
 export MOZ_LIBDIR=$HOME/firefox
 
 export FLYCTL_INSTALL="$HOME/.fly"
