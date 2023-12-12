@@ -31,6 +31,35 @@ defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
 
 # launchctl unload -w /System/Library/LaunchAgents/com.apple.notificationcenterui.plist 2> /dev/null
 
+###############################################################################
+# Dock, Dashboard, and hot corners                                            #
+###############################################################################
+
+# Disable the Click wallpaper to reveal desktop
+defaults write com.apple.WindowManager EnableStandardClickToShowDesktop -bool false
+
+# Change minimize/maximize window effect
+defaults write com.apple.dock mineffect -string "scale"
+
+# Speed up Mission Control animations (not sure if this is working)
+defaults write com.apple.dock expose-animation-duration -float 0.1
+
+# Show the path bar by default https://macos-defaults.com/finder/showpathbar.html#set-to-true
+defaults write com.apple.finder "ShowPathbar" -bool "true"
+
+###############################################################################
+# Finder                                                                      #
+###############################################################################
+
+# Default Finder to List View https://macos-defaults.com/finder/fxpreferredviewstyle.html
+defaults write com.apple.finder "FXPreferredViewStyle" -string "Nlsv"
+
+# Keep the folders on top of files: https://macos-defaults.com/finder/_fxsortfoldersfirst.html
+defaults write com.apple.finder "_FXSortFoldersFirst" -bool "true"
+
+# Default the finder search to the current folder: https://macos-defaults.com/finder/fxdefaultsearchscope.html#set-to-sccf
+defaults write com.apple.finder "FXDefaultSearchScope" -string "SCcf"
+
 # "Address Book" \
 # "Calendar" \∞
 # "cfprefsd" \
