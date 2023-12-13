@@ -113,6 +113,10 @@ local bindings = {
   [{'cmd'}] = {
     ['f1'] = moveFrontmostWindow(grid.fullScreen),
     ['f2'] = moveFrontmostWindow(grid.tenTwelfes),
+  },
+  [{'alt', 'cmd', 'ctrl', 'shift'}] = {
+    -- dangerous: kill all Terminals
+    ['return'] = executeScript('pkill -a Terminal')
   }
 }
 
