@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Installs NVM
+# https://github.com/nvm-sh/nvm#install--update-script
+
+if [ -d "$HOME/.nvm" ]; then
+  echo NVM Appears to already be installed as ~/.nvm exists.
+  exit 0
+fi
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
