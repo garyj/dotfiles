@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# This script is used to install the AWS CLI on a machine.
+# It first creates a temporary directory where it downloads the AWS CLI installer.
+
+set -eufo pipefail
+
+if command -v aws >/dev/null 2>&1; then
+  echo "AWS CLI is already installed."
+  exit 0
+fi
+
+# Create a temporary directory and ensure its cleanup
+temp_dir=$(mktemp -d)
+trap 'rm -rf -- "$temp_dir"' EXIT
+cd "$temp_dir"
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS installation
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
+{{ else if eq .chezmoi.os "linux" -}}
+# Linux installation
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+{{ end -}}
+
+cd -

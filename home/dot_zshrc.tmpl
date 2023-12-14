@@ -182,5 +182,15 @@ if zoxide --version >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
 
+#
 # Set some custom variables for local development
+#
+
+# Poetry by default create virtualenvs in the project directory (to keep projects self contained)
+# https://python-poetry.org/docs/configuration/#virtualenvsin-project
 export POETRY_VIRTUALENVS_IN_PROJECT=true
+
+# Disable the AWS_PAGER to prevent the aws cli from paging output: OMG annoying
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html
+export AWS_PAGER=""
+
