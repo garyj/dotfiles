@@ -1,0 +1,57 @@
+{{ $installCommand := "hdiutil" -}}
+{{ $sudo := "" -}}
+
+{{ if contains "linux" .osid}}
+{{ $installCommand = "apt" -}}
+{{ end -}}
+
+{{ if ne .chezmoi.username "root" -}}
+{{ $sudo = "sudo " -}}
+{{ end -}}
+
+#!/bin/bash
+
+# Installs Docker
+# For mac will use Docker Desktop for Apple Silicon
+
+set -eufo pipefail
+
+if command -v docker >/dev/null 2>&1; then
+  echo "Docker is already installed."
+  exit 0
+fi
+
+# Create a temporary directory and ensure its cleanup
+temp_dir=$(mktemp -d)
+trap 'rm -rf -- "$temp_dir"' EXIT
+cd "$temp_dir"
+
+{{ if eq .chezmoi.os "darwin" -}}
+# macOS installation: https://docs.docker.com/desktop/install/mac-install/
+curl https://desktop.docker.com/mac/main/arm64/Docker.dmg -o "Docker.dmg"
+{{ $sudo }} {{ $installCommand }} attach Docker.dmg
+{{ $sudo }} /Volumes/Docker/Docker.app/Contents/MacOS/install --accept-license --user={{.chezmoi.username}}
+{{ $sudo }} {{ $installCommand }} detach /Volumes/Docker
+
+{{ else if eq .chezmoi.os "linux" -}}
+# Linux installation https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+
+# Add Docker's official GPG key:
+{{ $sudo }} {{ $installCommand }} update
+{{ $sudo }} {{ $installCommand }} -y install ca-certificates curl gnupg
+{{ $sudo }} install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | {{ $sudo }}gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+{{ $sudo }} chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |
+  {{ $sudo }} tee /etc/apt/sources.list.d/docker.list >/dev/null
+{{ $sudo }} {{ $installCommand }} update
+
+# Install Docker Engine
+{{ $sudo }} {{ $installCommand }} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+{{ end -}}
+
+cd -
