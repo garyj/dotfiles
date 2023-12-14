@@ -100,7 +100,7 @@ local bindings = {
     ['g'] = launchNewInstance('Google Chrome'),
     ['p'] = executeScript('open $HOME/Pictures'),
     ['w'] = launchOrFocus('Microsoft Remote Desktop Beta'),
-    ['return'] = launchNewInstance('Terminal')
+    ['return'] = launchNewInstance('iTerm')
   },
   [{'alt', 'cmd'}] = {
     ['a'] = launchOrFocus('Activity Monitor'),
@@ -116,7 +116,7 @@ local bindings = {
   },
   [{'alt', 'cmd', 'ctrl', 'shift'}] = {
     -- dangerous: kill all Terminals
-    ['return'] = executeScript('pkill -a Terminal')
+    ['return'] = executeScript('pkill -a iTerm')
   }
 }
 
