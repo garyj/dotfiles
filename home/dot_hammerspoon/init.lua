@@ -166,10 +166,6 @@ hs.hotkey.bind({"alt"}, "3", function()
   hs.eventtap.keyStroke({"ctrl"}, "9")
 end)
 
--- Press F2 to launch Spotlight
-hs.hotkey.bind({}, "F2", function()
-  hs.eventtap.keyStroke({"cmd"}, "space")
-end)
 
 -- screenNumber = hs.menubar.new()
 -- function spaceNumberDisplay(state)
