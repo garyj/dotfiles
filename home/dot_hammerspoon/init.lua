@@ -86,6 +86,10 @@ local executeScript = function(script)
   end
 end
 
+-- Alt+R to open Spotlight
+hs.hotkey.bind({"alt"}, "R", function()
+  hs.eventtap.keyStroke({"cmd"}, "space")
+end)
 
 local bindings = {
   [{'alt'}] = {
