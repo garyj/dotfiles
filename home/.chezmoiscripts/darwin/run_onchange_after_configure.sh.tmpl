@@ -47,6 +47,10 @@ defaults write com.apple.dock expose-animation-duration -float 0.1
 # Show the path bar by default https://macos-defaults.com/finder/showpathbar.html#set-to-true
 defaults write com.apple.finder "ShowPathbar" -bool "true"
 
+# Delay the Dock popup, it's extremly annoying when it pops up every time I go to the bottom of the screen
+# https://discussions.apple.com/thread/254015524?sortBy=best
+defaults write com.apple.Dock autohide-delay -float 2
+
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################
