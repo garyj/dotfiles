@@ -42,11 +42,13 @@ set -eufo pipefail
     "hubstaff"
     "iterm2"
     "karabiner-elements"
+    "skype"
     "spaceman"
     "spotify"
     "sublime-text"
     "visual-studio-code"
-    "vlc" -}}
+    "vlc"
+    "warp" -}}
 
 {{ if eq .chezmoi.arch "amd64" -}}
 {{   $brews = concat $brews (list
