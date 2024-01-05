@@ -28,11 +28,6 @@
     {{   $packages = mustAppend $packages "xclip" -}}
   {{ end -}}
 
-  {{ if and .personal (eq .osid "linux-ubuntu") -}}
-    {{   $packages = concat $packages (list "gdal-bin" "libgeos-dev" "libproj-dev" "postgis" "postgresql" "qgis") -}}
-  {{ end -}}
-
-
   {{ $sudo := "sudo " -}}
   {{ if eq .chezmoi.username "root" -}}
     {{   $sudo = "" -}}
