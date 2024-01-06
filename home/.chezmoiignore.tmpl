@@ -1,5 +1,6 @@
 .oh-my-zsh/cache/**
 .oh-my-zsh/custom/themes/powerlevel10k/**/*.zwc
+README.md
 
 {{ if ne .chezmoi.os "darwin" }}
 .chezmoiscripts/darwin/**
@@ -15,6 +16,9 @@
 .local/share/fonts
 {{ end }}
 
+{{ if ne .osid "linux-linuxmint" -}}
+.chezmoiscripts/linux/mint/**
+{{ end }}
 
 {{ if not .personal }}
 .pypirc
