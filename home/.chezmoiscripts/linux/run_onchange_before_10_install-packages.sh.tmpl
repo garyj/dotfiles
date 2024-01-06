@@ -90,6 +90,9 @@
 
 set -euo pipefail
 
+# Create the keyrings dir in case it does not exist
+{{ $sudo }} install -m 0755 -d /etc/apt/keyrings
+
 echo --- Deb Packages: {{ $packages }} ---
 
 {{ $sudo }}apt-get update

@@ -1,10 +1,8 @@
 {{ $installCommand := "hdiutil" -}}
 {{ $sudo := "" -}}
-
-{{ if contains "linux" .osid}}
+{{ if contains "linux" .osid -}}
 {{ $installCommand = "apt" -}}
 {{ end -}}
-
 {{ if ne .chezmoi.username "root" -}}
 {{ $sudo = "sudo " -}}
 {{ end -}}
@@ -39,19 +37,26 @@ curl https://desktop.docker.com/mac/main/arm64/Docker.dmg -o "Docker.dmg"
 # Add Docker's official GPG key:
 {{ $sudo }} {{ $installCommand }} update
 {{ $sudo }} {{ $installCommand }} -y install ca-certificates curl gnupg
-{{ $sudo }} install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg | {{ $sudo }}gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-{{ $sudo }} chmod a+r /etc/apt/keyrings/docker.gpg
+
+curl -fsSL https://download.docker.com/linux/debian/gpg | \
+	gpg --dearmor | {{ $sudo }} tee /etc/apt/keyrings/docker.gpg > /dev/null
 
 # Add the repository to Apt sources:
+# For Mint the Ubunt version is set under UBUNTU_CODENAME in /etc/os-release
+{{ $versionVariable := "VERSION_CODENAME" -}}
+{{ if eq .osid "linux-linuxmint" -}}
+{{ $versionVariable = "UBUNTU_CODENAME" -}}
+{{ end -}}
+
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" |
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo ${{- $versionVariable }}) stable" |
   {{ $sudo }} tee /etc/apt/sources.list.d/docker.list >/dev/null
 {{ $sudo }} {{ $installCommand }} update
 
 # Install Docker Engine
 {{ $sudo }} {{ $installCommand }} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+{{ $sudo }} usermod $USER --append --group docker
 {{ end -}}
 
 cd -
