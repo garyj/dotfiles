@@ -1,0 +1,218 @@
+[/]
+alttab-switcher-delay=50
+alttab-switcher-style='icons+preview'
+enabled-applets=['panel1:left:0:menu@cinnamon.org:0', 'panel1:left:1:separator@cinnamon.org:1', 'panel1:left:2:grouped-window-list@cinnamon.org:2', 'panel1:right:5:systray@cinnamon.org:3', 'panel1:right:6:xapp-status@cinnamon.org:4', 'panel1:right:7:notifications@cinnamon.org:5', 'panel1:right:8:printers@cinnamon.org:6', 'panel1:right:9:removable-drives@cinnamon.org:7', 'panel1:right:10:keyboard@cinnamon.org:8', 'panel1:right:11:favorites@cinnamon.org:9', 'panel1:right:12:network@cinnamon.org:10', 'panel1:right:13:sound@cinnamon.org:11', 'panel1:right:14:power@cinnamon.org:12', 'panel1:right:15:calendar@cinnamon.org:13', 'panel1:right:16:cornerbar@cinnamon.org:14', 'panel1:right:4:workspace-switcher@cinnamon.org:15', 'panel1:right:3:scale@cinnamon.org:16', 'panel1:right:1:qredshift@quintao:17', 'panel1:right:2:temperature@fevimu:18']
+next-applet-id=19
+panel-edit-mode=false
+panel-zone-symbolic-icon-sizes='[{"panelId": 1, "left": 28, "center": 28, "right": 16}]'
+panels-autohide=['1:false']
+panels-height=['1:30']
+window-effect-speed=1
+
+[desktop/applications/terminal]
+exec='gnome-terminal'
+
+[desktop/background]
+color-shading-type='solid'
+picture-options='none'
+
+[desktop/background/slideshow]
+delay=15
+image-source='xml:///usr/share/cinnamon-background-properties/linuxmint.xml'
+
+[desktop/interface]
+cursor-blink-time=1200
+cursor-size=24
+cursor-theme='Adwaita'
+gtk-theme='Mint-Y-Dark'
+icon-theme='Yaru-viridian-dark'
+
+[desktop/keybindings]
+custom-list=['custom22', 'custom21', 'custom20', 'custom19', 'custom18', 'custom17', 'custom15', 'custom0', 'custom1', 'custom2', 'custom3', 'custom4', 'custom5', 'custom8', 'custom10', 'custom11', 'custom12', 'custom14', 'custom16', 'custom23', 'custom24', 'custom26']
+looking-glass-keybinding=@as []
+show-desklets=@as []
+
+[desktop/keybindings/custom-keybindings/custom0]
+binding=['<Super>apostrophe']
+command='code'
+name='VS Code'
+
+[desktop/keybindings/custom-keybindings/custom1]
+binding=['<Super>f']
+command='firefox-devedition'
+name='Firefox Developer'
+
+[desktop/keybindings/custom-keybindings/custom10]
+binding=['<Super>semicolon']
+command='bringme.sh GitKraken gitkraken'
+name='Gitkraken'
+
+[desktop/keybindings/custom-keybindings/custom11]
+binding=['<Primary>Print', '<Primary>F12']
+command='flameshot gui'
+name='Screenshot - Flameshot - Area'
+
+[desktop/keybindings/custom-keybindings/custom12]
+binding=['<Super>l']
+command='bringme.sh Clocks gnome-clocks'
+name='Gnome Clocks'
+
+[desktop/keybindings/custom-keybindings/custom14]
+binding=['<Super>p']
+command='nemo Pictures'
+name='Nemo Pictures'
+
+[desktop/keybindings/custom-keybindings/custom15]
+binding=['<Super>d']
+command='nemo Downloads'
+name='Nemo Downloads'
+
+[desktop/keybindings/custom-keybindings/custom16]
+binding=['<Super>KP_Multiply']
+command='bringme.sh Ferdium ferdium'
+name='Bring Ferdium'
+
+[desktop/keybindings/custom-keybindings/custom17]
+binding=['<Alt>1']
+command='bash -c "wmctrl -r :ACTIVE: -t 0 &&  wmctrl -s 0"'
+name='Send to Workspace 1'
+
+[desktop/keybindings/custom-keybindings/custom18]
+binding=['<Alt>2']
+command='bash -c "wmctrl -r :ACTIVE: -t 1 &&  wmctrl -s 1"'
+name='Send to Workspace 2'
+
+[desktop/keybindings/custom-keybindings/custom19]
+binding=['<Alt>3']
+command='bash -c "wmctrl -r :ACTIVE: -t 2 &&  wmctrl -s 2"'
+name='Send to Workspace 3'
+
+[desktop/keybindings/custom-keybindings/custom2]
+binding=['<Super>g']
+command='google-chrome'
+name='Chrome'
+
+[desktop/keybindings/custom-keybindings/custom20]
+binding=['<Alt>4']
+command='bash -c "wmctrl -r :ACTIVE: -t 3 &&  wmctrl -s 3"'
+name='Send to Workspace 4'
+
+[desktop/keybindings/custom-keybindings/custom21]
+binding=['<Alt>5']
+command='bash -c "wmctrl -r :ACTIVE: -t 4 &&  wmctrl -s 4"'
+name='Send to Workspace 5'
+
+[desktop/keybindings/custom-keybindings/custom22]
+binding=['<Super>KP_Subtract']
+command='bringme.sh Slack slack'
+name='Bring Slack'
+
+[desktop/keybindings/custom-keybindings/custom23]
+binding=['Calculator']
+command='bringme.sh Hubstaff hubstaff'
+name='Bring Hubstaff'
+
+[desktop/keybindings/custom-keybindings/custom24]
+binding=['<Super>k']
+command='xkill'
+name='xkill'
+
+[desktop/keybindings/custom-keybindings/custom26]
+binding=['<Super>m']
+command='mongodb-compass'
+name='Compass'
+
+[desktop/keybindings/custom-keybindings/custom3]
+binding=['<Super>h']
+command='chromium --password-store=basic'
+name='Chromium'
+
+[desktop/keybindings/custom-keybindings/custom4]
+binding=['<Super>w']
+command='remmina'
+name='remmina'
+
+[desktop/keybindings/custom-keybindings/custom5]
+binding=['<Super>q']
+command='remmina -c /home/garyj/.local/share/remmina/group_rdp_local-rest-garyj_192-168-1-40.remmina'
+name='rd-rest'
+
+[desktop/keybindings/custom-keybindings/custom8]
+binding=['<Super>s']
+command='bringme.sh Sublime Text subl'
+name='Sub Lime Text'
+
+[desktop/keybindings/media-keys]
+calculator=['<Super>c']
+home=['<Super>e']
+screenshot-clip=@as []
+terminal=['<Super>Return']
+
+[desktop/keybindings/wm]
+maximize=@as []
+move-to-corner-ne=['<Primary><Alt>KP_Page_Up']
+move-to-corner-nw=['<Primary><Alt>KP_Home']
+move-to-corner-se=['<Primary><Alt>KP_Next']
+move-to-corner-sw=['<Primary><Alt>KP_End']
+move-to-side-e=['<Primary><Alt>KP_Right']
+move-to-side-n=['<Primary><Alt>KP_Up']
+move-to-side-s=['<Primary><Alt>KP_Down']
+move-to-side-w=['<Primary><Alt>KP_Left']
+move-to-workspace-1=['<Primary><Alt>1']
+move-to-workspace-2=['<Primary><Alt>2']
+move-to-workspace-3=['<Primary><Alt>3']
+move-to-workspace-4=['<Primary><Alt>4']
+move-to-workspace-5=['<Primary><Alt>5']
+panel-run-dialog=['<Alt>F2', '<Super>r']
+show-desktop=@as []
+switch-group=['<Super>Tab']
+switch-group-backward=['<Shift><Super>Tab']
+switch-monitor=['XF86Display']
+switch-to-workspace-1=['<Super>1']
+switch-to-workspace-2=['<Super>2']
+switch-to-workspace-3=['<Super>3']
+switch-to-workspace-4=['<Super>4']
+switch-to-workspace-5=['<Super>5']
+switch-to-workspace-down=['F3']
+toggle-fullscreen=['<Primary>F2']
+toggle-maximized=['<Primary>F1']
+unmaximize=@as []
+
+[desktop/peripherals/keyboard]
+delay=uint32 500
+numlock-state=true
+repeat-interval=uint32 30
+
+[desktop/peripherals/mouse]
+double-click=400
+drag-threshold=8
+speed=0.84453781512605053
+
+[desktop/peripherals/touchpad]
+speed=0.0
+
+[desktop/sound]
+event-sounds=false
+
+[desktop/wm/preferences]
+action-scroll-titlebar='opacity'
+audible-bell=false
+auto-raise=true
+button-layout=':minimize,maximize,close'
+focus-mode='sloppy'
+min-window-opacity=30
+mouse-button-modifier='<Super>'
+num-workspaces=5
+visual-bell=false
+
+[muffin]
+draggable-border-width=10
+experimental-features=['x11-randr-fractional-scaling']
+
+[settings-daemon/peripherals/keyboard]
+delay=uint32 200
+numlock-state='on'
+repeat-interval=uint32 45
+
+[theme]
+name='Mint-Y-Dark'
