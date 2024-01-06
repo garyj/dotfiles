@@ -1,0 +1,3 @@
+{{- if (not .ephemeral) -}}
+xset r rate 200 45
+{{ end -}}
