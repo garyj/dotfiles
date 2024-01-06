@@ -1,0 +1,78 @@
+#
+# Common settings for both bash and zsh
+# File is sourced in .bashrc and .zshrc
+#
+
+{{- $paths := list }}
+{{- $homeDir := .chezmoi.homeDir }}
+{{- range $_, $relPath := list "bin" "bin/installers" "go/bin" ".cargo/bin" ".local/bin" }}
+{{ $path := joinPath $homeDir $relPath }}
+{{- if stat $path }}
+{{- $paths = mustAppend $paths $path }}
+{{- end }}
+{{- end -}}
+
+{{- if $paths }}
+export PATH={{ toStrings $paths | join ":" }}:$PATH
+{{- end }}
+
+ulimit -S -n 65535
+
+# umask to make sure that only user has access to new files
+umask 077
+
+export USERID=$(id -u)
+export GROUPID=$(id -g)
+
+if [ -f ~/.common_alias ]; then
+  . ~/.common_alias
+fi
+
+# check if .private_alias exists and then source those
+if [ -f $HOME/.private_alias ]; then
+  source $HOME/.private_alias
+fi
+
+{{ if stat (joinPath .chezmoi.homeDir ".pyenv") }}
+# Pyenv!
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+# below will optimize CPython builds for optimal performance when installing via pyenv
+# https://github.com/pyenv/pyenv/wiki#how-to-build-cpython-for-maximum-performance
+export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
+export PYTHON_CFLAGS="-march=native -mtune=native"
+{{ end }}
+
+{{ if stat (joinPath .chezmoi.homeDir ".nvm") -}}
+# NVM
+export NVM_DIR=$HOME/.nvm
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+{{ end }}
+
+{{- if lookPath "fly" }}
+# fly.io
+export FLYCTL_INSTALL="$HOME/.fly"
+export PATH="$FLYCTL_INSTALL/bin:$PATH"
+{{- end }}
+
+if pipx --version >/dev/null 2>&1; then
+  eval "$(register-python-argcomplete pipx)"
+fi
+
+# Poetry by default create virtualenvs in the project directory (to keep projects self contained)
+# https://python-poetry.org/docs/configuration/#virtualenvsin-project
+export POETRY_VIRTUALENVS_IN_PROJECT=true
+
+# Poetry by default will use the currently active python version when creating virtualenvs
+# instead of using the version of Python that poetry was installed with
+# without this setting was getting errors on MacOS as described in:
+# https://github.com/python-poetry/poetry/issues/7158
+# https://python-poetry.org/docs/configuration#virtualenvsprefer-active-python-experimental
+export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true
+
+# Disable the AWS_PAGER to prevent the aws cli from paging output: OMG annoying
+# https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html
+export AWS_PAGER=""
