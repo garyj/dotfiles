@@ -32,6 +32,11 @@ else
   curl https://pyenv.run | bash
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init -)"
+  {{- if contains "linux" .osid}}
+  # need some dependencies for pyenv to be able to install Python correctly.
+  # https://stackoverflow.com/a/74314165
+  {{ $installCommand }} zlib1g-dev libffi-dev libssl-dev libbz2-dev libreadline-dev libsqlite3-dev liblzma-dev
+  {{ end -}}
 fi
 
 # Install Pipx
