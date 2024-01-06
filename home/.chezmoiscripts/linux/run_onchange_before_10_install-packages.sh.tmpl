@@ -4,7 +4,7 @@
     "bat"
     "build-essential"
     "curl"
-    "direnv"
+    "gdu"
     "emacs"
     "exa"
     "fd-find"
@@ -23,13 +23,34 @@
   {{   $packages = mustAppend $packages "btop" -}}
 {{ end -}}
 
-{{ if not .headless -}}
-  {{   $packages = mustAppend $packages "xclip" -}}
+{{ if .personal -}}
+  {{  $packages = concat $packages (list
+    "apt-transport-https"
+    "ca-certificates"
+    "direnv"
+    "ffmpeg"
+    "ghostscript"
+    "imagemagick"
+    "openssh-server"
+    "software-properties-common"
+  )
+  -}}
 {{ end -}}
 
-{{ if .personal -}}
-  {{   $packages = mustAppend $packages 
-    "openssh-server" 
+{{ if not .headless -}}
+    {{  $packages = concat $packages (list
+      "chromium-browser"
+      "dconf-editor"
+      "flameshot"
+      "gimp"
+      "gnome-clocks"
+      "remmina-plugin-rdp"
+      "remmina-plugin-secret"
+      "remmina-plugin-vnc*"
+      "remmina"
+      "vlc"
+      "xclip"
+    )
   -}}
 {{ end -}}
 
@@ -37,19 +58,24 @@
 {{ $classicSnaps := list -}}
 
 {{ if (and (.personal) (not .headless)) -}}
-  
-{{   $snaps = concat $snaps (list 
-  "1password"
+
+{{   $snaps = concat $snaps (list
   "dbeaver-ce"
+  "ferdium"
   "obs-studio"
-  ) 
+  "postman"
+  "slack"
+  "spotify"
+  )
 -}}
 
-{{   $classicSnaps = concat $classicSnaps (list 
-  "code" 
-  "gitkraken" 
+{{   $classicSnaps = concat $classicSnaps (list
+  "code"
+  "code-insiders"
+  "gitkraken"
   "snapcraft"
-  ) 
+  "sublime-text"
+  )
 -}}
 
 {{ end -}}
