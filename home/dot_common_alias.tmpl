@@ -37,11 +37,16 @@ alias lsdot="{{ $ls_command }} -lahd .*"
 
 # Various Quick Shortcuts
 alias nbclean="jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*.ipynb"
-alias qpga='docker run -p 5050:80  -e "PGADMIN_DEFAULT_EMAIL=a@a.com" -e "PGADMIN_DEFAULT_PASSWORD=a" --add-host=host.docker.internal:host-gateway  -d dpage/pgadmin4 && x-www-browser http://localhost:5050'
 
 # Docker Stuff
-alias dcf="docker compose logs -f"
 alias d=docker
+# alias dsysprune='docker system prune -a --force' # careful this will delete a lot
+
+alias dstopall='docker stop $(docker ps -q)'
+alias drmall='docker rm $(docker ps -a -q)'
+alias dconprune='docker container prune --force'
+
+alias dcf="docker compose logs -f"
 alias dc="docker compose"
 
 # Scrapy aliases
@@ -51,3 +56,31 @@ alias st='scrapy-test'
 # Various Python Stuff
 alias py=python
 alias p=poetry
+
+# Docker Services - various commands to run services without installing them on localhost
+
+# May requiire a once off
+# mkdir -p $HOME/.docker_servers_data/
+
+alias d_pg='docker run --rm --name postgres --hostname postgres -p 5432:5432 \
+  -e POSTGRES_PASSWORD=postgres \
+  -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data \
+  -d postgres'
+
+alias d_pg_stop='docker stop $(docker ps -q --filter ancestor=postgres )'
+
+alias d_pgadmin='docker run --rm --name pgadmin --hostname pgadmin -p 5050:80 \
+  --add-host=host.docker.internal:host-gateway \
+  -e "PGADMIN_DEFAULT_EMAIL=a@a.com" -e "PGADMIN_DEFAULT_PASSWORD=a" \
+  -v $HOME/.docker_servers_data/pgadmin:/var/lib/pgadmin \
+  -d dpage/pgadmin4 \
+  && sleep 9 && \
+  x-www-browser http://localhost:5050'
+alias d_pgadmin_stop='docker stop $(docker ps -q --filter ancestor=dpage/pgadmin4 )'
+
+#  If mongodb does not start make sure the permissions on $HOME/.docker_servers_data/mongo are 777
+alias d_mongo='docker run --rm --name mongo --hostname mongo -p 27017:27017 \
+  -v $HOME/.docker_servers_data/mongo:/data/db \
+  -d mongodb/mongodb-community-server'
+
+alias d_mongo_stop='docker stop $(docker ps -q --filter ancestor=mongodb/mongodb-community-server )'
