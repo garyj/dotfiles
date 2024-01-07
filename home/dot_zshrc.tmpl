@@ -77,7 +77,9 @@ plugins=(
   {{ end -}}
   git
   zsh-syntax-highlighting
+  {{ if or (lookPath "python") (lookPath "python3") -}}
   autoswitch_virtualenv
+  {{ end -}}
 )
 
 source $ZSH/oh-my-zsh.sh
