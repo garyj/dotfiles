@@ -1,4 +1,4 @@
-{{/* Parts taken from: https://github.com/oizik/dotfiles/blob/master/.chezmoi.toml.tmpl */}}
+{{/* Parts taken from: https://github.com/twpayne/dotfiles/blob/master/home/.chezmoi.toml.tmpl */}}
 
 {{- $docker := false -}}{{/* true if this machine should have Docker installed */}}
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
@@ -23,19 +23,20 @@
 {{-   $hostname := output "scutil" "--get" "ComputerName" | trim -}}
 {{- end -}}
 
-{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
-{{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
-
 {{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
 {{-   $ephemeral = true -}}
 {{-   $headless = true -}}
 {{- end -}}
 
-
 {{- $personal := false -}}
 {{- if contains "noodle" $hostname -}}
 {{-   $personal = true -}}
+{{- end -}}
+
+{{/* if machine does not contain noodle in the host name most probably it's not a personal (dev) machine as as such is headless */}}
+{{- if not (contains "noodle" $hostname) -}}
+{{-   $headless = true -}}
 {{- end -}}
 
 {{- $email := "gary@jarrel.com.au" -}}
