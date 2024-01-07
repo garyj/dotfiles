@@ -28,7 +28,7 @@ gtk-theme='Mint-Y-Dark'
 icon-theme='Yaru-viridian-dark'
 
 [desktop/keybindings]
-custom-list=['custom22', 'custom21', 'custom20', 'custom19', 'custom18', 'custom17', 'custom15', 'custom0', 'custom1', 'custom2', 'custom3', 'custom4', 'custom5', 'custom8', 'custom10', 'custom11', 'custom12', 'custom14', 'custom16', 'custom23', 'custom24', 'custom26']
+custom-list=['custom6', 'custom26', 'custom24', 'custom23', 'custom16', 'custom14', 'custom12', 'custom11', 'custom10', 'custom8', 'custom5', 'custom4', 'custom3', 'custom2', 'custom1', 'custom0', 'custom15', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22']
 looking-glass-keybinding=@as []
 show-desklets=@as []
 
@@ -136,6 +136,11 @@ name='remmina'
 binding=['<Super>q']
 command='remmina -c /home/garyj/.local/share/remmina/group_rdp_local-rest-garyj_192-168-1-40.remmina'
 name='rd-rest'
+
+[desktop/keybindings/custom-keybindings/custom6]
+binding=['<Super>backslash']
+command='bringme.sh 1Password 1password'
+name='Bring 1Password'
 
 [desktop/keybindings/custom-keybindings/custom8]
 binding=['<Super>s']
