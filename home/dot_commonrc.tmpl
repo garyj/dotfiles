@@ -58,8 +58,13 @@ export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
 {{- end }}
 
+{{ $argComplete := "register-python-argcomplete3" }}
+{{- if lookPath "register-python-argcomplete" }}
+{{ $argComplete = "register-python-argcomplete" }}
+{{- end }}
+
 if pipx --version >/dev/null 2>&1; then
-  eval "$(register-python-argcomplete pipx)"
+  eval "$({{ $argComplete }} pipx)"
 fi
 
 # Poetry by default create virtualenvs in the project directory (to keep projects self contained)
