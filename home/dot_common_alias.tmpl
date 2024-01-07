@@ -1,5 +1,7 @@
 alias g=git
 
+alias ccp="pwd | xclip -selection clipboard"
+
 {{- if lookPath "bat" }}
 alias cat=bat
 {{- else if lookPath "batcat" }}
@@ -20,7 +22,10 @@ alias lsdate="{{ $ls_command }} -lah --sort newest"
 alias -- -='cd -'
 alias le="less"
 
-alias ll="{{ $ls_command }} -la"
+## everything without the dot files
+alias ll="{{ $ls_command }} -la -I '.*'"
+## everything with dot files
+alias lla="{{ $ls_command }} -la"
 # show me everything human readable
 alias lsa="{{ $ls_command }} -lah"
 # sorted by size

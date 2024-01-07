@@ -24,8 +24,8 @@ umask 077
 export USERID=$(id -u)
 export GROUPID=$(id -g)
 
-if [ -f ~/.common_alias ]; then
-  . ~/.common_alias
+if [ -f $HOME/.common_alias ]; then
+  source $HOME/.common_alias
 fi
 
 # check if .private_alias exists and then source those
