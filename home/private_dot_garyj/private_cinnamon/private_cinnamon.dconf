@@ -236,5 +236,11 @@ experimental-features=['x11-randr-fractional-scaling']
 [settings-daemon/peripherals/keyboard]
 numlock-state='on'
 
+[sounds]
+login-enabled=false
+logout-enabled=false
+switch-enabled=false
+tile-enabled=false
+
 [theme]
 name='Mint-Y-Dark'
