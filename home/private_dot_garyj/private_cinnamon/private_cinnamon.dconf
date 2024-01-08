@@ -9,8 +9,23 @@ panels-autohide=['1:false']
 panels-height=['1:30']
 window-effect-speed=1
 
+[desktop/a11y/applications]
+screen-keyboard-enabled=false
+screen-reader-enabled=false
+
+[desktop/a11y/mouse]
+dwell-click-enabled=false
+dwell-threshold=10
+dwell-time=1.2
+secondary-click-enabled=false
+secondary-click-time=1.2
+
+[desktop/applications/calculator]
+exec='gnome-calculator'
+
 [desktop/applications/terminal]
 exec='gnome-terminal'
+exec-arg='--'
 
 [desktop/background]
 color-shading-type='solid'
@@ -26,6 +41,7 @@ cursor-size=24
 cursor-theme='Adwaita'
 gtk-theme='Mint-Y-Dark'
 icon-theme='Yaru-viridian-dark'
+toolkit-accessibility=false
 
 [desktop/keybindings]
 custom-list=['custom6', 'custom26', 'custom24', 'custom23', 'custom16', 'custom14', 'custom12', 'custom11', 'custom10', 'custom8', 'custom5', 'custom4', 'custom3', 'custom2', 'custom1', 'custom0', 'custom15', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22']
@@ -183,15 +199,18 @@ toggle-fullscreen=['<Primary>F2']
 toggle-maximized=['<Primary>F1']
 unmaximize=@as []
 
+[desktop/media-handling]
+autorun-never=false
+
 [desktop/peripherals/keyboard]
-delay=uint32 500
+delay=uint32 230
 numlock-state=true
-repeat-interval=uint32 30
+repeat-interval=uint32 20
 
 [desktop/peripherals/mouse]
 double-click=400
 drag-threshold=8
-speed=0.84453781512605053
+speed=0.92436974789915971
 
 [desktop/peripherals/touchpad]
 speed=0.0
@@ -215,9 +234,7 @@ draggable-border-width=10
 experimental-features=['x11-randr-fractional-scaling']
 
 [settings-daemon/peripherals/keyboard]
-delay=uint32 200
 numlock-state='on'
-repeat-interval=uint32 45
 
 [theme]
 name='Mint-Y-Dark'
