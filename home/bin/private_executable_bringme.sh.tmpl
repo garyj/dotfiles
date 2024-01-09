@@ -1,0 +1,18 @@
+{{ if not .headless -}}
+#!/usr/bin/env bash
+# This shell script takes two arguments, WINDOW_NAME and COMMAND.
+# It uses wmctrl to search for a window with a title that matches the WINDOW_NAME argument.
+# If the window is found, the window is moved to the current desktop and raised
+# If the window is not found, the script executes the COMMAND argument.
+
+WINDOW_NAME=$1
+COMMAND=$2
+
+wmctrl -R $(wmctrl -l | grep "$WINDOW_NAME" | cut -d ' ' -f 5-) >/dev/null 2>&1
+
+status=$?
+
+if [ $status -ne 0 ]; then
+  bash -c "${COMMAND}" &
+fi
+{{ end }}
