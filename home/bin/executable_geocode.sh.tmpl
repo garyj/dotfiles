@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # This script is used to geocode an address using the Google Maps Geocoding API.
 # It takes an address as an argument, sends a request to the API, and retrieves the geocoded data in JSON format.
@@ -24,4 +24,3 @@ echo "$formatted_address" | pbcopy
 echo "$formatted_address" | xclip -selection clipboard
 {{ end -}}
 
-cd -
