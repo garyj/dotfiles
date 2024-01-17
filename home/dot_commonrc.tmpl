@@ -18,8 +18,9 @@ export PATH={{ toStrings $paths | join ":" }}:$PATH
 
 ulimit -S -n 65535
 
-# umask to make sure that only user has access to new files
-umask 077
+# https://www.tenable.com/audits/items/CIS_Debian_Linux_8_Server_v2.0.2_L1.audit:632ea5de5002b78e71581003f107448a
+# Umask is relaxed as 077 seems to cause issues with Docker causing permission changes to executable files on host
+umask 022
 
 export USERID=$(id -u)
 export GROUPID=$(id -g)
@@ -66,10 +67,6 @@ export PATH="$FLYCTL_INSTALL/bin:$PATH"
 if pipx --version >/dev/null 2>&1; then
   eval "$({{ $argComplete }} pipx)"
 fi
-
-# Poetry by default create virtualenvs in the project directory (to keep projects self contained)
-# https://python-poetry.org/docs/configuration/#virtualenvsin-project
-export POETRY_VIRTUALENVS_IN_PROJECT=true
 
 # Poetry by default will use the currently active python version when creating virtualenvs
 # instead of using the version of Python that poetry was installed with
