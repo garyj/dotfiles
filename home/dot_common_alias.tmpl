@@ -42,6 +42,8 @@ alias nbclean="jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplac
 alias d=docker
 # alias dsysprune='docker system prune -a --force' # careful this will delete a lot
 
+alias dpsa='docker ps -a'
+
 alias dstopall='docker stop $(docker ps -q)'
 alias drmall='docker rm $(docker ps -a -q)'
 alias dconprune='docker container prune --force'
@@ -84,3 +86,6 @@ alias d_mongo='docker run --rm --name mongo --hostname mongo -p 27017:27017 \
   -d mongodb/mongodb-community-server'
 
 alias d_mongo_stop='docker stop $(docker ps -q --filter ancestor=mongodb/mongodb-community-server )'
+
+# Container for MongoDB Shell Access
+alias moishell='docker run -it --rm --name mongo_shell --entrypoint /bin/bash mongodb/mongodb-community-server'
