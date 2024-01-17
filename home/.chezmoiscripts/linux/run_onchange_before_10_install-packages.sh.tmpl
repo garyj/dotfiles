@@ -38,6 +38,13 @@
   -}}
 {{ end -}}
 
+{{ if .personal -}}
+  {{  $packages = concat $packages (list
+    "libpq-dev"
+  )
+  -}}
+{{ end -}}
+
 {{ if not .headless -}}
     {{  $packages = concat $packages (list
       "chromium-browser"
@@ -46,6 +53,7 @@
       "gimp"
       "gnome-clocks"
       "gparted"
+      "meld"
       "remmina-plugin-rdp"
       "remmina-plugin-secret"
       "remmina-plugin-vnc*"
@@ -67,14 +75,13 @@
   "obs-studio"
   "postman"
   "pdftk"
+  "skype"
   "slack"
   "spotify"
   )
 -}}
 
 {{   $classicSnaps = concat $classicSnaps (list
-  "code"
-  "code-insiders"
   "gitkraken"
   "snapcraft"
   "sublime-text"
