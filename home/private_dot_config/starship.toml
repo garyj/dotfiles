@@ -1,10 +1,5 @@
 # Get editor completions based on the config schema
 "$schema" = 'https://starship.rs/config-schema.json'
 
-[character]
-success_symbol = '[➜](bold green)'
-error_symbol = '[➜](bold red)'
-
-
-[python]
-format = 'via [${symbol}${pyenv_prefix}(${version} )[in: ](red bold)[($virtualenv)](red bold)]($style)'
+[nodejs]
+symbol = '🤖 '
