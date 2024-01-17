@@ -60,3 +60,11 @@ else
   mkdir -p {{ .chezmoi.homeDir -}} {{- $pluginDir }}
   poetry completions zsh > {{- .chezmoi.homeDir -}} {{- $pluginDir -}}_poetry
 fi
+
+# Cookiecutter - check if cookiecutter is installed and if not install via pipx
+if command -v cookiecutter >/dev/null 2>&1; then
+  echo "Cookiecutter is already installed."
+else
+  echo "Installing Cookiecutter."
+  pipx install cookiecutter
+fi
