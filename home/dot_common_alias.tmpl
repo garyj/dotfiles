@@ -70,6 +70,12 @@ alias d_pg='docker run --rm --name postgres --hostname postgres -p 5432:5432 \
   -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data \
   -d postgres'
 
+# Postgress with pgvector on port 5433
+alias d_pgvec='docker run --rm --name postgres --hostname postgres -p 5433:5432 \
+  -e POSTGRES_PASSWORD=postgres \
+  -v $HOME/.docker_servers_data/postgres_pgvec:/var/lib/postgresql/data \
+  -d ankane/pgvector'
+
 alias d_pg_stop='docker stop $(docker ps -q --filter ancestor=postgres )'
 
 alias d_pgadmin='docker run --rm --name pgadmin --hostname pgadmin -p 5050:80 \
