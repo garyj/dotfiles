@@ -19,5 +19,10 @@
   profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
   gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/${profile}/ preserve-working-directory never
 
+  # Disable Ctrl+. (Dot) ibus emoji hotkey (conflicts with VSCode)
+  # https://stackoverflow.com/questions/71997823/ctrl-dot-makes-e-appear-instead-of-showing-suggestions-in-vscode-on-gnome
+  gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
+
+
 
 {{ end }}
