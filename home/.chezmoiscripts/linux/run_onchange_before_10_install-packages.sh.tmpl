@@ -28,6 +28,7 @@
     "ffmpeg"
     "ghostscript"
     "imagemagick"
+    "inotify-tools"
     "openssh-server"
     "python3-dev"
     "software-properties-common"
@@ -41,6 +42,7 @@
 {{ if .personal -}}
   {{  $packages = concat $packages (list
     "libpq-dev"
+    "fonts-firacode"
   )
   -}}
 {{ end -}}
