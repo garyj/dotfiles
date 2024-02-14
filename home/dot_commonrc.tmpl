@@ -3,6 +3,9 @@
 # File is sourced in .bashrc and .zshrc
 #
 
+export XDG_CONFIG_HOME="$HOME/.config"
+export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+
 {{- $paths := list }}
 {{- $homeDir := .chezmoi.homeDir }}
 {{- range $_, $relPath := list "bin" "bin/installers" "go/bin" ".cargo/bin" ".local/bin" }}
