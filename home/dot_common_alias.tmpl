@@ -5,6 +5,7 @@ alias ccp="pwd | xclip -selection clipboard"
 {{- if lookPath "bat" }}
 alias cat=bat
 {{- else if lookPath "batcat" }}
+alias bat=batcat
 alias cat=batcat
 {{- end }}
 {{- if lookPath "fdfind" }}
