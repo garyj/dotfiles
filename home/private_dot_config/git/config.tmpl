@@ -1,6 +1,13 @@
 [user]
 	name = Gary Jarrel
 	email = {{ .email }}
+	signingkey = {{ .chezmoi.homeDir }}/.ssh/id_ed_25519_signing.pub
+
+[gpg]
+	format = ssh
+
+[commit]
+	gpgsign = true
 
 [alias]
 
@@ -48,6 +55,7 @@
 	rpo = remote prune origin
 	s = status -sb
 	sh = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git show"
+	stp = stash push --include-untracked --message
 	ss = commit --message snapshot --no-gpg-sign
 	su = submodule update
 	wd = diff --patience --word-diff
@@ -89,3 +97,9 @@
 
 [transfer]
 	fsckobjects = true
+
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f

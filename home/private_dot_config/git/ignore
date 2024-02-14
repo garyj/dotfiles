@@ -8,3 +8,4 @@
 .svn
 .vscode
 /tmp
+.python-version
