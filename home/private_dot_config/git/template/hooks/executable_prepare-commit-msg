@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# git prepare-commit-msg hook for automatically prepending an issue key
+# git prepare-commit-msg hook for automatically prepending or appending an issue key
 # from the start of the current branch name to commit messages.
 # based on: https://bitbucket.org/atlassian/workspace/snippets/qedp7d
 # takses into account Conventional Commits
@@ -13,11 +13,11 @@
 
 
 # check if commit is merge commit or a commit ammend
-if [ $2 = "merge" ] || [ $2 = "commit" ]; then
+if [ "$2" = "merge" ] || [ "$2" = "commit" ]; then
     exit
 fi
 
-ISSUE_KEY=`git branch | grep -o "\* \(.*/\)*[A-Z]\{2,\}-[0-9]\+" | grep -o "[A-Z]\{2,\}-[0-9]\+"`
+ISSUE_KEY=$(git branch --show-current | grep -o "[A-Z0-9]\{2,\}-[0-9]\+")
 if [ $? -ne 0 ]; then
     # no issue key in branch, use the default message
     exit
@@ -67,4 +67,4 @@ if grep -q "$ISSUE_KEY" "$1"; then exit 0; fi
 # [ $status -eq 42 ] && sed -i -e "1s/$/ [$ISSUE_KEY]/" $1
 # END section that insert issue key after column
 
-sed -i -e "1s/$/ $ISSUE_KEY/" $1
+sed -i -e "1s/$/ $ISSUE_KEY/" "$1"
