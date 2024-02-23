@@ -6,6 +6,9 @@
 [gpg]
 	format = ssh
 
+[gpg "ssh"]
+	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
+
 [commit]
 	gpgsign = true
 
