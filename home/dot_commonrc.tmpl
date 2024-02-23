@@ -56,10 +56,11 @@ export NVM_DIR=$HOME/.nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 {{ end }}
 
-{{- if lookPath "fly" }}
+{{ if stat (joinPath .chezmoi.homeDir ".fly") -}}
 # fly.io
 export FLYCTL_INSTALL="$HOME/.fly"
 export PATH="$FLYCTL_INSTALL/bin:$PATH"
+alias fly="flyctl"
 {{- end }}
 
 {{ $argComplete := "register-python-argcomplete3" }}

@@ -1,0 +1,3 @@
+{{- if lookPath "fly" }}
+  {{- output "fly" "completion" "zsh" | trim -}}
+{{- end }}

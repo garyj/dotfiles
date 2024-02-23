@@ -116,7 +116,7 @@ if ! shopt -oq posix; then
   fi
 fi
 
-source $HOME/.commonrc
+source "$HOME"/.commonrc
 
 if starship --version >/dev/null 2>&1; then
   eval "$(starship init bash)"
@@ -125,4 +125,8 @@ fi
 # should always have the below packages, hence no need to check if they exist!
 if zoxide --version >/dev/null 2>&1; then
   eval "$(zoxide init bash)"
+fi
+
+if fly --version >/dev/null 2>&1; then
+  eval "$(flyctl completion bash)"
 fi
