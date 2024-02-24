@@ -9,6 +9,9 @@
 [gpg "ssh"]
 	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
 
+[tag]
+	forceSignAnnotated = true
+
 [commit]
 	gpgsign = true
 
