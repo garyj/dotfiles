@@ -72,6 +72,9 @@ if pipx --version >/dev/null 2>&1; then
   eval "$({{ $argComplete }} pipx)"
 fi
 
+# Export .email into USER_EMAIL to be used in scripts
+export USER_EMAIL={{ .email }}
+
 # Poetry by default will use the currently active python version when creating virtualenvs
 # instead of using the version of Python that poetry was installed with
 # without this setting was getting errors on MacOS as described in:
