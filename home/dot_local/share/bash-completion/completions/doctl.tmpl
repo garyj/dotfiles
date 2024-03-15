@@ -1,0 +1,3 @@
+{{- if lookPath "doctl" }}
+  {{- output "doctl" "completion" "bash" | trim -}}
+{{- end }}
