@@ -1,0 +1,135 @@
+#!/bin/bash
+
+# Description:
+# This script automates the process of creating a new Git branch based on a Jira issue.
+# It fetches the issue name from Jira, slugifies it, and formats it into a branch name with the issue type and key.
+# Additionally, it allows the user to transition the issue to a new status directly from the terminal.
+
+# Usage:
+# ./script_name.sh <your-jira-domain-prexix> <issue-type> <issue-key>
+# Example:
+# ./script_name.sh myproj feature ISSUE-123
+#
+# This will use Atlassian's domain: https://myproj.atlassian.net
+
+# Before running the script, ensure you have JIRA_API_TOKEN and USER_EMAIL set in your environment variables.
+# You can export them by running: export JIRA_API_TOKEN="your_api_token_here" and export USER_EMAIL="your_email_here"
+
+# Requirements:
+# - Jira API token stored in environment variable JIRA_API_TOKEN
+# - curl for making API requests
+# - jq installed for JSON processing
+# - tr for converting issue key to uppercase
+#
+
+# Read JIRA_API_TOKEN from environment variable
+
+set -eufo pipefail
+
+JIRA_API_TOKEN="${JIRA_API_TOKEN}"
+
+# Ensure JIRA_API_TOKEN is provided
+if [ -z "$JIRA_API_TOKEN" ]; then
+    echo "Error: JIRA_API_TOKEN environment variable is not set."
+    exit 1
+fi
+
+# Ensure the Jira domain, type of the issue, and issue key are provided
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <jira-domain> <type-of-issue> <JIRA_ISSUE_KEY>"chez
+    exit 1
+fi
+
+# Use the first script argument as the Jira domain
+JIRA_DOMAIN="https://$1.atlassian.net"
+
+# The type of the issue is the second script argument
+ISSUE_TYPE=$2
+
+# The Jira issue key is the third script argument, converted to uppercase
+ISSUE_KEY=$(echo "$3" | tr '[:lower:]' '[:upper:]')
+
+# Hardcoded email for Jira
+JIRA_USER_EMAIL="${USER_EMAIL}"
+echo "Jira user: $JIRA_USER_EMAIL"
+
+# Function to slugify the issue name
+slugify() {
+    echo "$1" | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z
+}
+
+# Function to fetch, sort transitions by name, and allow quitting
+fetch_and_select_transition() {
+    # Fetch transitions
+    TRANSITIONS_JSON=$(curl -s -u "$JIRA_USER_EMAIL":"$JIRA_API_TOKEN" \
+        -X GET "$JIRA_DOMAIN/rest/api/2/issue/$ISSUE_KEY/transitions" \
+        -H "Content-Type: application/json")
+
+    # Parse transitions to arrays, storing names and IDs
+    IFS=$'\n' # Change Internal Field Separator to newline
+    readarray -t TRANSITION_NAMES < <(echo "$TRANSITIONS_JSON" | jq -r '.transitions[] | .name' | sort)
+    readarray -t TRANSITION_IDS < <(echo "$TRANSITIONS_JSON" | jq -r '.transitions[] | .id')
+    unset IFS # Reset IFS to default
+
+    # Add Quit option to the list
+    TRANSITION_NAMES+=("Quit")
+    TRANSITION_IDS+=("Q")
+
+    echo "Available transitions:"
+    select TRANSITION_NAME in "${TRANSITION_NAMES[@]}"; do
+        if [[ "$TRANSITION_NAME" == "Quit" ]]; then
+            echo "Quitting without making any transitions."
+            exit 0
+        elif [[ -n "$TRANSITION_NAME" ]]; then
+            # Find the index of the selected name
+            for i in "${!TRANSITION_NAMES[@]}"; do
+                if [[ "${TRANSITION_NAMES[$i]}" = "$TRANSITION_NAME" ]]; then
+                    TRANSITION_ID="${TRANSITION_IDS[$i]}"
+                    break
+                fi
+            done
+
+            echo "Selected transition: $TRANSITION_NAME (ID: $TRANSITION_ID)"
+
+            # Transition the issue
+            curl -s -u "$JIRA_USER_EMAIL":"$JIRA_API_TOKEN" \
+                -X POST "$JIRA_DOMAIN/rest/api/2/issue/$ISSUE_KEY/transitions" \
+                -H "Content-Type: application/json" \
+                --data "{\"transition\":{\"id\":\"$TRANSITION_ID\"}}"
+            break
+        else
+            echo "Invalid selection. Please try again."
+        fi
+    done
+}
+
+# Make a request to the Jira REST API to get the issue details
+RESPONSE=$(curl -s -u "$JIRA_USER_EMAIL":"$JIRA_API_TOKEN" \
+    -X GET "$JIRA_DOMAIN/rest/api/2/issue/$ISSUE_KEY" \
+    -H "Content-Type: application/json")
+
+# Extract the issue name using jq
+ISSUE_NAME=$(echo "$RESPONSE" | jq -r '.fields.summary')
+
+# Slugify the issue name
+SLUGIFIED_NAME=$(slugify "$ISSUE_NAME")
+
+# Format the output as a Git branch name
+BRANCH_NAME="${ISSUE_TYPE}/${ISSUE_KEY}-${SLUGIFIED_NAME}"
+echo "Proposed branch name: $BRANCH_NAME"
+
+# Prompt the user for confirmation or a new branch name
+echo -n "Create $BRANCH_NAME (or type a new branch name): "
+read USER_INPUT
+
+# If the user provided input, use it as the new branch name
+if [ ! -z "$USER_INPUT" ]; then
+    BRANCH_NAME="$USER_INPUT"
+fi
+
+echo "Creating branch: $BRANCH_NAME"
+
+# Execute Git command to create and switch to the new branch
+git checkout -b "$BRANCH_NAME"
+
+fetch_and_select_transition
