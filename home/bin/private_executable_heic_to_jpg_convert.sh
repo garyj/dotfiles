@@ -14,9 +14,10 @@ if ! command -v convert &>/dev/null; then
 fi
 
 # Check if there are HEIC files in the current directory
-shopt -s nullglob
-heic_files=(*.HEIC)
-shopt -u nullglob
+shopt -s nullglob nocaseglob
+heic_files=(*.heic)
+shopt -u nullglob nocaseglob
+
 
 # Check if there are any HEIC files
 if [ ${#heic_files[@]} -eq 0 ]; then
