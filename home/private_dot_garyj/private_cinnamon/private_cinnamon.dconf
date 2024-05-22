@@ -10,10 +10,18 @@ panel-zone-symbolic-icon-sizes='[{"panelId": 1, "left": 28, "center": 28, "right
 panels-autohide=['1:false']
 panels-height=['1:30']
 window-effect-speed=1
+workspace-osd-visible=false
 
 [desktop/a11y/applications]
 screen-keyboard-enabled=false
 screen-reader-enabled=false
+
+[desktop/a11y/keyboard]
+bouncekeys-delay=300
+mousekeys-accel-time=300
+mousekeys-init-delay=300
+mousekeys-max-speed=10
+slowkeys-delay=300
 
 [desktop/a11y/mouse]
 dwell-click-enabled=false
@@ -43,10 +51,11 @@ cursor-size=24
 cursor-theme='Adwaita'
 gtk-theme='Mint-Y-Dark'
 icon-theme='Yaru-viridian-dark'
+text-scaling-factor=1.0
 toolkit-accessibility=false
 
 [desktop/keybindings]
-custom-list=['custom7', 'custom22', 'custom21', 'custom20', 'custom19', 'custom18', 'custom17', 'custom15', 'custom0', 'custom1', 'custom2', 'custom3', 'custom4', 'custom5', 'custom8', 'custom10', 'custom11', 'custom12', 'custom14', 'custom16', 'custom23', 'custom24', 'custom26', 'custom6']
+custom-list=['custom28', 'custom27', 'custom25', 'custom13', 'custom6', 'custom26', 'custom24', 'custom23', 'custom16', 'custom14', 'custom12', 'custom11', 'custom10', 'custom8', 'custom5', 'custom4', 'custom3', 'custom2', 'custom1', 'custom0', 'custom15', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22', 'custom7', 'custom9']
 looking-glass-keybinding=@as []
 show-desklets=@as []
 
@@ -66,7 +75,7 @@ command="bringme.sh GitKraken \"zsh -c 'source ~/.zshrc; gitkraken'\""
 name='Gitkraken'
 
 [desktop/keybindings/custom-keybindings/custom11]
-binding=['<Primary>Print', '<Primary>F12']
+binding=['<Primary>Print']
 command='flameshot gui'
 name='Screenshot - Flameshot - Area'
 
@@ -74,6 +83,11 @@ name='Screenshot - Flameshot - Area'
 binding=['<Super>l']
 command='bringme.sh Clocks gnome-clocks'
 name='Gnome Clocks'
+
+[desktop/keybindings/custom-keybindings/custom13]
+binding=['<Super>minus']
+command='bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
+name='DiscoDisco - Obsidian'
 
 [desktop/keybindings/custom-keybindings/custom14]
 binding=['<Super>p']
@@ -135,10 +149,25 @@ binding=['<Super>k']
 command='xkill'
 name='xkill'
 
+[desktop/keybindings/custom-keybindings/custom25]
+binding=['<Super>v', '<Super>KP_1']
+command='vivaldi --profile-directory="Default" --new-window'
+name='Vivaldi'
+
 [desktop/keybindings/custom-keybindings/custom26]
 binding=['<Super>m']
 command='mongodb-compass'
 name='Compass'
+
+[desktop/keybindings/custom-keybindings/custom27]
+binding=['<Super>KP_2', '<Super>z']
+command='vivaldi --profile-directory="PACMAN" --new-window'
+name='Vivaldi  - PACMAN'
+
+[desktop/keybindings/custom-keybindings/custom28]
+binding=['<Super>KP_3', '<Super>x']
+command='vivaldi --profile-directory="C1" --new-window'
+name='Vivaldi - C1'
 
 [desktop/keybindings/custom-keybindings/custom3]
 binding=['<Super>h']
@@ -167,8 +196,13 @@ name='ChatGTP in Chrome (bring)'
 
 [desktop/keybindings/custom-keybindings/custom8]
 binding=['<Super>s']
-command='bringme.sh "Sublime Text" subl'
-name='Sub Lime Text'
+command='bringme.sh "Scratch" "code-insiders $HOME/scratch"'
+name='Scratch '
+
+[desktop/keybindings/custom-keybindings/custom9]
+binding=['<Super>equal']
+command='bringme.sh "DiscoDisco - VSCode" "code $HOME/DiscoDisco"'
+name='DiscoDisco - VsCode'
 
 [desktop/keybindings/media-keys]
 calculator=['<Super>c']
@@ -202,7 +236,8 @@ switch-to-workspace-3=['<Super>3']
 switch-to-workspace-4=['<Super>4']
 switch-to-workspace-5=['<Super>5']
 switch-to-workspace-down=['F3']
-toggle-fullscreen=['<Primary>F2']
+toggle-above=['<Primary>F2']
+toggle-fullscreen=@as []
 toggle-maximized=['<Primary>F1']
 unmaximize=@as []
 
@@ -222,11 +257,15 @@ speed=0.92436974789915971
 [desktop/peripherals/touchpad]
 speed=0.0
 
+[desktop/screensaver]
+lock-enabled=true
+
 [desktop/session]
 idle-delay=uint32 3600
 
 [desktop/sound]
 event-sounds=false
+maximum-volume=100
 
 [desktop/wm/preferences]
 action-scroll-titlebar='opacity'
@@ -239,6 +278,21 @@ mouse-button-modifier='<Super>'
 num-workspaces=5
 visual-bell=false
 
+[gestures]
+swipe-down-2='PUSH_TILE_DOWN::end'
+swipe-down-3='TOGGLE_OVERVIEW::end'
+swipe-down-4='VOLUME_DOWN::end'
+swipe-left-2='PUSH_TILE_LEFT::end'
+swipe-left-3='WORKSPACE_NEXT::end'
+swipe-left-4='WINDOW_WORKSPACE_PREVIOUS::end'
+swipe-right-2='PUSH_TILE_RIGHT::end'
+swipe-right-3='WORKSPACE_PREVIOUS::end'
+swipe-right-4='WINDOW_WORKSPACE_NEXT::end'
+swipe-up-2='PUSH_TILE_UP::end'
+swipe-up-3='TOGGLE_EXPO::end'
+swipe-up-4='VOLUME_UP::end'
+tap-3='MEDIA_PLAY_PAUSE::end'
+
 [muffin]
 draggable-border-width=10
 experimental-features=['x11-randr-fractional-scaling']
@@ -246,11 +300,17 @@ experimental-features=['x11-randr-fractional-scaling']
 [settings-daemon/peripherals/keyboard]
 numlock-state='on'
 
+[settings-daemon/peripherals/touchscreen]
+orientation-lock=true
+
 [sounds]
 login-enabled=false
 logout-enabled=false
+notification-enabled=false
+plug-enabled=false
 switch-enabled=false
 tile-enabled=false
+unplug-enabled=false
 
 [theme]
 name='Mint-Y-Dark'

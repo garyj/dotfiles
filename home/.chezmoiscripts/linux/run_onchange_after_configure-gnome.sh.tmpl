@@ -23,6 +23,9 @@
   # https://stackoverflow.com/questions/71997823/ctrl-dot-makes-e-appear-instead-of-showing-suggestions-in-vscode-on-gnome
   gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
 
-
+  # TODO: switch to configuring Cinnamon using dconf instead of the import/export settings that I am currently using
+  # For example, below disables the workspace name popup when switching workspaces which is annoying
+  # https://dharmitshah.com/2022/06/disable-workspace-name-cinnamon/
+  dconf write /org/cinnamon/workspace-osd-visible false
 
 {{ end }}
