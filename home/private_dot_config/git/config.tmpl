@@ -25,6 +25,9 @@
   cleanbranches = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
   cleanbranchesforrealsy = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
 
+	updm = !git checkout master && git pull && git checkout - && git merge --ff-only master
+	rebm = !git checkout master && git pull && git checkout - && git rebase master
+
 	a = add
 	ap = add -p
 	amc = am --continue
