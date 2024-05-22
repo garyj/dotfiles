@@ -79,11 +79,17 @@ fi
 
 # tbump (used in some projects to bump versions)
 # installed via pipx as it requires tabulate < 0.9.0
-# which confcilts with projects using Pandas which requires tabulate >= 0.9.0
-if command -v cookiecutter >/dev/null 2>&1; then
+# which conflicts with projects using Pandas which requires tabulate >= 0.9.0
+if command -v tbump >/dev/null 2>&1; then
   echo "tbump is already installed."
 else
   echo "Installing tbump."
   pipx install tbump
 fi
 
+if command -v djlint >/dev/null 2>&1; then
+  echo "djlint is already installed."
+else
+  echo "Installing djlint."
+  pipx install djlint
+fi
