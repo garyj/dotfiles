@@ -23,6 +23,20 @@
   # https://stackoverflow.com/questions/71997823/ctrl-dot-makes-e-appear-instead-of-showing-suggestions-in-vscode-on-gnome
   gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
 
+  # Configure Cinnamon/Gnome window focus and raising
+  # https://askubuntu.com/questions/1205036/gnome-focus-new-windows-strict-not-working-in-one-situation
+  gsettings set org.cinnamon.desktop.wm.preferences auto-raise true
+  gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 300
+  gsettings set org.cinnamon.desktop.wm.preferences focus-mode 'sloppy'
+  gsettings set org.cinnamon.desktop.wm.preferences focus-new-windows 'smart'
+  gsettings set org.cinnamon.desktop.wm.preferences raise-on-click true
+  gsettings set org.gnome.desktop.wm.preferences auto-raise true
+  gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 300
+  gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
+  gsettings set org.gnome.desktop.wm.preferences focus-new-windows 'smart'
+  gsettings set org.gnome.desktop.wm.preferences raise-on-click true
+
+
   # TODO: switch to configuring Cinnamon using dconf instead of the import/export settings that I am currently using
   # For example, below disables the workspace name popup when switching workspaces which is annoying
   # https://dharmitshah.com/2022/06/disable-workspace-name-cinnamon/
