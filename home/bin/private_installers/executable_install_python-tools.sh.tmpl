@@ -93,3 +93,10 @@ else
   echo "Installing djlint."
   pipx install djlint
 fi
+
+if command -v git-changelog >/dev/null 2>&1; then
+  echo "git-changelog is already installed."
+else
+  echo "Installing git-changelog."
+  pipx install git-changelog
+fi
