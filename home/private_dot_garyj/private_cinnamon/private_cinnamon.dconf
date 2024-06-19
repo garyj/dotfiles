@@ -55,7 +55,7 @@ text-scaling-factor=1.0
 toolkit-accessibility=false
 
 [desktop/keybindings]
-custom-list=['custom28', 'custom27', 'custom25', 'custom13', 'custom6', 'custom26', 'custom24', 'custom23', 'custom16', 'custom14', 'custom12', 'custom11', 'custom10', 'custom8', 'custom5', 'custom4', 'custom3', 'custom2', 'custom1', 'custom0', 'custom15', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22', 'custom7', 'custom9']
+custom-list=['custom9', 'custom7', 'custom22', 'custom21', 'custom20', 'custom19', 'custom18', 'custom17', 'custom15', 'custom0', 'custom1', 'custom2', 'custom3', 'custom4', 'custom5', 'custom8', 'custom10', 'custom11', 'custom12', 'custom14', 'custom16', 'custom23', 'custom24', 'custom26', 'custom6', 'custom13', 'custom25', 'custom27', 'custom28']
 looking-glass-keybinding=@as []
 show-desklets=@as []
 
@@ -191,8 +191,8 @@ name='Bring 1Password'
 
 [desktop/keybindings/custom-keybindings/custom7]
 binding=['<Super>slash']
-command='bringme.sh "ChatGPT - Google Chrome" "google-chrome --new-window https://chat.openai.com/"'
-name='ChatGTP in Chrome (bring)'
+command='bringme.sh "LobeChat - Chromium" "chromium https://chat.jarrel.io/chat"'
+name='Bringme LobeChat'
 
 [desktop/keybindings/custom-keybindings/custom8]
 binding=['<Super>s']
@@ -201,7 +201,7 @@ name='Scratch '
 
 [desktop/keybindings/custom-keybindings/custom9]
 binding=['<Super>equal']
-command='bringme.sh "DiscoDisco - VSCode" "code $HOME/DiscoDisco"'
+command="bringme.sh \"DiscoDisco - VSCode\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
 name='DiscoDisco - VsCode'
 
 [desktop/keybindings/media-keys]
@@ -212,6 +212,7 @@ terminal=['<Super>Return']
 
 [desktop/keybindings/wm]
 maximize=@as []
+minimize=['<Alt>F3']
 move-to-corner-ne=['<Primary><Alt>KP_Page_Up']
 move-to-corner-nw=['<Primary><Alt>KP_Home']
 move-to-corner-se=['<Primary><Alt>KP_Next']
@@ -271,11 +272,14 @@ maximum-volume=100
 action-scroll-titlebar='opacity'
 audible-bell=false
 auto-raise=true
+auto-raise-delay=300
 button-layout=':minimize,maximize,close'
 focus-mode='sloppy'
+focus-new-windows='smart'
 min-window-opacity=30
 mouse-button-modifier='<Super>'
 num-workspaces=5
+raise-on-click=true
 visual-bell=false
 
 [gestures]
