@@ -23,7 +23,7 @@ ulimit -S -n 65535
 
 # https://www.tenable.com/audits/items/CIS_Debian_Linux_8_Server_v2.0.2_L1.audit:632ea5de5002b78e71581003f107448a
 # Umask is relaxed as 077 seems to cause issues with Docker causing permission changes to executable files on host
-umask 022
+umask 027
 
 export USERID=$(id -u)
 export GROUPID=$(id -g)
