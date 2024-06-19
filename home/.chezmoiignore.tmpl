@@ -17,11 +17,6 @@ Library
 .local/share/fonts
 {{ end }}
 
-{{ if ne .osid "linux-linuxmint" -}}
-.chezmoiscripts/linux/mint/**
-.garyj/cinnamon
-{{ end }}
-
 {{ if not .personal }}
 .pypirc
 .psqlrc
