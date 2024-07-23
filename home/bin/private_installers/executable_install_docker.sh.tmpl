@@ -1,16 +1,10 @@
-{{ $installCommand := "hdiutil" -}}
+{{ $installCommand := "apt" -}}
 {{ $sudo := "" -}}
-{{ if contains "linux" .osid -}}
-{{ $installCommand = "apt" -}}
-{{ end -}}
 {{ if ne .chezmoi.username "root" -}}
 {{ $sudo = "sudo " -}}
 {{ end -}}
 
 #!/bin/bash
-
-# Installs Docker
-# For mac will use Docker Desktop for Apple Silicon
 
 set -eufo pipefail
 
@@ -24,14 +18,6 @@ temp_dir=$(mktemp -d)
 trap 'rm -rf -- "$temp_dir"' EXIT
 cd "$temp_dir"
 
-{{ if eq .chezmoi.os "darwin" -}}
-# macOS installation: https://docs.docker.com/desktop/install/mac-install/
-curl https://desktop.docker.com/mac/main/arm64/Docker.dmg -o "Docker.dmg"
-{{ $sudo }} {{ $installCommand }} attach Docker.dmg
-{{ $sudo }} /Volumes/Docker/Docker.app/Contents/MacOS/install --accept-license --user={{.chezmoi.username}}
-{{ $sudo }} {{ $installCommand }} detach /Volumes/Docker
-
-{{ else if eq .chezmoi.os "linux" -}}
 # Linux installation https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
 # Add Docker's official GPG key:
@@ -57,6 +43,5 @@ echo \
 # Install Docker Engine
 {{ $sudo }} {{ $installCommand }} install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 {{ $sudo }} usermod $USER --append --group docker
-{{ end -}}
 
 cd -

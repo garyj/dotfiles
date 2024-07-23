@@ -18,9 +18,6 @@ echo "--- formatted address ---"
 formatted_address=$(echo "$result" | jq -r '.results[0].formatted_address')
 echo "$formatted_address"
 
-{{ if eq .chezmoi.os "darwin" -}}
-echo "$formatted_address" | pbcopy
-{{ else if eq .chezmoi.os "linux" -}}
 echo "$formatted_address" | xclip -selection clipboard
-{{ end -}}
+
 
