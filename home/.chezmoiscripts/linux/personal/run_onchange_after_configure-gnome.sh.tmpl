@@ -18,9 +18,11 @@ gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Alt>'
 profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
 gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/"${profile}"/ preserve-working-directory never
 
-# Disable Ctrl+. (Dot) ibus emoji hotkey (conflicts with VSCode)
+{{ if eq .osid "linux-linuxmint" -}}
+# Disable Ctrl+. (Dot) ibus emoji hotkey (conflicts with VSCode) - Only on Linux Mint
 # https://stackoverflow.com/questions/71997823/ctrl-dot-makes-e-appear-instead-of-showing-suggestions-in-vscode-on-gnome
 gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
+{{- end }}
 
 # Configure Cinnamon/Gnome window focus and raising
 # https://askubuntu.com/questions/1205036/gnome-focus-new-windows-strict-not-working-in-one-situation
