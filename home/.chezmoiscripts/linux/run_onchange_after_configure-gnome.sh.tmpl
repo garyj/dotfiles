@@ -26,15 +26,21 @@
   # Configure Cinnamon/Gnome window focus and raising
   # https://askubuntu.com/questions/1205036/gnome-focus-new-windows-strict-not-working-in-one-situation
   gsettings set org.cinnamon.desktop.wm.preferences auto-raise true
-  gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 300
+  gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 500
   gsettings set org.cinnamon.desktop.wm.preferences focus-mode 'sloppy'
   gsettings set org.cinnamon.desktop.wm.preferences focus-new-windows 'smart'
   gsettings set org.cinnamon.desktop.wm.preferences raise-on-click true
   gsettings set org.gnome.desktop.wm.preferences auto-raise true
-  gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 300
+  gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 500
   gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
   gsettings set org.gnome.desktop.wm.preferences focus-new-windows 'smart'
   gsettings set org.gnome.desktop.wm.preferences raise-on-click true
+
+  # Configure Key Repease Delay and interval
+  # https://askubuntu.com/a/1031070/739169
+  gsettings set org.cinnamon.desktop.peripherals.keyboard delay 300
+  gsettings set org.cinnamon.desktop.peripherals.keyboard repeat-interval 20
+
 
 
   # TODO: switch to configuring Cinnamon using dconf instead of the import/export settings that I am currently using
