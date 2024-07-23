@@ -7,16 +7,61 @@ set -eufo pipefail
 
 fc-cache
 
+# Root level org.cinnamon configuration
+gsettings set org.cinnamon enabled-applets "[
+  'panel1:left:0:menu@cinnamon.org:0',
+  'panel1:left:1:separator@cinnamon.org:1',
+  'panel1:left:2:grouped-window-list@cinnamon.org:2',
+  'panel1:right:5:systray@cinnamon.org:3',
+  'panel1:right:6:xapp-status@cinnamon.org:4',
+  'panel1:right:7:notifications@cinnamon.org:5',
+  'panel1:right:8:printers@cinnamon.org:6',
+  'panel1:right:9:removable-drives@cinnamon.org:7',
+  'panel1:right:10:keyboard@cinnamon.org:8',
+  'panel1:right:11:favorites@cinnamon.org:9',
+  'panel1:right:12:network@cinnamon.org:10',
+  'panel1:right:13:sound@cinnamon.org:11',
+  'panel1:right:14:power@cinnamon.org:12',
+  'panel1:right:15:calendar@cinnamon.org:13',
+  'panel1:right:16:cornerbar@cinnamon.org:14',
+  'panel1:right:4:workspace-switcher@cinnamon.org:15',
+  'panel1:right:3:scale@cinnamon.org:16',
+  'panel1:right:1:qredshift@quintao:17',
+  'panel1:right:2:temperature@fevimu:18'
+]"
+
+# Set Alt-Tab switcher delay
+gsettings set org.cinnamon alttab-switcher-delay 50
+
+# Set Alt-Tab switcher style
+gsettings set org.cinnamon alttab-switcher-style 'icons+preview'
+
+# Set desklet snap interval
+gsettings set org.cinnamon desklet-snap-interval 25
+
+# Set panels autohide
+gsettings set org.cinnamon panels-autohide "['1:false']"
+
+# Set panels height
+gsettings set org.cinnamon panels-height "['1:30']"
+
+# Set window effect speed
+gsettings set org.cinnamon window-effect-speed 1
+
+# Set workspace OSD visibility
+gsettings set org.cinnamon workspace-osd-visible false
+
+
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+# gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
 
 # Resizes with Alt+RightClick
 # https://unix.stackexchange.com/questions/28514/how-to-get-altright-mouse-to-resize-windows-again
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
-gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Alt>'
+gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
 
-profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/"${profile}"/ preserve-working-directory never
+#profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
+# gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/"${profile}"/ preserve-working-directory never
 
 {{ if eq .osid "linux-linuxmint" -}}
 # Disable Ctrl+. (Dot) ibus emoji hotkey (conflicts with VSCode) - Only on Linux Mint
@@ -92,6 +137,5 @@ gsettings set org.cinnamon.desktop.keybindings.wm toggle-fullscreen "@as []"
 # Unset keybinding for showing desktop
 gsettings set org.cinnamon.desktop.keybindings.wm show-desktop "@as []"
 
-dconf write /org/cinnamon/workspace-osd-visible false
 
 {{ end }}
