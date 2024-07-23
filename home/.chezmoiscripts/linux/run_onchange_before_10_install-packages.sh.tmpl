@@ -121,8 +121,8 @@ echo --- Classic Snaps: {{ $classicSnaps }} ---
 {{   end }}
 {{ end }}
 
-{{ if eq .osid "linux-linuxmint" -}}
-# Mint does not by default add the Snap icons to the menu, hece we need to copy them
+{{ if or (eq .osid "linux-linuxmint") (eq .osid "linux-debian") -}}
+# Neither Mint not Debian add the Snap icons to the menu, hence we need to copy them
 cp /var/lib/snapd/desktop/applications/*.desktop {{ .chezmoi.homeDir }}/.local/share/applications
 {{- end }}
 
