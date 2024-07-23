@@ -55,7 +55,7 @@ text-scaling-factor=1.0
 toolkit-accessibility=false
 
 [desktop/keybindings]
-custom-list=['custom9', 'custom7', 'custom22', 'custom21', 'custom20', 'custom19', 'custom18', 'custom17', 'custom15', 'custom0', 'custom1', 'custom2', 'custom3', 'custom4', 'custom5', 'custom8', 'custom10', 'custom11', 'custom12', 'custom14', 'custom16', 'custom23', 'custom24', 'custom26', 'custom6', 'custom13', 'custom25', 'custom27', 'custom28']
+custom-list=['custom28', 'custom27', 'custom25', 'custom13', 'custom6', 'custom26', 'custom24', 'custom23', 'custom16', 'custom14', 'custom12', 'custom11', 'custom10', 'custom8', 'custom5', 'custom4', 'custom3', 'custom2', 'custom1', 'custom0', 'custom15', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22', 'custom7', 'custom9']
 looking-glass-keybinding=@as []
 show-desklets=@as []
 
@@ -201,7 +201,7 @@ name='Scratch '
 
 [desktop/keybindings/custom-keybindings/custom9]
 binding=['<Super>equal']
-command="bringme.sh \"DiscoDisco - VSCode\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
+command="bringme.sh \"DiscoDiscoSexyPkm\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
 name='DiscoDisco - VsCode'
 
 [desktop/keybindings/media-keys]
@@ -246,7 +246,7 @@ unmaximize=@as []
 autorun-never=false
 
 [desktop/peripherals/keyboard]
-delay=uint32 230
+delay=uint32 304
 numlock-state=true
 repeat-interval=uint32 19
 
@@ -272,7 +272,7 @@ maximum-volume=100
 action-scroll-titlebar='opacity'
 audible-bell=false
 auto-raise=true
-auto-raise-delay=300
+auto-raise-delay=500
 button-layout=':minimize,maximize,close'
 focus-mode='sloppy'
 focus-new-windows='smart'
