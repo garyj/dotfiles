@@ -116,6 +116,9 @@ export EDITOR=emacs
 {{ output "direnv" "hook" "zsh" | trim }}
 {{- end }}
 
+
+source $HOME/.commonrc
+
 if starship --version >/dev/null 2>&1; then
   export VIRTUAL_ENV_DISABLE_PROMPT=0
   eval "$(starship init zsh)"
@@ -124,5 +127,3 @@ fi
 if zoxide --version >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
-
-source $HOME/.commonrc

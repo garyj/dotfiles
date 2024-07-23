@@ -14,9 +14,9 @@ while [ "$1" != "" ]; do
   -e)
     echo "export"
     dconf dump /org/cinnamon/ | grep -v '^command-history' > {{ output "dirname" $path | trim }}/private_cinnamon.dconf
-    # dconf dump /org/nemo/ > nemo.dconf;
-    # dconf dump /org/gtk/ > gtk.dconf;
-    # dconf dump /org/gnome/ > gnome.dconf;
+    dconf dump /org/nemo/ > nemo.dconf;
+    dconf dump /org/gtk/ > gtk.dconf;
+    dconf dump /org/gnome/ > gnome.dconf;
     ;;
   *)
     echo "usage: -e for export -i for import"
