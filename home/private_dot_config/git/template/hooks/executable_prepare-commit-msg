@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # git prepare-commit-msg hook for automatically prepending or appending an issue key
 # from the start of the current branch name to commit messages.
@@ -10,7 +10,6 @@
 # it results in error: bash:  : unrecognized history modifier
 # so commit message like fix(api)!: authentication is now required to get toke
 # will not work becuase of !: in the message
-
 
 # check if commit is merge commit or a commit ammend
 if [ "$2" = "merge" ] || [ "$2" = "commit" ]; then
@@ -27,7 +26,6 @@ fi
 # in the commit message so that we do not double add
 if grep -q "$ISSUE_KEY" "$1"; then exit 0; fi
 
-
 # issue key matched from branch prefix
 # try to find a column and insert after column
 # so a commit message like fix: broken link
@@ -42,7 +40,6 @@ if grep -q "$ISSUE_KEY" "$1"; then exit 0; fi
 # Exit codes are set up using Branching and Flow Control
 # https://askubuntu.com/questions/1036912/how-do-i-get-the-exit-status-when-using-the-sed-command
 # https://www.gnu.org/software/sed/manual/sed.html#Branching-and-flow-control
-
 
 # START section that insert issue key after column
 # sed -i -e "0,/:/{s/:/: $ISSUE_KEY/}; t; q42" $1

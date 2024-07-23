@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Description:
 # This script automates the process of creating a new Git branch based on a Jira issue.

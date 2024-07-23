@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-VERSION=7.0
+VERSION={{- .langs.mongodb }}
 curl -fSsL https://pgp.mongodb.com/server-$VERSION.asc |
   gpg --dearmor | sudo tee /usr/share/keyrings/atlascli.gpg >/dev/null
 

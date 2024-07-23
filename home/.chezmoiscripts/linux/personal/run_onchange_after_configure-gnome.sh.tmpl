@@ -1,0 +1,92 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+
+echo -- Running run_onchange_after_configure-gnome.sh.tmpl --
+
+set -eufo pipefail
+
+fc-cache
+
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+
+# Resizes with Alt+RightClick
+# https://unix.stackexchange.com/questions/28514/how-to-get-altright-mouse-to-resize-windows-again
+gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
+gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Alt>'
+
+profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/"${profile}"/ preserve-working-directory never
+
+# Disable Ctrl+. (Dot) ibus emoji hotkey (conflicts with VSCode)
+# https://stackoverflow.com/questions/71997823/ctrl-dot-makes-e-appear-instead-of-showing-suggestions-in-vscode-on-gnome
+gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
+
+# Configure Cinnamon/Gnome window focus and raising
+# https://askubuntu.com/questions/1205036/gnome-focus-new-windows-strict-not-working-in-one-situation
+gsettings set org.cinnamon.desktop.wm.preferences auto-raise true
+gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 500
+gsettings set org.cinnamon.desktop.wm.preferences focus-mode 'sloppy'
+gsettings set org.cinnamon.desktop.wm.preferences focus-new-windows 'smart'
+gsettings set org.cinnamon.desktop.wm.preferences raise-on-click true
+gsettings set org.gnome.desktop.wm.preferences auto-raise true
+gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 500
+gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
+gsettings set org.gnome.desktop.wm.preferences focus-new-windows 'smart'
+gsettings set org.gnome.desktop.wm.preferences raise-on-click true
+
+# Configure Key Repease Delay and interval
+# https://askubuntu.com/a/1031070/739169
+gsettings set org.cinnamon.desktop.peripherals.keyboard delay 300
+gsettings set org.cinnamon.desktop.peripherals.keyboard repeat-interval 20
+
+# Set keybindings for switching workspaces
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-1 "['<Super>1']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-2 "['<Super>2']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-3 "['<Super>3']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-4 "['<Super>4']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-5 "['<Super>5']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-down "['F3']"
+
+# Set keybindings for window management
+gsettings set org.cinnamon.desktop.keybindings.wm maximize "@as []"
+gsettings set org.cinnamon.desktop.keybindings.wm minimize "['<Alt>F3']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-ne "['<Primary><Alt>KP_Page_Up']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-nw "['<Primary><Alt>KP_Home']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-se "['<Primary><Alt>KP_Next']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-sw "['<Primary><Alt>KP_End']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-e "['<Primary><Alt>KP_Right']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-n "['<Primary><Alt>KP_Up']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-s "['<Primary><Alt>KP_Down']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-w "['<Primary><Alt>KP_Left']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-1 "['<Primary><Alt>1']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-2 "['<Primary><Alt>2']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-3 "['<Primary><Alt>3']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-4 "['<Primary><Alt>4']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-5 "['<Primary><Alt>5']"
+
+# Set keybindings for panel run dialog
+gsettings set org.cinnamon.desktop.keybindings.wm panel-run-dialog "['<Alt>F2', '<Super>r']"
+
+# Set keybindings for switching groups
+gsettings set org.cinnamon.desktop.keybindings.wm switch-group "['<Super>Tab']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-group-backward "['<Shift><Super>Tab']"
+
+# Set keybinding for toggling maximized
+gsettings set org.cinnamon.desktop.keybindings.wm toggle-maximized "['<Primary>F1']"
+
+# Set keybinding for toggling window above
+gsettings set org.cinnamon.desktop.keybindings.wm toggle-above "['<Primary>F2']"
+
+# Unset keybinding for unmaximizing
+gsettings set org.cinnamon.desktop.keybindings.wm unmaximize "@as []"
+
+# Unset keybinding for toggling fullscreen
+gsettings set org.cinnamon.desktop.keybindings.wm toggle-fullscreen "@as []"
+
+# Unset keybinding for showing desktop
+gsettings set org.cinnamon.desktop.keybindings.wm show-desktop "@as []"
+
+dconf write /org/cinnamon/workspace-osd-visible false
+
+{{ end }}

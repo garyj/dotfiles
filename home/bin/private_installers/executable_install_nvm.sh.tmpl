@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Installs NVM
 # https://github.com/nvm-sh/nvm#install--update-script
@@ -8,4 +8,4 @@ if [ -d "$HOME/.nvm" ]; then
   exit 0
 fi
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/{{- .langs.nvm -}}/install.sh | bash

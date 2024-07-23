@@ -1,5 +1,5 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Create a temporary directory and ensure its cleanup!
 temp_dir=$(mktemp -d)

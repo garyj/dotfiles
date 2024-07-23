@@ -1,12 +1,7 @@
-#!/bin/bash
-{{ $installCommand := "brew install " -}}
-
-{{ if contains "linux" .osid}}
+#!/usr/bin/env bash
+{{ $installCommand := "apt install -y " -}}
 {{ if ne .chezmoi.username "root" -}}
 {{ $installCommand = "sudo apt install -y " -}}
-{{ else -}}
-{{ $installCommand = "apt install -y " -}}
-{{ end -}}
 {{ end -}}
 
 echo "Installing Python & Stuff"

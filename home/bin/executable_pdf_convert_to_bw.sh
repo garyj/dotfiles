@@ -1,5 +1,5 @@
-#!/bin/bash
-for file in *.pdf ; do 
+#!/usr/bin/env bash
+for file in *.pdf ; do
 gs \
  -sOutputFile="${file%.pdf}-bw.pdf" \
  -sDEVICE=pdfwrite \
@@ -8,6 +8,6 @@ gs \
  -dCompatibilityLevel=1.4 \
  -dNOPAUSE \
  -dBATCH \
- "$file" ; 
+ "$file" ;
  rm "$file";
 done
