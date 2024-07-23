@@ -1,39 +1,40 @@
 {{ if eq .osid "linux-debian" "linux-raspbian" "linux-ubuntu" "linux-linuxmint" -}}
 
 {{ $packages := list
-    "bat"
-    "build-essential"
-    "curl"
-    "gdu"
-    "emacs"
-    "exa"
-    "fd-find"
-    "fzf"
-    "git"
-    "git-lfs"
-    "jq"
-    "libfuse2"
-    "ripgrep"
-    "zoxide" -}}
+  "curl"
+  "emacs"
+-}}
 
-{{ if eq .osid "linux-ubuntu" "linux-linuxmint" -}}
+{{ if eq .osid "linux-debian" "linux-ubuntu" "linux-linuxmint" -}}
   {{   $packages = mustAppend $packages "btop" -}}
 {{ end -}}
 
 {{ if .personal -}}
   {{  $packages = concat $packages (list
     "apt-transport-https"
+    "bat"
+    "build-essential"
     "ca-certificates"
     "direnv"
+    "exa"
+    "fd-find"
     "ffmpeg"
+    "fzf"
+    "gdu"
     "ghostscript"
+    "git-lfs"
+    "git"
     "imagemagick"
     "inotify-tools"
+    "jq"
+    "libfuse2"
     "openssh-server"
     "python3-dev"
-    "software-properties-common"
+    "ripgrep"
     "shellcheck"
+    "software-properties-common"
     "units"
+    "zoxide"
     "zsh"
   )
   -}}
@@ -47,7 +48,7 @@
   -}}
 {{ end -}}
 
-{{ if not .headless -}}
+{{ if (and (.personal) (not .headless)) -}}
     {{  $packages = concat $packages (list
       "chromium-browser"
       "dconf-editor"
@@ -64,6 +65,9 @@
       "xclip"
     )
   -}}
+  {{ if ne .osid "linux-debian" -}}
+    {{  $packages = concat $packages (list "chromium-browser" ) -}}
+  {{ end -}}
 {{ end -}}
 
 {{ $snaps := list -}}
@@ -94,33 +98,27 @@
 
 {{ end -}}
 
-
-{{ $sudo := "sudo " -}}
-{{ if eq .chezmoi.username "root" -}}
-  {{   $sudo = "" -}}
-{{ end -}}
-
-#!/bin/bash
+#!/usr/bin/env bash
 
 set -euo pipefail
 
 # Create the keyrings dir in case it does not exist
-{{ $sudo }} install -m 0755 -d /etc/apt/keyrings
+sudo  install -m 0755 -d /etc/apt/keyrings
 
 echo --- Deb Packages: {{ $packages }} ---
 
-{{ $sudo }}apt-get update
-{{ $sudo }}apt-get install -y {{ $packages | join " " }}
+sudo apt-get update
+sudo apt-get install -y {{ $packages | join " " }}
 
 echo --- Snaps: {{ $snaps }} ---
 echo --- Classic Snaps: {{ $classicSnaps }} ---
 
 {{ if lookPath "snap" }}
 {{   range $snaps }}
-( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install {{ . }}
+( snap info {{ . }} | grep -q ^installed: ) || sudo snap install {{ . }}
 {{   end }}
 {{   range $classicSnaps }}
-( snap info {{ . }} | grep -q ^installed: ) || {{ $sudo }}snap install --classic {{ . }}
+( snap info {{ . }} | grep -q ^installed: ) || sudo snap install --classic {{ . }}
 {{   end }}
 {{ end }}
 

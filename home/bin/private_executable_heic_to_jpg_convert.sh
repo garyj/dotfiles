@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This script converts HEIC files to JPG using ImageMagick.
 # It checks for the presence of ImageMagick, finds all HEIC files in the current directory,
@@ -17,7 +17,6 @@ fi
 shopt -s nullglob nocaseglob
 heic_files=(*.heic)
 shopt -u nullglob nocaseglob
-
 
 # Check if there are any HEIC files
 if [ ${#heic_files[@]} -eq 0 ]; then

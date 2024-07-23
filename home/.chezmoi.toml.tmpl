@@ -1,44 +1,40 @@
 {{/* Parts taken from: https://github.com/twpayne/dotfiles/blob/master/home/.chezmoi.toml.tmpl */}}
 
-{{- $docker := false -}}{{/* true if this machine should have Docker installed */}}
+{{- /* Checks if running interactively */ -}}
+{{- $interactive := stdinIsATTY -}}
+
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
-{{- $headless := false -}}{{/* true if this machine does not have a screen and keyboard */}}
 {{- $personal := false -}}{{/* true if this machine should have personal secrets */}}
+
+{{- $headless := or (env "SSH_CLIENT" | not | not) (not (or (env "DISPLAY") (env "WAYLAND_DISPLAY"))) -}}
 
 {{- $osID := .chezmoi.os -}}
 {{- if (and (eq .chezmoi.os "linux") (hasKey .chezmoi.osRelease "id")) -}}
-{{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
+    {{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
 
 {{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
-{{-   $ephemeral = true -}}
-{{-   $headless = true -}}
+    {{-   $ephemeral = true -}}
+    {{-   $headless = true -}}
 {{- end -}}
 
 {{- $hostname := .chezmoi.hostname -}}
 
-{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
-{{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
-{{-   $ephemeral = true -}}
-{{-   $headless = true -}}
-{{- end -}}
-
-{{- $personal := false -}}
 {{- if contains "noodle" $hostname -}}
-{{-   $personal = true -}}
+    {{-   $personal = true -}}
 {{- end -}}
 
-{{/* if machine does not contain noodle in the host name most probably it's not a personal (dev) machine as as such is headless */}}
-{{- if not (contains "noodle" $hostname) -}}
-{{-   $headless = true -}}
-{{- end -}}
+{{ $sudo := "sudo " -}}
+{{ if eq .chezmoi.username "root" -}}
+  {{   $sudo = "" -}}
+{{ end -}}
 
-{{- $email := "gary@jarrel.com.au" -}}
+{{- if $interactive -}}
+{{-   writeToStdout "💡 Tip: you can re-enter your data with `chezmoi init --data=false`.\n" -}}
+{{- end -}}
 
 [data]
-    docker = {{ $docker }}
-    email = {{ $email | quote }}
     ephemeral = {{ $ephemeral }}
     headless = {{ $headless }}
     hostname = {{ $hostname | quote }}

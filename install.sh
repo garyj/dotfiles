@@ -4,6 +4,11 @@
 
 set -e # -e: exit on error
 
+# check if $HOME/.local/bin does not exist and if so create it
+if [ ! -d "$HOME/.local/bin" ]; then
+  mkdir -p "$HOME/.local/bin"
+fi
+
 if [ ! "$(command -v chezmoi)" ]; then
   bin_dir="$HOME/.local/bin"
   chezmoi="$bin_dir/chezmoi"
