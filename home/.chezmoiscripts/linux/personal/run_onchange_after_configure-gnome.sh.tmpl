@@ -7,6 +7,20 @@ set -eufo pipefail
 
 fc-cache
 
+# Keyboard
+gsettings set org.cinnamon.desktop.a11y.keyboard bouncekeys-delay 300
+gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-accel-time 300
+gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-init-delay 300
+gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-max-speed 10
+gsettings set org.cinnamon.desktop.a11y.keyboard slowkeys-delay 300
+
+# Mouse
+gsettings set org.cinnamon.desktop.a11y.mouse dwell-click-enabled false
+gsettings set org.cinnamon.desktop.a11y.mouse dwell-threshold 10
+gsettings set org.cinnamon.desktop.a11y.mouse dwell-time 1.2
+gsettings set org.cinnamon.desktop.a11y.mouse secondary-click-enabled false
+gsettings set org.cinnamon.desktop.a11y.mouse secondary-click-time 1.2
+
 # Root level org.cinnamon configuration
 gsettings set org.cinnamon enabled-applets "[
   'panel1:left:0:menu@cinnamon.org:0',
@@ -186,4 +200,163 @@ gsettings set org.cinnamon.sounds switch-enabled false
 gsettings set org.cinnamon.sounds tile-enabled false
 # gsettings set org.cinnamon.sounds unplug-enabled false
 # gsettings set org.cinnamon.sounds plug-enabled false
+
+
+# Shortcuts
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ binding "['<Super>apostrophe']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ command 'code'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ name 'VS Code'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ binding "['<Super>f']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ command 'firefox-devedition'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ name 'Firefox Developer'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ binding "['<Super>semicolon']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ command "bringme.sh GitKraken \"zsh -c 'source ~/.zshrc; gitkraken'\""
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ name 'Gitkraken'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ binding "['<Primary>Print']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ command 'flameshot gui'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ name 'Screenshot - Flameshot - Area'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ binding "['<Super>l']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ command 'bringme.sh Clocks gnome-clocks'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ name 'Gnome Clocks'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ binding "['<Super>minus']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ command 'bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ name 'DiscoDisco - Obsidian'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ binding "['<Super>p']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ command 'nemo Pictures'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ name 'Nemo Pictures'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ binding "['<Super>d']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ command 'nemo Downloads'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ name 'Nemo Downloads'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ binding "['<Super>KP_Multiply']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ command 'bringme.sh Ferdium ferdium'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ name 'Bring Ferdium'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ binding "['<Alt>1']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ command 'bash -c "wmctrl -r :ACTIVE: -t 0 &&  wmctrl -s 0"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ name 'Send to Workspace 1'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ binding "['<Alt>2']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ command 'bash -c "wmctrl -r :ACTIVE: -t 1 &&  wmctrl -s 1"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ name 'Send to Workspace 2'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ binding "['<Alt>3']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ command 'bash -c "wmctrl -r :ACTIVE: -t 2 &&  wmctrl -s 2"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ name 'Send to Workspace 3'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ binding "['<Super>g']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ command 'google-chrome'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ name 'Chrome'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ binding "['<Alt>4']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ command 'bash -c "wmctrl -r :ACTIVE: -t 3 &&  wmctrl -s 3"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ name 'Send to Workspace 4'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ binding "['<Alt>5']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ command 'bash -c "wmctrl -r :ACTIVE: -t 4 &&  wmctrl -s 4"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ name 'Send to Workspace 5'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ binding "['<Super>KP_Subtract']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ command 'bringme.sh Slack slack'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ name 'Bring Slack'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ binding "['Calculator']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ command 'bringme.sh Hubstaff hubstaff'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ name 'Bring Hubstaff'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ binding "['<Super>k']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ command 'xkill'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ name 'xkill'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ binding "['<Super>v', '<Super>KP_1']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'vivaldi --profile-directory="Default" --new-window'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ name 'Vivaldi'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ binding "['<Super>m']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ command 'mongodb-compass'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ name 'Compass'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ binding "['<Super>KP_2', '<Super>z']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ command 'vivaldi --profile-directory="PACMAN" --new-window'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ name 'Vivaldi  - PACMAN'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ binding "['<Super>KP_3', '<Super>x']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ command 'vivaldi --profile-directory="C1" --new-window'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ name 'Vivaldi - C1'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ binding "['<Super>h']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ command 'chromium --password-store=basic'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ name 'Chromium'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ binding "['<Super>w']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ command 'remmina'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ name 'remmina'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ binding "['<Super>q']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ command 'remmina -c /home/garyj/.local/share/remmina/group_rdp_local-rest-garyj_192-168-1-40.remmina'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ name 'rd-rest'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ binding "['<Super>backslash']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ command 'bringme.sh 1Password 1password'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ name 'Bring 1Password'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings.custom-keybindings.custom7/ binding "['<Super>slash']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings.custom-keybindings.custom7/ command 'bringme.sh "Chat - Chromium" "chromium https://chat.jarrel.io/chat"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings.custom-keybindings.custom7/ name 'Bringme LobeChat'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings.custom-keybindings.custom8/ binding "['<Super>s']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings.custom-keybindings.custom8/ command 'bringme.sh "Scratch" "code-insiders $HOME/scratch"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings.custom-keybindings.custom8/ name 'Scratch '
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings.custom-keybindings.custom9/ binding "['<Super>equal']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings.custom-keybindings.custom9/ command "bringme.sh \"DiscoDiscoSexyPkm\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings.custom-keybindings.custom9/ name 'DiscoDisco - VsCode'
+
+gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
+gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
+gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
+gsettings set org.cinnamon.desktop.keybindings.media-keys terminal "['<Super>Return']"
+
+
+
+# ! MAKE SURE WHEN ADDING COMMANDS ABOVE YOU ADD THEM TO THE LIST BELOW
+gsettings set org.cinnamon.desktop.keybindings custom-list "[\
+'custom0',\
+'custom1',\
+'custom2',\
+'custom3',\
+'custom4',\
+'custom5',\
+'custom6',\
+'custom7',\
+'custom8',\
+'custom9',\
+'custom10',\
+'custom11',\
+'custom12',\
+'custom13',\
+'custom14',\
+'custom15',\
+'custom16',\
+'custom17',\
+'custom18',\
+'custom19',\
+'custom20',\
+'custom21',\
+'custom22',\
+'custom23',\
+'custom24',\
+'custom25',\
+'custom26',\
+'custom27',\
+'custom28'\
+]"
+
 {{ end }}
