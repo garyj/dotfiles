@@ -74,13 +74,24 @@ gsettings set org.cinnamon.desktop.background color-shading-type 'solid'
 gsettings set org.cinnamon.desktop.background picture-options 'none'
 
 # Cinnamon Theme and Interface Settings
-gsettings set org.cinnamon.theme name 'Mint-Y-Dark'
+{{ if eq .osid "linux-linuxmint" -}}
+  gsettings set org.cinnamon.theme name 'Mint-Y-Dark'
+  gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
+  gsettings set org.cinnamon.desktop.interface icon-theme 'Yaru-olive'
+  gsettings set org.cinnamon.desktop.interface cursor-theme 'Adwaita'
+{{- end }}
+{{ if eq .osid "linux-debian" -}}
+  gsettings set org.cinnamon.theme name 'BlackMATE'
+  gsettings set org.cinnamon.desktop.interface gtk-theme 'Adwaita-dark'
+  gsettings set org.cinnamon.desktop.interface icon-theme 'mate'
+  gsettings set org.cinnamon.desktop.interface cursor-theme 'Adwaita'
+{{- end }}
+
+
 gsettings set org.cinnamon.desktop.interface cursor-blink-time 1200
 gsettings set org.cinnamon.desktop.interface cursor-size 24
-gsettings set org.cinnamon.desktop.interface cursor-theme 'Adwaita'
+
 gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark'
-gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
-gsettings set org.cinnamon.desktop.interface icon-theme 'Yaru-olive'
 gsettings set org.cinnamon.desktop.interface text-scaling-factor 1.0
 gsettings set org.cinnamon.desktop.interface toolkit-accessibility false
 
