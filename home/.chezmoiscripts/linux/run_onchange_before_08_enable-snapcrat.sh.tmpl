@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Enables Use of Snaps on Mint & Debian
+# Mint: https://snapcraft.io/docs/installing-snap-on-linux-mint
+# Debian: https://snapcraft.io/docs/installing-snap-on-debian
+
+if [[ -r "/etc/apt/preferences.d/nosnap.pref" ]]; then
+sudo mv /etc/apt/preferences.d/nosnap.pref /tmp/
+fi
+{{ if or (eq .osid "linux-linuxmint") (eq .osid "linux-debian") -}}
+sudo apt update
+sudo apt install -y snapd
+{{ end }}

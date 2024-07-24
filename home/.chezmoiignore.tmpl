@@ -14,6 +14,15 @@ README.md
 .local/share/fonts
 {{ end }}
 
+{{ if ne .osid "linux-linuxmint" -}}
+.chezmoiscripts/linux/mint/**
+{{ end }}
+
+{{ if ne .osid "linux-debian" -}}
+.chezmoiscripts/linux/debian/**
+{{ end }}
+
+
 {{ if not .personal }}
 .pypirc
 .psqlrc
