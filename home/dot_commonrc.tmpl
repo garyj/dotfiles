@@ -6,19 +6,6 @@
 export XDG_CONFIG_HOME="$HOME/.config"
 export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
 
-{{- $paths := list }}
-{{- $homeDir := .chezmoi.homeDir }}
-{{- range $_, $relPath := list "bin" "bin/installers" "go/bin" ".cargo/bin" ".local/bin" ".pulumi/bin" }}
-{{ $path := joinPath $homeDir $relPath }}
-{{- if stat $path }}
-{{- $paths = mustAppend $paths $path }}
-{{- end }}
-{{- end -}}
-
-{{- if $paths }}
-export PATH={{ toStrings $paths | join ":" }}:$PATH
-{{- end }}
-
 ulimit -S -n 65535
 
 # https://www.tenable.com/audits/items/CIS_Debian_Linux_8_Server_v2.0.2_L1.audit:632ea5de5002b78e71581003f107448a
