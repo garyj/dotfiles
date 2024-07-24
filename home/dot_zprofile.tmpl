@@ -1,6 +1,6 @@
 # shellcheck shell=bash
 # https://stackoverflow.com/a/9954208/12156188
-if [[ -r "$HOME/.profile" ]]; then
+if [[ -r "${HOME}/.profile" ]]; then
   # shellcheck source=./dot_profile.tmpl
-  source "$HOME/.profile"
+  source "${HOME}/.profile"
 fi
