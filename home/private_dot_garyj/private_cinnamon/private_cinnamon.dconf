@@ -12,6 +12,19 @@ panels-height=['1:30']
 window-effect-speed=1
 workspace-osd-visible=false
 
+[desktop.keybindings.custom-keybindings.custom7]
+name='Bringme LobeChat'
+
+[desktop.keybindings.custom-keybindings.custom8]
+binding=['<Super>s']
+command='bringme.sh "Scratch" "code-insiders $HOME/scratch"'
+name='Scratch '
+
+[desktop.keybindings.custom-keybindings.custom9]
+binding=['<Super>equal']
+command="bringme.sh \"DiscoDiscoSexyPkm\" 'code /home/garyj/DiscoDisco --profile \"DiscoDiscoPKM\"'"
+name='DiscoDisco - VsCode'
+
 [desktop/a11y/applications]
 screen-keyboard-enabled=false
 screen-reader-enabled=false
@@ -55,8 +68,12 @@ icon-theme='Yaru-olive'
 text-scaling-factor=1.0
 toolkit-accessibility=false
 
+[desktop/keybindings.custom-keybindings.custom7]
+binding=['<Super>slash']
+command='bringme.sh "Chat - Chromium" "chromium https://chat.jarrel.io/chat"'
+
 [desktop/keybindings]
-custom-list=['custom28', 'custom27', 'custom25', 'custom13', 'custom6', 'custom26', 'custom24', 'custom23', 'custom16', 'custom14', 'custom12', 'custom11', 'custom10', 'custom8', 'custom5', 'custom4', 'custom3', 'custom2', 'custom1', 'custom0', 'custom15', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22', 'custom7', 'custom9']
+custom-list=['custom0', 'custom1', 'custom2', 'custom3', 'custom4', 'custom5', 'custom6', 'custom7', 'custom8', 'custom9', 'custom10', 'custom11', 'custom12', 'custom13', 'custom14', 'custom15', 'custom16', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22', 'custom23', 'custom24', 'custom25', 'custom26', 'custom27', 'custom28']
 looking-glass-keybinding=@as []
 show-desklets=@as []
 
@@ -254,7 +271,7 @@ repeat-interval=uint32 20
 [desktop/peripherals/mouse]
 double-click=400
 drag-threshold=8
-speed=0.92436974789915971
+speed=1.0
 
 [desktop/peripherals/touchpad]
 speed=0.0
