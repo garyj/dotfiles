@@ -2,4 +2,6 @@
 
 set -eufo pipefail
 
-chsh -s /usr/bin/zsh
+#  chsh -s /usr/bin/zsh
+zsh_path="/bin/zsh"
+sudo usermod --shell "${zsh_path}" '{{ .chezmoi.username }}'
