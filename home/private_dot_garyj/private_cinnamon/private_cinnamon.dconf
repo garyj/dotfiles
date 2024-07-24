@@ -51,7 +51,7 @@ cursor-size=24
 cursor-theme='Adwaita'
 gtk-color-scheme='prefer-dark'
 gtk-theme='Mint-Y-Dark'
-icon-theme='Yaru-viridian-dark'
+icon-theme='Yaru-olive'
 text-scaling-factor=1.0
 toolkit-accessibility=false
 

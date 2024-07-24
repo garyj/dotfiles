@@ -69,6 +69,21 @@ gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark' #  d
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 gsettings set org.gnome.desktop.interface gtk-color-scheme 'prefer-dark'
 
+# Remove the background picture and just make it all black
+gsettings set org.cinnamon.desktop.background color-shading-type 'solid'
+gsettings set org.cinnamon.desktop.background picture-options 'none'
+
+# Cinnamon Theme and Interface Settings
+gsettings set org.cinnamon.theme name 'Mint-Y-Dark'
+gsettings set org.cinnamon.desktop.interface cursor-blink-time 1200
+gsettings set org.cinnamon.desktop.interface cursor-size 24
+gsettings set org.cinnamon.desktop.interface cursor-theme 'Adwaita'
+gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark'
+gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
+gsettings set org.cinnamon.desktop.interface icon-theme 'Yaru-olive'
+gsettings set org.cinnamon.desktop.interface text-scaling-factor 1.0
+gsettings set org.cinnamon.desktop.interface toolkit-accessibility false
+
 # Resizes with Alt+RightClick
 # https://unix.stackexchange.com/questions/28514/how-to-get-altright-mouse-to-resize-windows-again
 gsettings set org.cinnamon.desktop.wm.preferences resize-with-right-button true
@@ -152,4 +167,12 @@ gsettings set org.cinnamon.desktop.keybindings.wm toggle-fullscreen "@as []"
 gsettings set org.cinnamon.desktop.keybindings.wm show-desktop "@as []"
 
 
+# Disable Some Sounds
+gsettings set org.cinnamon.sounds login-enabled false
+gsettings set org.cinnamon.sounds logout-enabled false
+gsettings set org.cinnamon.sounds notification-enabled false
+gsettings set org.cinnamon.sounds switch-enabled false
+gsettings set org.cinnamon.sounds tile-enabled false
+# gsettings set org.cinnamon.sounds unplug-enabled false
+# gsettings set org.cinnamon.sounds plug-enabled false
 {{ end }}
