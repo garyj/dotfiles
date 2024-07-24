@@ -51,9 +51,23 @@ gsettings set org.cinnamon window-effect-speed 1
 # Set workspace OSD visibility
 gsettings set org.cinnamon workspace-osd-visible false
 
+# gnome-terminal settings
+gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar true
+profile=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
+# echo "Gnome TermianProfile: ${profile}"
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ background-color 'rgb(23,20,33)'
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ default-size-columns 130
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ default-size-rows 30
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ font 'Monaspace Krypton Var 14'
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ foreground-color 'rgb(208,207,204)'
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ preserve-working-directory never
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ use-custom-command false
+gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ use-system-font false
 
+# Set up Dark Theme ('prefer-dark' does not work on Cinnamon)
+gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark' #  doesn't do anything for Cinnamon :(
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-# gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar false
+gsettings set org.gnome.desktop.interface gtk-color-scheme 'prefer-dark'
 
 # Resizes with Alt+RightClick
 # https://unix.stackexchange.com/questions/28514/how-to-get-altright-mouse-to-resize-windows-again
@@ -62,9 +76,6 @@ gsettings set org.cinnamon.desktop.wm.preferences mouse-button-modifier '<Super>
 
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
-
-#profile=$(gsettings get org.gnome.Terminal.ProfilesList default)
-# gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles/"${profile}"/ preserve-working-directory never
 
 {{ if eq .osid "linux-linuxmint" -}}
 # Disable Ctrl+. (Dot) ibus emoji hotkey (conflicts with VSCode) - Only on Linux Mint
