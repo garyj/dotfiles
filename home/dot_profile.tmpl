@@ -1,5 +1,9 @@
 # Ref: https://github.dev/felipecrs/dotfiles
 
+if [ -d "/snap/bin/" ]; then
+  export PATH="/snap/bin/:${PATH}"
+fi
+
 {{- $paths := list }}
 {{- $homeDir := .chezmoi.homeDir }}
 {{- range $_, $relPath := list "bin" "bin/installers" "go/bin" ".cargo/bin" ".local/bin" ".pulumi/bin" }}
