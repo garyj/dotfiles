@@ -6,6 +6,5 @@
 .idea
 .pc
 .svn
-.vscode
 /tmp
 .python-version
