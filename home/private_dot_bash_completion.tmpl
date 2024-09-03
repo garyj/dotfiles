@@ -1,3 +1,7 @@
 {{ if lookPath "poetry" -}}
 {{ output "poetry" "completions" "bash" | trim }}
 {{ end -}}
+
+{{ if lookPath "uv" -}}
+{{ output "uv" "generate-shell-completion" "bash" | trim }}
+{{ end -}}
