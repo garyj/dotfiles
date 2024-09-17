@@ -1,3 +1,10 @@
+zmodload zsh/zprof # when enabled one can use zprof to profile shell startup time
+
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME=$HOME/.cache
+
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -26,11 +33,6 @@ HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
 zstyle ':omz:update' mode disabled # disable automatic updates
-# zstyle ':omz:update' mode auto # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS="true"
@@ -42,13 +44,13 @@ zstyle ':omz:update' mode disabled # disable automatic updates
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
 # e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
 # Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
+COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
 # under VCS as dirty. This makes repository status check for large repositories
@@ -71,7 +73,11 @@ HIST_STAMPS="yyyy-mm-dd"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+
+zstyle ':omz:plugins:nvm' lazy yes
+
 plugins=(
+  nvm
   git
   zsh-syntax-highlighting
 )
@@ -79,23 +85,9 @@ plugins=(
 source $ZSH/oh-my-zsh.sh
 
 # User Settings
-setopt autocd          # simpy type name of dir to make it current dir https://zsh.sourceforge.io/Intro/intro_16.html
+setopt autocd          # simply type name of dir to make it current dir https://zsh.sourceforge.io/Intro/intro_16.html
 setopt histignorespace # prevent commands with leading space from being saved to history
 setopt rm_star_silent
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -109,21 +101,10 @@ setopt rm_star_silent
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-export EDITOR=emacs
-
-# direnv
-{{- if lookPath "direnv" }}
-{{ output "direnv" "hook" "zsh" | trim }}
-{{- end }}
-
-
 source $HOME/.commonrc
 
-if starship --version >/dev/null 2>&1; then
-  export VIRTUAL_ENV_DISABLE_PROMPT=0
-  eval "$(starship init zsh)"
-fi
-
-if zoxide --version >/dev/null 2>&1; then
-  eval "$(zoxide init zsh)"
-fi
+# https://blog.mattclemente.com/2020/06/26/oh-my-zsh-slow-to-load/
+timezsh() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do /usr/bin/time $shell -i -c exit; done
+}
