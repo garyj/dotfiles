@@ -1,0 +1,6 @@
+# Replacement function for poetry install that uses uv (much faster)
+# https://mil.ad/blog/2024/uv-poetry-install.html
+uvpi() {
+  uv pip install --no-deps -r <(POETRY_WARNINGS_EXPORT=false poetry export --without-hashes --with dev --with test -f requirements.txt)
+  poetry install --only-root
+}

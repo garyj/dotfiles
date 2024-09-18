@@ -3,17 +3,20 @@
 # File is sourced in .bashrc and .zshrc
 #
 
-export XDG_CONFIG_HOME="$HOME/.config"
 export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+
+# Export .email into USER_EMAIL to be used in scripts
+export USER_EMAIL={{ .email }}
+
+# Can use UID & GID in docker-compose
+export UID=$(id -u)
+export GID=$(id -g)
 
 ulimit -S -n 65535
 
-# https://www.tenable.com/audits/items/CIS_Debian_Linux_8_Server_v2.0.2_L1.audit:632ea5de5002b78e71581003f107448a
-# Umask is relaxed as 077 seems to cause issues with Docker causing permission changes to executable files on host
 umask 027
 
-export USERID=$(id -u)
-export GROUPID=$(id -g)
+export EDITOR=emacs
 
 if [ -f $HOME/.common_alias ]; then
   source $HOME/.common_alias
@@ -24,46 +27,40 @@ if [ -f $HOME/.private_alias ]; then
   source $HOME/.private_alias
 fi
 
-{{ if stat (joinPath .chezmoi.homeDir ".pyenv") }}
-# Pyenv!
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-# below will optimize CPython builds for optimal performance when installing via pyenv
-# https://github.com/pyenv/pyenv/wiki#how-to-build-cpython-for-maximum-performance
-export PYTHON_CONFIGURE_OPTS="--enable-optimizations --with-lto"
-export PYTHON_CFLAGS="-march=native -mtune=native"
-{{ end }}
+# check if .private_alias exists and then source those
+if [ -f $HOME/.functions ]; then
+  source $HOME/.functions
+fi
 
-{{ if stat (joinPath .chezmoi.homeDir ".nvm") -}}
-# NVM
-export NVM_DIR=$HOME/.nvm
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
-{{ end }}
+# Determine the current shell
+if [ -n "$ZSH_VERSION" ]; then
+    current_shell=zsh
+elif [ -n "$BASH_VERSION" ]; then
+    current_shell=bash
+else
+    echo "Unknown shell: direnv hook not loaded"
+    exit 1
+fi
 
-{{ if stat (joinPath .chezmoi.homeDir ".fly") -}}
-# fly.io
-export FLYCTL_INSTALL="$HOME/.fly"
-export PATH="$FLYCTL_INSTALL/bin:$PATH"
-alias fly="flyctl"
+{{- if lookPath "starship" }}
+  eval "$(starship init $current_shell)"
 {{- end }}
+
+{{- if lookPath "zoxide" }}
+  eval "$(zoxide init $current_shell)"
+{{- end }}
+
+{{- if lookPath "direnv" }}
+  eval "$(direnv hook $current_shell)"
+{{- end }}
+
+export CURRENT_SHELL=$current_shell
 
 {{ $argComplete := "register-python-argcomplete3" }}
 {{- if lookPath "register-python-argcomplete" }}
 {{ $argComplete = "register-python-argcomplete" }}
 {{- end }}
 
-if pipx --version >/dev/null 2>&1; then
-  if command -v pyenv >/dev/null; then
-    PIPX_DEFAULT_PYTHON=$(pyenv which python)
-  fi
-  eval "$({{ $argComplete }} pipx)"
-fi
-
-# Export .email into USER_EMAIL to be used in scripts
-export USER_EMAIL={{ .email }}
 
 # Poetry by default will use the currently active python version when creating virtualenvs
 # instead of using the version of Python that poetry was installed with
@@ -71,6 +68,8 @@ export USER_EMAIL={{ .email }}
 # https://github.com/python-poetry/poetry/issues/7158
 # https://python-poetry.org/docs/configuration#virtualenvsprefer-active-python-experimental
 export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true
+export POETRY_VIRTUALENVS_IN_PROJECT=true
+
 
 # Disable the AWS_PAGER to prevent the aws cli from paging output: OMG annoying
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html

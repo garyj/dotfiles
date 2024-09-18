@@ -13,8 +13,8 @@ alias fd=fdfind
 {{- end }}
 
 {{ $ls_command := "ls" -}}
-{{- if lookPath "exa" }}
-{{ $ls_command := "exa" -}}
+{{- if lookPath "eza" }}
+{{ $ls_command := "eza" -}}
 alias ls="{{ $ls_command }}"
 # sort by date modified
 alias lsdate="{{ $ls_command }} -lah --sort newest"
@@ -63,9 +63,17 @@ alias st='scrapy-test'
 alias py=python
 alias p=poetry
 
+# Set up Python Aliases for use with UV
+# https://andrich.me/2024/09/uv-i-am-somewhat-sold/
+alias python3.11='uv run --python=3.11 python3'
+alias python3.12='uv run --python=3.12 python3'
+alias python3.13='uv run --python=3.13 python3'
+alias python3=python3.12
+alias py=python3.12
+
 # Docker Services - various commands to run services without installing them on localhost
 
-# May requiire a once off
+# May require a once off
 # mkdir -p $HOME/.docker_servers_data/
 
 alias d_pg='docker run --rm --name postgres --hostname postgres -p 5432:5432 \

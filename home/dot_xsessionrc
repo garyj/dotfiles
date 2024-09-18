@@ -1,5 +1,6 @@
-if [ -f "$HOME/.profile" ]; then
-  . "$HOME/.profile"
+# Load .profile (which loads all the paths)
+if [[ -r "$HOME/.profile" ]]; then
+  source "$HOME/.profile"
 fi
 
 # This file is sources when the X session starts.

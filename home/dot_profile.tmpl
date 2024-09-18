@@ -1,18 +1,17 @@
-# Ref: https://github.dev/felipecrs/dotfiles
+# List of directories to check and add to PATH
+# REMEMBER the order is reversed, so the last directory in the list will be added first
+paths=(
+  "$HOME/bin/installers"
+  "$HOME/.pulumi/bin"
+  "$HOME/.cargo/bin"
+  "$HOME/go/bin"
+  "$HOME/.local/bin"
+  "$HOME/bin"
+)
 
-if [ -d "/snap/bin/" ]; then
-  export PATH="/snap/bin/:${PATH}"
-fi
-
-{{- $paths := list }}
-{{- $homeDir := .chezmoi.homeDir }}
-{{- range $_, $relPath := list "bin" "bin/installers" "go/bin" ".cargo/bin" ".local/bin" ".pulumi/bin" }}
-{{ $path := joinPath $homeDir $relPath }}
-{{- if stat $path }}
-{{- $paths = mustAppend $paths $path }}
-{{- end }}
-{{- end -}}
-
-{{- if $paths }}
-export PATH={{ toStrings $paths | join ":" }}:$PATH
-{{- end }}
+# Loop through each path and add to PATH if it exists and isn't already included
+for dir in "${paths[@]}"; do
+  if [ -d "$dir" ] && [[ ":$PATH:" != *":$dir:"* ]]; then
+    export PATH="$dir:$PATH"
+  fi
+done
