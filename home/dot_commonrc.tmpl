@@ -53,6 +53,7 @@ current_shell=$(basename "$SHELL")
 # https://github.com/python-poetry/poetry/issues/7158
 # https://python-poetry.org/docs/configuration#virtualenvsprefer-active-python-experimental
 export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true
+export POETRY_VIRTUALENVS_IN_PROJECT=true
 
 
 # Disable the AWS_PAGER to prevent the aws cli from paging output: OMG annoying
