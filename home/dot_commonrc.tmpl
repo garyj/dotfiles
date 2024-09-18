@@ -27,7 +27,20 @@ if [ -f $HOME/.private_alias ]; then
   source $HOME/.private_alias
 fi
 
-current_shell=$(basename "$SHELL")
+# check if .private_alias exists and then source those
+if [ -f $HOME/.functions ]; then
+  source $HOME/.functions
+fi
+
+# Determine the current shell
+if [ -n "$ZSH_VERSION" ]; then
+    current_shell=zsh
+elif [ -n "$BASH_VERSION" ]; then
+    current_shell=bash
+else
+    echo "Unknown shell: direnv hook not loaded"
+    exit 1
+fi
 
 {{- if lookPath "starship" }}
   eval "$(starship init $current_shell)"
@@ -40,6 +53,8 @@ current_shell=$(basename "$SHELL")
 {{- if lookPath "direnv" }}
   eval "$(direnv hook $current_shell)"
 {{- end }}
+
+export CURRENT_SHELL=$current_shell
 
 {{ $argComplete := "register-python-argcomplete3" }}
 {{- if lookPath "register-python-argcomplete" }}
