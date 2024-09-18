@@ -13,8 +13,8 @@ alias fd=fdfind
 {{- end }}
 
 {{ $ls_command := "ls" -}}
-{{- if lookPath "exa" }}
-{{ $ls_command := "exa" -}}
+{{- if lookPath "eza" }}
+{{ $ls_command := "eza" -}}
 alias ls="{{ $ls_command }}"
 # sort by date modified
 alias lsdate="{{ $ls_command }} -lah --sort newest"
