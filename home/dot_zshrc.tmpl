@@ -66,7 +66,9 @@ plugins=(
   command-not-found
   zsh-syntax-highlighting
   zsh-autosuggestions
+{{ if .personal -}}
   autoswitch_virtualenv
+{{ end -}}
 )
 
 source $ZSH/oh-my-zsh.sh

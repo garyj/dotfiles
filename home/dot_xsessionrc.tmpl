@@ -1,3 +1,5 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
+
 # Load .profile (which loads all the paths)
 if [[ -r "$HOME/.profile" ]]; then
   source "$HOME/.profile"
@@ -6,3 +8,5 @@ fi
 # This file is sources when the X session starts.
 # This should make the $HOME/bin and other directories part of the $PATH in Gnome
 # This will allow us to call scripts like `bringme.sh`
+
+{{ end }}

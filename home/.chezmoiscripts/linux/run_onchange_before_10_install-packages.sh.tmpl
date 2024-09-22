@@ -3,6 +3,9 @@
 {{ $packages := list
   "curl"
   "emacs"
+  "eza"
+  "zoxide"
+  "zsh"
 -}}
 
 {{ if eq .osid "linux-debian" "linux-ubuntu" "linux-linuxmint" -}}
@@ -17,7 +20,6 @@
     "ca-certificates"
     "clang"
     "direnv"
-    "eza"
     "fd-find"
     "ffmpeg"
     "fzf"
@@ -40,8 +42,6 @@
     "units"
     "wireguard"
     "wmctrl"
-    "zoxide"
-    "zsh"
   )
   -}}
 {{ end -}}
@@ -116,7 +116,7 @@ sudo  install -m 0755 -d /etc/apt/keyrings
 echo --- Deb Packages: {{ $packages }} ---
 
 sudo apt-get update
-sudo apt-get install -y {{ $packages | join " " }}
+sudo apt-get install {{ $packages | join " " }}
 
 echo --- Snaps: {{ $snaps }} ---
 echo --- Classic Snaps: {{ $classicSnaps }} ---
