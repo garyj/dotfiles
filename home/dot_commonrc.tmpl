@@ -7,6 +7,7 @@ export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
 
 # Export .email into USER_EMAIL to be used in scripts
 export USER_EMAIL={{ .email }}
+export GITHUB_USER={{ .githubUser }}
 
 # Can use UID & GID in docker-compose
 export UID=$(id -u)
@@ -14,7 +15,7 @@ export GID=$(id -g)
 
 ulimit -S -n 65535
 
-umask 027
+umask 002
 
 export EDITOR=emacs
 
