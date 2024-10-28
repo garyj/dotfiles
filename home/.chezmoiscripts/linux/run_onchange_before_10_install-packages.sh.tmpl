@@ -16,6 +16,7 @@
   {{  $packages = concat $packages (list
     "apt-transport-https"
     "bat"
+    "bzip2"
     "build-essential"
     "ca-certificates"
     "clang"
@@ -28,16 +29,19 @@
     "ghostscript"
     "git-lfs"
     "git"
+    "git-absorb"
     "imagemagick"
     "inotify-tools"
     "jq"
     "libfuse2"
     "locate"
+    "nmap"
     "openssh-server"
     "python3-dev"
     "resolvconf"
     "ripgrep"
     "shellcheck"
+    "sshfs"
     "software-properties-common"
     "units"
     "wireguard"
@@ -116,7 +120,7 @@ sudo  install -m 0755 -d /etc/apt/keyrings
 echo --- Deb Packages: {{ $packages }} ---
 
 sudo apt-get update
-sudo apt-get install {{ $packages | join " " }}
+sudo apt-get install {{ $packages | join " " }} -y
 
 echo --- Snaps: {{ $snaps }} ---
 echo --- Classic Snaps: {{ $classicSnaps }} ---
