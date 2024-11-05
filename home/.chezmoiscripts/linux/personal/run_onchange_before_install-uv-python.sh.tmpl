@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Install uv into ~/.local/bin and do not modify our bash/zsh rc files
+curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 sh
+
+UV_PATH="$HOME/.cargo/bin" # uv's default install path
+DEFAULT_PYTHON_VERSION={{- .langs.python }} # Set the default Python version
+
+# if adding a new default version remember to update the .common_aliases file
+"$UV_PATH"/uv python install 3.11
+"$UV_PATH"/uv python install 3.12
+"$UV_PATH"/uv python install 3.13
+
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" cookiecutter
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" djlint
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" git-changelog
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" files-to-prompt
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" ipython
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" llm
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" mkdocs --with mkdocs-material
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" poetry --with poetry-plugin-export
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" pre-commit --with pre-commit-uv
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" tbump
+"$UV_PATH"/uv tool install --python="$DEFAULT_PYTHON_VERSION" tox --with tox-uv
