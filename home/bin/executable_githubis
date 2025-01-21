@@ -1,0 +1,106 @@
+#!/usr/bin/env bash
+
+set -eufo pipefail
+
+GITHUB_TOKEN="${GITHUB_TOKEN}"
+GITHUB_USER="${GITHUB_USER}"
+
+# Ensure GITHUB_TOKEN and GITHUB_USER are provided
+if [ -z "$GITHUB_TOKEN" ]; then
+  echo "Error: GITHUB_TOKEN environment variable is not set."
+  exit 1
+fi
+
+if [ -z "$GITHUB_USER" ]; then
+  echo "Error: GITHUB_USER environment variable is not set."
+  exit 1
+fi
+
+# Ensure all required arguments are provided
+if [ "$#" -ne 4 ]; then
+  echo "Usage: $0 <owner> <repo> <branch-type> <issue-number>"
+  echo "Branch types: feat, fix, doc, etc."
+  exit 1
+fi
+
+OWNER=$1
+REPO=$2
+BRANCH_TYPE=$3
+ISSUE_NUMBER=$4
+
+# Function to slugify the issue title
+slugify() {
+  echo "$1" | iconv -t ascii//TRANSLIT | sed -r s/[^a-zA-Z0-9]+/-/g | sed -r s/^-+\|-+$//g | tr A-Z a-z
+}
+
+# Make a request to the GitHub API to get the issue details
+echo "Fetching issue details..."
+RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  -w "\nHTTP_STATUS:%{http_code}" \
+  "https://api.github.com/repos/$OWNER/$REPO/issues/$ISSUE_NUMBER")
+
+HTTP_STATUS=$(echo "$RESPONSE" | grep HTTP_STATUS | cut -d':' -f2)
+RESPONSE_BODY=$(echo "$RESPONSE" | sed '$d')
+
+echo "HTTP Status: $HTTP_STATUS"
+
+if [ "$HTTP_STATUS" != "200" ]; then
+  echo "Error fetching issue. HTTP Status: $HTTP_STATUS"
+  echo "Response body:"
+  echo "$RESPONSE_BODY"
+  exit 1
+fi
+
+# Extract the issue title using jq
+ISSUE_TITLE=$(echo "$RESPONSE_BODY" | jq -r '.title')
+
+if [ "$ISSUE_TITLE" == "null" ]; then
+  echo "Error: Unable to fetch issue title. Please check your permissions and the issue number."
+  exit 1
+fi
+
+# Format the output as a Git branch name with type prefix
+BRANCH_NAME="${BRANCH_TYPE}/GH-${ISSUE_NUMBER}-$(slugify "$ISSUE_TITLE")"
+echo "Proposed branch name: $BRANCH_NAME"
+
+# Prompt the user for confirmation or a new branch name
+echo -n "Create $BRANCH_NAME (or type a new branch name): "
+read USER_INPUT
+
+# If the user provided input, use it as the new branch name
+if [ ! -z "$USER_INPUT" ]; then
+  BRANCH_NAME="$USER_INPUT"
+fi
+
+echo "Creating branch: $BRANCH_NAME"
+
+# Execute Git command to create and switch to the new branch
+git checkout -b "$BRANCH_NAME"
+
+echo "Branch $BRANCH_NAME created successfully."
+
+# Add "Picked Up" label to the issue and assign it to the user
+echo "Adding 'Picked Up' label and assigning the issue to $GITHUB_USER..."
+UPDATE_RESPONSE=$(curl -s -X PATCH -H "Authorization: token $GITHUB_TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  -w "\nHTTP_STATUS:%{http_code}" \
+  "https://api.github.com/repos/$OWNER/$REPO/issues/$ISSUE_NUMBER" \
+  -d "{\"labels\":[\"Picked Up\"], \"assignees\":[\"$GITHUB_USER\"]}")
+
+UPDATE_HTTP_STATUS=$(echo "$UPDATE_RESPONSE" | grep HTTP_STATUS | cut -d':' -f2)
+UPDATE_RESPONSE_BODY=$(echo "$UPDATE_RESPONSE" | sed '$d')
+
+echo "Update HTTP Status: $UPDATE_HTTP_STATUS"
+echo "Update Response:"
+echo "$UPDATE_RESPONSE_BODY" | jq '.'
+
+if [ "$UPDATE_HTTP_STATUS" == "200" ]; then
+  echo "Issue updated successfully:"
+  echo "  - Label 'Picked Up' added"
+  echo "  - Assigned to $GITHUB_USER"
+else
+  echo "Failed to update the issue. HTTP Status: $UPDATE_HTTP_STATUS"
+  echo "Response body:"
+  echo "$UPDATE_RESPONSE_BODY"
+fi
