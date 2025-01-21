@@ -1,10 +1,61 @@
-# Get editor completions based on the config schema
-"$schema" = 'https://starship.rs/config-schema.json'
+# https://github.com/jefftriplett/dotfiles/blob/main/home/.config/starship.toml
+add_newline = false
+command_timeout = 1000
+scan_timeout = 1000
 
-[nodejs]
-symbol = '🤖 '
+[aws]
+disabled = false
+style = "bold #ffb86c"
+
+# [aws.region_aliases]
+# us-east-1 = "va"
+
+[battery]
+disabled = true
+
+[bun]
+disabled = true
+
+[character]
+error_symbol = "[✗](bold #ff5555)"
+success_symbol = "[➜](bold #50fa7b)"
+# dracula style...
+# error_symbol = "[λ](bold #ff5555)"
+# success_symbol = "[λ](bold #50fa7b)"
+
+[cmd_duration]
+style = "bold #f1fa8c"
 
 [directory]
-truncation_length = 3
-truncate_to_repo = false
-truncation_symbol = '.../'
+style = "bold #50fa7b"
+
+# [direnv]
+# disabled = true
+
+# [docker_context]
+# # disabled = false
+# # only_with_files = false
+# symbol = "🐳 "
+
+[git_branch]
+style = "bold #ff79c6"
+symbol = " "
+
+[git_status]
+style = "bold #ff5555"
+
+[hostname]
+style = "bold #bd93f9"
+
+[kubernetes]
+disabled = true
+
+[nodejs]
+disabled = false
+
+[package]
+disabled = true
+
+[username]
+format = "[$user]($style) on "
+style_user = "bold #8be9fd"
