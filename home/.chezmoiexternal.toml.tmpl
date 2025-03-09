@@ -24,9 +24,12 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
-[".garyj/font-monaspace"]
-    type = "git-repo"
-    url = "https://github.com/githubnext/monaspace.git"
+[".local/share/fonts/Monaspace"]
+    type = "archive"
+    url = "https://github.com/githubnext/monaspace/archive/master.zip"
+    exact = true
+    stripComponents = 3
     refreshPeriod = "168h"
+    include = ["**/*.otf", "**/*.ttf"]
 {{ end -}}
 
