@@ -2,10 +2,8 @@
 
 {{ $packages := list
   "curl"
-  "emacs-nox"
   "eza"
   "zoxide"
-  "zsh"
 -}}
 
 {{ if eq .osid "linux-debian" "linux-ubuntu" "linux-linuxmint" -}}
@@ -21,6 +19,7 @@
     "ca-certificates"
     "clang"
     "direnv"
+    "emacs-nox"
     "fd-find"
     "ffmpeg"
     "fzf"
@@ -47,6 +46,7 @@
     "units"
     "wireguard"
     "wmctrl"
+    "zsh"
   )
   -}}
 {{ end -}}

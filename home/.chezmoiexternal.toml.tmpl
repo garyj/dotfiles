@@ -1,4 +1,4 @@
-
+{{ if .personal -}}
 [".oh-my-zsh"]
     type = "archive"
     url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
@@ -18,7 +18,6 @@
     stripComponents = 1
     refreshPeriod = "168h"
 
-{{ if .personal -}}
 [".oh-my-zsh/custom/plugins/autoswitch_virtualenv"]
     type = "archive"
     url = "https://github.com/MichaelAquilina/zsh-autoswitch-virtualenv/archive/master.tar.gz"
