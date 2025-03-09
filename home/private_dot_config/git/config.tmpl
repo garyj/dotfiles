@@ -11,9 +11,11 @@
 
 [tag]
 	forceSignAnnotated = true
+	sort = version:refname
 
 [commit]
 	gpgsign = true
+	verbose = true
 
 [help]
 	autoCorrect = immediate
@@ -22,8 +24,7 @@
 
   ll 	= log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
   move = "!f() { MESSAGE=$(git log -1 HEAD --pretty=format:%s); git reset HEAD~ --soft; git stash; git checkout $1; git stash pop; git add .;	git commit -m\"$MESSAGE\";};f"
-  cleanbranches = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
-  cleanbranchesforrealsy = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
+	cmllm = "!f() { git diff --cached | llm -t git-commit-msg > /tmp/commit_msg.txt && code-insiders --wait /tmp/commit_msg.txt && git commit -F /tmp/commit_msg.txt && rm /tmp/commit_msg.txt; }; f"
 
 	updm = !git checkout master && git pull && git checkout - && git merge --ff-only master
 	rebm = !git checkout master && git pull && git checkout - && git rebase master
@@ -73,8 +74,15 @@
 	su = submodule update
 	wd = diff --patience --word-diff
 
+[branch]
+	sort = -committerdate
+
 [color]
 	ui = auto
+
+[column]
+	ui = auto
+
 [core]
 	autocrlf = false
 	eol = LF
@@ -87,12 +95,15 @@
 
 [diff]
 	algorithm = histogram
+	mnemonicPrefix = true
 	renamelimit = 8192
 	renames = copies
 
 [fetch]
 	fsckobjects = false
 	prune = true
+	pruneTags = true
+	all = true
 
 [init]
 	templatedir = ~/.config/git/template
@@ -100,10 +111,17 @@
 
 [push]
 	default = current
+	autoSetupRemote = true
+	followTags = true
 
 [rebase]
 	autosquash = true
 	autostash = true
+	updateRefs = true
+
+[rerere]
+	enabled = true
+	autoupdate = true
 
 [receive]
 	fsckobjects = true
