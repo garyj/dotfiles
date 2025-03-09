@@ -2,7 +2,7 @@ name: Gary Jarrel
 email: gary@jarrel.com.au
 githubUser: garyj
 langs:
-  python: "3.12"
+  python: "3.13"
   docli: "1.104.0" # Digital Ocean CLI
   mongodb: "7.0"
   nvm: "v0.40.1"
