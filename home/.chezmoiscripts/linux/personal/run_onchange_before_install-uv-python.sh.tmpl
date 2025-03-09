@@ -6,11 +6,10 @@ curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 sh
 DEFAULT_PYTHON_VERSION={{- .langs.python }} # Set the default Python version
 
 # if adding a new default version remember to update the .common_aliases file
-uv python install 3.11
 uv python install 3.12
 uv python install 3.13
 
-uv python install "$DEFAULT_PYTHON_VERSION" --default
+uv python install "$DEFAULT_PYTHON_VERSION" --default --preview
 
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force cookiecutter
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force djlint
@@ -18,9 +17,11 @@ uv tool install --python="$DEFAULT_PYTHON_VERSION" --force files-to-prompt
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force git-changelog
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force ipython
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force jupyter-core --with jupyter
-uv tool install --python="$DEFAULT_PYTHON_VERSION" --force llm
+uv tool install --python="$DEFAULT_PYTHON_VERSION" --force llm --with llm-anthropic --with llm-perplexity --with llm-jq
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force mkdocs --with mkdocs-material
-uv tool install --python="$DEFAULT_PYTHON_VERSION" --force poetry --with poetry-plugin-export
+uv tool install --python="$DEFAULT_PYTHON_VERSION" --force pip-tools
+uv tool install --python="$DEFAULT_PYTHON_VERSION" --force "poetry<2" --with poetry-plugin-export
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force pre-commit --with pre-commit-uv
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force tbump
 uv tool install --python="$DEFAULT_PYTHON_VERSION" --force tox --with tox-uv
+
