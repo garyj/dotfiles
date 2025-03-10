@@ -17,13 +17,13 @@
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
-
 [".oh-my-zsh/custom/plugins/autoswitch_virtualenv"]
     type = "archive"
     url = "https://github.com/MichaelAquilina/zsh-autoswitch-virtualenv/archive/master.tar.gz"
     exact = true
     stripComponents = 1
     refreshPeriod = "168h"
+
 [".local/share/fonts/Monaspace"]
     type = "archive"
     url = "https://github.com/githubnext/monaspace/archive/master.zip"
@@ -31,5 +31,12 @@
     stripComponents = 3
     refreshPeriod = "168h"
     include = ["**/*.otf", "**/*.ttf"]
+
+[".local/bin/glow"]
+    type = "archive-file"
+    url = {{ gitHubLatestReleaseAssetURL "charmbracelet/glow" "glow_*_Linux_x86_64.tar.gz" | quote }}
+    executable = true
+    stripComponents = 1
+    path = "glow"
 {{ end -}}
 
