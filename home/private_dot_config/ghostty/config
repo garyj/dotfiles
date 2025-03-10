@@ -1,0 +1,57 @@
+#title = "Ghostty 👻"
+
+background-opacity = 0.80
+background-blur-radius = 30
+unfocused-split-opacity = 0.10
+window-decoration = true
+window-width = 160
+window-height = 28
+
+# mouse-hide-while-typing = true
+
+font-family = "Monaspace Neon Var"
+font-size = 15
+adjust-cursor-thickness = 1
+
+theme = Builtin Pastel Dark
+#theme = Ayu Mirage
+
+cursor-style-blink = true
+window-theme = auto
+# working-directory = inherit
+working-directory = home
+clipboard-trim-trailing-spaces = true
+font-thicken = true
+
+confirm-close-surface = false
+quit-after-last-window-closed = true
+shell-integration-features = cursor, sudo, title
+
+# Inverting seems to work better with Solarized
+selection-invert-fg-bg = true
+
+shell-integration = zsh
+
+keybind = ctrl+t=new_tab
+keybind = ctrl+w=close_tab
+keybind = super+left=previous_tab
+keybind = super+right=next_tab
+#keybind = super+left_arrow=goto_split:left
+
+
+keybind = super+q=quit
+keybind = super+comma=open_config
+keybind = super+shift+comma=reload_config
+#keybind = super+alt+i=inspector:toggle
+#keybind = super+q=quit
+#keybind = super+c=copy_to_clipboard
+#keybind = super+v=paste_from_clipboard
+keybind = super+equal=increase_font_size:1
+keybind = super+minus=decrease_font_size:1
+keybind = super+zero=reset_font_size
+
+
+
+
+
+# vim: ft=ini commentstring=#\ %s

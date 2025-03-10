@@ -309,6 +309,10 @@ gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/d
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ command 'xkill'
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ name 'xkill'
 
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ binding "['<Super>Return']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'ghostty'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ name 'Ghostty'
+
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ binding "['<Super>m']"
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ command 'mongodb-compass'
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ name 'Compass'
@@ -321,13 +325,10 @@ gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/d
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ command 'google-chrome --profile-directory=garyjcom1'
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ name 'Chrome - C1'
 
-gsettings set org.cinnamon.desktop.keybindings custom-list "['custom0', 'custom1', 'custom2', 'custom3', 'custom4', 'custom5', 'custom6', 'custom7', 'custom8', 'custom9', 'custom10', 'custom11', 'custom12', 'custom13', 'custom14', 'custom15', 'custom16', 'custom17', 'custom18', 'custom19', 'custom20', 'custom21', 'custom22', 'custom23', 'custom24', 'custom26', 'custom27', 'custom28']"
-
 
 gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
 gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
 gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
-gsettings set org.cinnamon.desktop.keybindings.media-keys terminal "['<Super>Return']"
 
 
 
@@ -361,7 +362,8 @@ gsettings set org.cinnamon.desktop.keybindings custom-list "[\
 'custom25',\
 'custom26',\
 'custom27',\
-'custom28'\
+'custom28',\
+'__dummy__'\
 ]"
 
 # Set Gedit Theme otherwise we get nasty white highlight current line with white text :(
