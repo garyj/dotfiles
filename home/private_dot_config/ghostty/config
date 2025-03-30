@@ -1,6 +1,6 @@
 #title = "Ghostty 👻"
 
-background-opacity = 0.80
+background-opacity = 0.90
 background-blur-radius = 30
 unfocused-split-opacity = 0.10
 window-decoration = true
@@ -33,7 +33,7 @@ selection-invert-fg-bg = true
 shell-integration = zsh
 
 keybind = ctrl+t=new_tab
-keybind = ctrl+w=close_tab
+# keybind = ctrl+w=close_tab
 keybind = super+left=previous_tab
 keybind = super+right=next_tab
 #keybind = super+left_arrow=goto_split:left
