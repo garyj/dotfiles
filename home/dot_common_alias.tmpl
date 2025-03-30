@@ -81,10 +81,8 @@ alias py=python3.12
 # May require a once off
 # mkdir -p $HOME/.docker_servers_data/
 
-alias d_pg='docker run --rm --name postgres --hostname postgres -p 5432:5432 \
-  -e POSTGRES_PASSWORD=postgres \
-  -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data \
-  -d postgres'
+alias d_pg='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data -d postgres:16'
+alias d_pggis='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres_pggis:/var/lib/postgresql/data -d postgis/postgis:15-3.3'
 
 # Postgress with pgvector on port 5433
 alias d_pgvec='docker run --rm --name postgres --hostname postgres -p 5433:5432 \
