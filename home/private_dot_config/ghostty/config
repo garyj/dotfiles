@@ -4,7 +4,7 @@ background-opacity = 0.90
 background-blur-radius = 30
 unfocused-split-opacity = 0.10
 window-decoration = true
-window-width = 160
+window-width = 140
 window-height = 28
 
 # mouse-hide-while-typing = true
