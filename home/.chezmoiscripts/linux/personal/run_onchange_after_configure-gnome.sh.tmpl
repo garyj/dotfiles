@@ -122,12 +122,6 @@ gsettings set org.cinnamon.desktop.wm.preferences mouse-button-modifier '<Super>
 gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
 gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
 
-{{ if eq .osid "linux-linuxmint" -}}
-# Disable Ctrl+. (Dot) ibus emoji hotkey (conflicts with VSCode) - Only on Linux Mint
-# https://stackoverflow.com/questions/71997823/ctrl-dot-makes-e-appear-instead-of-showing-suggestions-in-vscode-on-gnome
-gsettings set org.freedesktop.ibus.panel.emoji hotkey "[]"
-{{- end }}
-
 # Configure Cinnamon/Gnome window focus and raising
 # https://askubuntu.com/questions/1205036/gnome-focus-new-windows-strict-not-working-in-one-situation
 gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 5
@@ -310,7 +304,7 @@ gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/d
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ name 'xkill'
 
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ binding "['<Super>Return']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command '/usr/bin/ghostty'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'ghostty'
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ name 'Ghostty'
 
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ binding "['<Super>m']"
