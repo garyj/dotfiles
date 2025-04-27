@@ -8,6 +8,7 @@
 
 [gpg "ssh"]
 	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
+	program = "/opt/1Password/op-ssh-sign"
 
 [tag]
 	forceSignAnnotated = true
