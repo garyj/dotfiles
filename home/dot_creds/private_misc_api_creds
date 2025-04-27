@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+eval "$(op item get "Misc Credentials" --vault "Personal" --format=json | jq -r '.fields[] | select(.id == "notesPlain").value')"
