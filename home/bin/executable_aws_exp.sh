@@ -20,22 +20,21 @@ if [[ -n "$cred_proc" ]]; then
   creds_json="$(eval "$cred_proc")"
   export AWS_ACCESS_KEY_ID="$(echo "$creds_json" | jq -r .AccessKeyId)"
   export AWS_SECRET_ACCESS_KEY="$(echo "$creds_json" | jq -r .SecretAccessKey)"
-  export AWS_SESSION_TOKEN="$(echo "$creds_json" | jq -r .SessionToken)"
-  export AWS_SECURITY_TOKEN="$AWS_SESSION_TOKEN"
+  AWS_SESSION_TOKEN="$(echo "$creds_json" | jq -r .SessionToken)"
   echo "Loaded credentials via credential_process for profile '$PROFILE'."
 else
   # If missing keys, warn (do not fail)
   export AWS_ACCESS_KEY_ID="$(aws configure get aws_access_key_id --profile "$PROFILE" 2>/dev/null || true)"
   export AWS_SECRET_ACCESS_KEY="$(aws configure get aws_secret_access_key --profile "$PROFILE" 2>/dev/null || true)"
-  export AWS_SESSION_TOKEN="$(aws configure get aws_session_token --profile "$PROFILE" 2>/dev/null || true)"
-  export AWS_SECURITY_TOKEN="$(aws configure get aws_security_token --profile "$PROFILE" 2>/dev/null || true)"
-
-  if [[ -z "$AWS_ACCESS_KEY_ID" || -z "$AWS_SECRET_ACCESS_KEY" ]]; then
-    echo "ERROR: Credentials not found for profile '$PROFILE'. Check ~/.aws/credentials." >&2
-    return 1 2>/dev/null || exit 1
-  fi
-
+  AWS_SESSION_TOKEN="$(aws configure get aws_session_token --profile "$PROFILE" 2>/dev/null || true)"
   echo "Loaded credentials from disk file for profile '$PROFILE'."
+fi
+
+# Unset tokens if they are empty to avoid exporting empty strings
+if [[ -z "$AWS_SESSION_TOKEN" || "$AWS_SESSION_TOKEN" == "null" ]]; then
+  unset AWS_SESSION_TOKEN
+else
+  export AWS_SESSION_TOKEN
 fi
 
 # Export region (warn if not found)
