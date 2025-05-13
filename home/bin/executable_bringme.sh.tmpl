@@ -8,7 +8,7 @@
 WINDOW_NAME=$1
 COMMAND=$2
 
-wmctrl -R $(wmctrl -l | grep "$WINDOW_NAME" | cut -d ' ' -f 5-) >/dev/null 2>&1
+wmctrl -R "$(wmctrl -l | grep "$WINDOW_NAME" | cut -d ' ' -f 5-)" >/dev/null 2>&1
 
 status=$?
 
