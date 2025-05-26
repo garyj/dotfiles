@@ -9,4 +9,7 @@ fi
 # This should make the $HOME/bin and other directories part of the $PATH in Gnome
 # This will allow us to call scripts like `bringme.sh`
 
+# Try to set the fallback for keyboard repeat rate which seems to intermitently be reset by Cinnamon
+xset r rate 300 50
+
 {{ end }}
