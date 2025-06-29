@@ -39,6 +39,8 @@ alias lsdot="{{ $ls_command }} -lahd .*"
 # Various Quick Shortcuts
 alias nbclean="jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*.ipynb"
 
+alias n="nvm use 22"
+
 # Alias m to make (as I type it 100 time a day)
 alias m=make
 alias j=just
@@ -48,6 +50,11 @@ alias glow="glow -lp"
 alias c="code-insiders ."
 alias ce="code-insiders . && exit"
 alias cn="code-insiders"
+alias cu="codium"
+
+# Precommit alias to run all file and autoupdate
+alias pca="pre-commit run --all-files"
+alias pcup="pre-commit autoupdate"
 
 # Docker Stuff
 alias d=docker
@@ -64,7 +71,6 @@ alias dc="docker compose"
 
 # Scrapy aliases
 alias sc='scrapy check'
-alias st='scrapy-test'
 
 # Various Python Stuff
 alias py=python
