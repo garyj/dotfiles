@@ -50,3 +50,4 @@ keybind = super+minus=decrease_font_size:1
 keybind = super+zero=reset_font_size
 keybind = ctrl+w=close_tab
 keybind = ctrl+shift+/=new_split:right
+keybind = shift+enter=text:\n
