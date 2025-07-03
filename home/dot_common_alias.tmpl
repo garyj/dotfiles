@@ -36,6 +36,12 @@ alias lsnd="{{ $ls_command }} -lahd"
 # list all dot files
 alias lsdot="{{ $ls_command }} -lahd .*"
 
+# eza specific aliases
+{{- if lookPath "eza" }}
+alias lx="eza --group-directories-first --classify --git -l"
+{{- end }}
+
+
 # Various Quick Shortcuts
 alias nbclean="jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*.ipynb"
 
