@@ -1,8 +1,25 @@
 #!/usr/bin/env bash
 
-# Ref: https://github.com/twpayne/dotfiles/blob/master/home/.chezmoiscripts/linux/run_onchange_after_max-user-watches.sh.tmpl
+INSTANCES_VALUE="1024"
+WATCHES_VALUE="8388608"
 
-if ! grep -qF "fs.inotify.max_user_watches = 524288" /etc/sysctl.conf; then
-	echo fs.inotify.max_user_watches = 524288 | sudo tee -a /etc/sysctl.conf
-	sudo sysctl -p
-fi
+# Function to set or update sysctl value
+set_sysctl_value() {
+	local key="$1"
+	local value="$2"
+	local setting="$key = $value"
+
+	if grep -q "^$key" /etc/sysctl.conf; then
+		# Update existing value
+		sudo sed -i "s/^$key.*/$setting/" /etc/sysctl.conf
+	else
+		# Add new value
+		echo "$setting" | sudo tee -a /etc/sysctl.conf
+	fi
+}
+
+set_sysctl_value "fs.inotify.max_user_instances" "$INSTANCES_VALUE"
+set_sysctl_value "fs.inotify.max_user_watches" "$WATCHES_VALUE"
+
+# Apply the changes
+sudo sysctl -p
