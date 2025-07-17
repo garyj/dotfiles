@@ -8,11 +8,24 @@
 WINDOW_NAME=$1
 COMMAND=$2
 
-wmctrl -R $(wmctrl -l | grep "$WINDOW_NAME" | cut -d ' ' -f 5-) >/dev/null 2>&1
+# Find all matching windows, print ID and full title
+matches=($(wmctrl -l | awk -v pat="$WINDOW_NAME" 'tolower($0) ~ tolower(pat) {print $1}'))
 
-status=$?
-
-if [ $status -ne 0 ]; then
-  bash -c "${COMMAND}" &
+if [ "${#matches[@]}" = "0" ]; then
+    # No matching window, start the command
+    bash -c "$COMMAND" &
+elif [ "${#matches[@]}" = "1" ]; then
+    # One match: bring that window
+    wmctrl -i -R "${matches[0]}"
+else
+    # Multiple matches: show a menu and let user pick, or pick the first
+    echo "Multiple windows found matching '$WINDOW_NAME':"
+    for id in "${matches[@]}"; do
+        # get full line for this ID
+        title=$(wmctrl -l | grep "^$id" | cut -d' ' -f5-)
+        echo "$id  $title"
+    done
+    echo "Bringing the first match: $title (${matches[0]})"
+    wmctrl -i -R "${matches[0]}"
 fi
 {{ end }}
