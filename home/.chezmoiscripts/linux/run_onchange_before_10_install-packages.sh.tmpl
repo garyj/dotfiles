@@ -12,6 +12,7 @@
 
 {{ if .personal -}}
   {{  $packages = concat $packages (list
+    "ack"
     "apache2-utils"
     "apt-transport-https"
     "bat"
@@ -89,12 +90,12 @@
 {{ if (and (.personal) (not .headless)) -}}
 
 {{   $snaps = concat $snaps (list
+  "bruno"
   "dbeaver-ce"
   "discord"
   "dust"
   "ferdium"
   "obs-studio"
-  "postman"
   "pdftk"
   "slack"
   "spotify"
@@ -103,7 +104,6 @@
 -}}
 
 {{   $classicSnaps = concat $classicSnaps (list
-  "gitkraken"
   "ghostty"
   "just"
   "snapcraft"
