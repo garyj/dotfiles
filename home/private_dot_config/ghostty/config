@@ -33,8 +33,8 @@ shell-integration = zsh
 
 keybind = ctrl+t=new_tab
 # keybind = ctrl+w=close_tab
-keybind = super+left=previous_tab
-keybind = super+right=next_tab
+# keybind = super+left=previous_tab
+# keybind = super+right=next_tab
 #keybind = super+left_arrow=goto_split:left
 
 
