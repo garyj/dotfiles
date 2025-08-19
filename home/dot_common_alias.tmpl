@@ -83,8 +83,9 @@ alias py=python
 alias p=poetry
 
 # Prevent these from stating in home dir just in case
-alias yocl='[ "$PWD" = "$HOME" ] && echo "Refusing to run yocl in home directory" && return 1 || (nvm use default && claude --mcp-config ~/.mcp.json --dangerously-skip-permissions)'
-alias yogm='[ "$PWD" = "$HOME" ] && echo "Refusing to run yogm in home directory" && return 1 || ([ -z "$GEMINI_API_KEY" ] && echo "GEMINI_API_KEY is not in env (continuing)" ; nvm use default && gemini --yolo)'
+alias clyo='[ "$PWD" = "$HOME" ] && echo "Refusing to run yocl in home directory" && return 1 || (nvm use default && claude --mcp-config ~/.mcp.json --dangerously-skip-permissions)'
+alias clopyo='[ "$PWD" = "$HOME" ] && echo "Refusing to run yocl in home directory" && return 1 || (nvm use default && export CLAUDE_CONFIG_DIR=~/.claude_opus; claude --mcp-config ~/.mcp.json --dangerously-skip-permissions)'
+alias gmyo='[ "$PWD" = "$HOME" ] && echo "Refusing to run yogm in home directory" && return 1 || ([ -z "$GEMINI_API_KEY" ] && echo "GEMINI_API_KEY is not in env (continuing)" ; nvm use default && gemini --yolo)'
 
 # Set up Python Aliases for use with UV
 # https://andrich.me/2024/09/uv-i-am-somewhat-sold/
@@ -107,25 +108,25 @@ alias wd='sudo wg-quick down wg0'
 # May require a once off
 # mkdir -p $HOME/.docker_servers_data/
 
-alias d_pg='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data -d postgres:16'
-alias d_pggis='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres_pggis:/var/lib/postgresql/data -d postgis/postgis:15-3.3'
+alias pgstart='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data -d postgres:16'
+alias pggeostart='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres_pggis:/var/lib/postgresql/data -d postgis/postgis:15-3.3'
 
-# Postgress with pgvector on port 5433
-alias d_pgvec='docker run --rm --name postgres --hostname postgres -p 5433:5432 \
+# Postgres with pgvector on port 5433
+alias pgvecstart='docker run --rm --name postgres --hostname postgres -p 5433:5432 \
   -e POSTGRES_PASSWORD=postgres \
   -v $HOME/.docker_servers_data/postgres_pgvec:/var/lib/postgresql/data \
   -d ankane/pgvector'
 
-alias d_pg_stop='docker stop $(docker ps -q --filter ancestor=postgres )'
+alias pgstop='docker stop $(docker ps -q --filter name=postgres)'
 
-alias d_pgadmin='docker run --rm --name pgadmin --hostname pgadmin -p 5050:80 \
+alias pgadminstart='docker run --rm --name pgadmin --hostname pgadmin -p 5050:80 \
   --add-host=host.docker.internal:host-gateway \
   -e "PGADMIN_DEFAULT_EMAIL=a@a.com" -e "PGADMIN_DEFAULT_PASSWORD=a" \
   -v $HOME/.docker_servers_data/pgadmin:/var/lib/pgadmin \
   -d dpage/pgadmin4 \
   && sleep 9 && \
   x-www-browser http://localhost:5050'
-alias d_pgadmin_stop='docker stop $(docker ps -q --filter ancestor=dpage/pgadmin4 )'
+alias pgadminstop='docker stop $(docker ps -q --filter ancestor=dpage/pgadmin4 )'
 
 #  If mongodb does not start make sure the permissions on $HOME/.docker_servers_data/mongo are 777
 #alias d_mongo="docker run --rm --name mongo --hostname mongo -p 27017:27017 \
@@ -135,11 +136,11 @@ alias d_pgadmin_stop='docker stop $(docker ps -q --filter ancestor=dpage/pgadmin
 #  && sleep 2 \
 #  && docker exec mongo mongosh --eval 'rs.initiate({_id: \"rs0\", members: [{_id: 0, host: \"localhost:27017\"}]})'"
 
-alias d_mongo='docker run --rm --name mongo --hostname mongo -p 27017:27017 \
+alias mongostart='docker run --rm --name mongo --hostname mongo -p 27017:27017 \
   -v $HOME/.docker_servers_data/mongo:/data/db \
   -d mongodb/mongodb-community-server'
 
-alias d_mongo_stop='docker stop $(docker ps -q --filter ancestor=mongodb/mongodb-community-server )'
+alias mongostop='docker stop $(docker ps -q --filter ancestor=mongodb/mongodb-community-server )'
 
 # Container for MongoDB Shell Access
 alias moishell='docker run -it --rm --name mongo_shell --entrypoint /bin/bash mongodb/mongodb-community-server'
