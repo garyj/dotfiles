@@ -17,7 +17,7 @@ alias fd=fdfind
 {{ $ls_command := "eza" -}}
 alias ls="{{ $ls_command }}"
 # sort by date modified
-alias lsdate="{{ $ls_command }} -lah --sort newest"
+alias lsdate="{{ $ls_command }} -lh --sort newest"
 {{- end }}
 
 alias -- -='cd -'
