@@ -48,6 +48,6 @@ keybind = super+shift+comma=reload_config
 keybind = super+equal=increase_font_size:1
 keybind = super+minus=decrease_font_size:1
 keybind = super+zero=reset_font_size
-keybind = ctrl+w=close_tab
+# keybind = ctrl+w=close_tab # conflicts with nano search in SSH
 keybind = ctrl+shift+/=new_split:right
 keybind = shift+enter=text:\n
