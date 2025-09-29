@@ -1,0 +1,19 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+
+if command -v gcloud >/dev/null 2>&1; then
+  echo "Google Cloud CLI is already installed"
+  exit 0
+fi
+
+# Add the GPG
+wget -qO - https://packages.cloud.google.com/apt/doc/apt-key.gpg \
+    | gpg --dearmor \
+    | sudo dd of=/usr/share/keyrings/cloud.google.gpg
+
+# Add the ATP Repo
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
+  | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+sudo apt update && sudo apt install -y google-cloud-cli
+{{ end -}}
