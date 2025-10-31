@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+# This script is used to install Signal Desktop on a machine.
+# NOTE: These instructions only work for 64-bit Debian-based Linux distributions
+# such as Ubuntu, Mint etc.
+
+set -eufo pipefail
+
+if command -v signal-desktop >/dev/null 2>&1; then
+  echo "Signal Desktop is already installed."
+  exit 0
+fi
+
+# Create a temporary directory and ensure its cleanup
+temp_dir=$(mktemp -d)
+trap 'rm -rf -- "$temp_dir"' EXIT
+cd "$temp_dir"
+
+# 1. Install official public software signing key
+wget -O- https://updates.signal.org/desktop/apt/keys.asc | gpg --dearmor > signal-desktop-keyring.gpg
+cat signal-desktop-keyring.gpg | sudo tee /usr/share/keyrings/signal-desktop-keyring.gpg > /dev/null
+
+# 2. Add repository to list of repositories
+wget -O signal-desktop.sources https://updates.signal.org/static/desktop/apt/signal-desktop.sources
+cat signal-desktop.sources | sudo tee /etc/apt/sources.list.d/signal-desktop.sources > /dev/null
+
+# 3. Update package database and install Signal
+sudo apt update && sudo apt install signal-desktop
+
+cd -
