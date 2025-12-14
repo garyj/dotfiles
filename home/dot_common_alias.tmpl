@@ -82,10 +82,25 @@ alias sc='scrapy check'
 alias py=python
 alias p=poetry
 
-# Prevent these from stating in home dir just in case
-alias clyo='[ "$PWD" = "$HOME" ] && echo "Refusing to run yocl in home directory" && return 1 || (nvm use default && claude --mcp-config ~/.mcp.json --dangerously-skip-permissions)'
-alias clopyo='[ "$PWD" = "$HOME" ] && echo "Refusing to run yocl in home directory" && return 1 || (nvm use default && export CLAUDE_CONFIG_DIR=~/.claude_opus; claude --mcp-config ~/.mcp.json --dangerously-skip-permissions)'
-alias gmyo='[ "$PWD" = "$HOME" ] && echo "Refusing to run yogm in home directory" && return 1 || ([ -z "$GEMINI_API_KEY" ] && echo "GEMINI_API_KEY is not in env (continuing)" ; nvm use default && gemini --yolo)'
+# Prevent these from starting in home dir just in case
+clyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run claude in home directory"
+    return 1
+  fi
+  nvm use default && claude --dangerously-skip-permissions "$@"
+}
+
+gmyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run gemini in home directory"
+    return 1
+  fi
+  if [ -z "$GEMINI_API_KEY" ]; then
+    echo "GEMINI_API_KEY is not in env (continuing)"
+  fi
+  nvm use default && gemini --yolo "$@"
+}
 
 # Set up Python Aliases for use with UV
 # https://andrich.me/2024/09/uv-i-am-somewhat-sold/
