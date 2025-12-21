@@ -6,23 +6,24 @@ curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 sh
 DEFAULT_PYTHON_VERSION={{- .langs.python }} # Set the default Python version
 
 # if adding a new default version remember to update the .common_aliases file
-$HOME/.local/bin/uv python install 3.12
 $HOME/.local/bin/uv python install 3.13
+$HOME/.local/bin/uv python install 3.14
 
 $HOME/.local/bin/uv python install "$DEFAULT_PYTHON_VERSION" --default --preview
 
+$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" "poetry<2" --with poetry-plugin-export
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" cookiecutter
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" djlint
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" files-to-prompt
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" git-changelog
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" ipython
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" jupyter-core --with jupyter
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" nbconvert
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" llm --with llm-anthropic --with llm-perplexity --with llm-jq
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" mcp-scan
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" mkdocs --with mkdocs-material
+$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" nbconvert
+$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" openai-whisper
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" pip-tools
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" "poetry<2" --with poetry-plugin-export
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" pre-commit --with pre-commit-uv
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" tbump
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" tox --with tox-uv
