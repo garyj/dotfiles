@@ -59,6 +59,10 @@ if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init $current_shell)"
 fi
 
+if command -v mise > /dev/null 2>&1; then
+    eval "$(mise activate $current_shell)";
+fi
+
 export CURRENT_SHELL=$current_shell
 
 {{ $argComplete := "register-python-argcomplete3" }}

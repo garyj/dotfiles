@@ -1,0 +1,15 @@
+[settings]
+disable_tools = ['python']
+experimental = true
+not_found_auto_install = false
+idiomatic_version_file_enable_tools = ["[]"]
+
+[tools]
+go = ['latest']
+node = ['22', '24', 'latest']
+rust = ['latest']
+usage = ['latest']  # Required for mise shell completions
+
+[tasks.bootstrap]
+description = "Bootstrap our CLI"
+run = "mise upgrade"

@@ -1,0 +1,31 @@
+set dotenv-load := false
+set export := true
+set quiet := true
+set unstable := true
+
+export JUST_UNSTABLE := "true"
+
+mod mise '.justfiles/mise.justfile'
+
+HOST := `hostname -s`
+
+[private]
+@default:
+    just --list --list-submodules
+
+# Setup mise
+[group("setup")]
+@bootstrap:
+    just mise::bootstrap
+
+# Format and overwrite justfile
+[group("utils")]
+@fmt:
+    just --fmt --unstable
+    just mise fmt
+
+# Upgrade all tools (uv and mise)
+[group("maintenance")]
+@upgrade:
+    uv tool upgrade --all
+    just mise::upgrade
