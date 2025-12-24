@@ -125,14 +125,14 @@ gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
 
 # Configure Cinnamon/Gnome window focus and raising
 # https://askubuntu.com/questions/1205036/gnome-focus-new-windows-strict-not-working-in-one-situation
-gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 5
+gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 7
 gsettings set org.cinnamon.desktop.wm.preferences auto-raise true
 gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 500
 gsettings set org.cinnamon.desktop.wm.preferences focus-mode 'sloppy'
 gsettings set org.cinnamon.desktop.wm.preferences focus-new-windows 'smart'
 gsettings set org.cinnamon.desktop.wm.preferences raise-on-click true
 
-gsettings set org.gnome.desktop.wm.preferences num-workspaces 5
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 7
 gsettings set org.gnome.desktop.wm.preferences auto-raise true
 gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 500
 gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
@@ -150,6 +150,8 @@ gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-2 "['<Supe
 gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-3 "['<Super>3']"
 gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-4 "['<Super>4']"
 gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-5 "['<Super>5']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-6 "['<Super>6']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-7 "['<Super>7']"
 gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-down "['F3']"
 
 # Set keybindings for window management
@@ -168,6 +170,8 @@ gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-2 "['<Primar
 gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-3 "['<Primary><Alt>3']"
 gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-4 "['<Primary><Alt>4']"
 gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-5 "['<Primary><Alt>5']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-6 "['<Primary><Alt>6']"
+gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-7 "['<Primary><Alt>7']"
 
 # Set keybindings for panel run dialog
 gsettings set org.cinnamon.desktop.keybindings.wm panel-run-dialog "['<Alt>F2', '<Super>r']"
@@ -233,7 +237,7 @@ gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/d
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ name 'Bring 1Password'
 
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom7/ binding "['<Super>slash']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom7/ command 'bringme.sh "Chat - Chromium" "chromium https://lobe.jarrel.io/chat"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom7/ command 'bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom7/ name 'Bringme LobeChat'
 
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom8/ binding "['<Super>s']"
@@ -324,6 +328,15 @@ gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/d
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ command 'google-chrome --profile-directory=garyjjad'
 gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ name 'Chrome - Jad'
 
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ binding "['<Alt>6']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ command 'bash -c "wmctrl -r :ACTIVE: -t 5 &&  wmctrl -s 5"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ name 'Send to Workspace 6'
+
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ binding "['<Alt>7']"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ command 'bash -c "wmctrl -r :ACTIVE: -t 6 &&  wmctrl -s 6"'
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ name 'Send to Workspace 7'
+
+
 
 gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
 gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
@@ -363,6 +376,8 @@ gsettings set org.cinnamon.desktop.keybindings custom-list "[\
 'custom27',\
 'custom28',\
 'custom29',\
+'custom30',\
+'custom31',\
 '__dummy__'\
 ]"
 
