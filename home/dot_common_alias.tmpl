@@ -45,8 +45,6 @@ alias lx="eza --group-directories-first --classify --git -l"
 # Various Quick Shortcuts
 alias nbclean="jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*.ipynb"
 
-alias n="nvm use default"
-
 # Alias m to make (as I type it 100 time a day)
 alias m=make
 alias j=just
@@ -89,7 +87,7 @@ clyo() {
     echo "Refusing to run claude in home directory"
     return 1
   fi
-  nvm use default && claude --dangerously-skip-permissions "$@"
+  claude --dangerously-skip-permissions "$@"
 }
 
 gmyo() {
@@ -100,7 +98,7 @@ gmyo() {
   if [ -z "$GEMINI_API_KEY" ]; then
     echo "GEMINI_API_KEY is not in env (continuing)"
   fi
-  nvm use default && gemini --yolo "$@"
+  gemini --yolo "$@"
 }
 
 # Set up Python Aliases for use with UV
