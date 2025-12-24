@@ -5,6 +5,7 @@ set unstable := true
 
 export JUST_UNSTABLE := "true"
 
+mod claude '.justfiles/claude.justfile'
 mod mise '.justfiles/mise.justfile'
 
 HOST := `hostname -s`
@@ -22,6 +23,7 @@ HOST := `hostname -s`
 [group("utils")]
 @fmt:
     just --fmt --unstable
+    just claude fmt
     just mise fmt
 
 # Upgrade all tools (uv and mise)

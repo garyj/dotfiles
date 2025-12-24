@@ -83,3 +83,7 @@ export POETRY_VIRTUALENVS_IN_PROJECT=true
 # Disable the AWS_PAGER to prevent the aws cli from paging output: OMG annoying
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html
 export AWS_PAGER=""
+
+# BUN_CONFIG_DISABLE_COPY_FILE_RANGE as bun seems to have problems with encryptfs
+# https://github.com/anthropics/claude-code/issues/8158
+export BUN_CONFIG_DISABLE_COPY_FILE_RANGE=true

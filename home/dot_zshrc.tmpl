@@ -1,4 +1,4 @@
-zmodload zsh/zprof # when enabled one can use zprof to profile shell startup time
+# zmodload zsh/zprof # when enabled one can use zprof to profile shell startup time
 
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CONFIG_HOME=$HOME/.config
@@ -59,7 +59,6 @@ zstyle ':completion:*:*:docker:*' option-stacking yes
 zstyle ':completion:*:*:docker-*:*' option-stacking yes
 
 plugins=(
-  git
   docker
   docker-compose
   command-not-found
