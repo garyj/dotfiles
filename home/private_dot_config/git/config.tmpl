@@ -23,8 +23,8 @@
 
 [alias]
 
-  ll 	= log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-  move = "!f() { MESSAGE=$(git log -1 HEAD --pretty=format:%s); git reset HEAD~ --soft; git stash; git checkout $1; git stash pop; git add .;	git commit -m\"$MESSAGE\";};f"
+	ll 	= log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+	move = "!f() { MESSAGE=$(git log -1 HEAD --pretty=format:%s); git reset HEAD~ --soft; git stash; git checkout $1; git stash pop; git add .;	git commit -m\"$MESSAGE\";};f"
 	cmllm = "!f() { git diff --cached | llm -t git-commit-msg > /tmp/commit_msg.txt && code-insiders --wait /tmp/commit_msg.txt && git commit -F /tmp/commit_msg.txt && rm /tmp/commit_msg.txt; }; f"
 
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
@@ -60,14 +60,14 @@
 	mff = merge --ff-only
 	ol = log --pretty=oneline
 	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-  lfol = log --follow --
+	lfol = log --follow --
 	p = push
 	pf = push --force-with-lease
 	prb = pull --rebase
 	r = restore
 	ra = rebase --abort
 	rc = rebase --continue
-  remv = remote -v
+	remv = remote -v
 	ri = rebase --interactive
 	rl = reflog
 	riom = rebase --interactive origin/master
