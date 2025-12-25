@@ -50,4 +50,9 @@ keybind = super+minus=decrease_font_size:1
 keybind = super+zero=reset_font_size
 # keybind = ctrl+w=close_tab # conflicts with nano search in SSH
 keybind = ctrl+shift+/=new_split:right
-keybind = shift+enter=text:\n
+keybind = shift+enter=text:\x1b\r
+
+# disable strange full screen mode that happens when pressing ctrl+enter
+# make it behave like a standard Enter key
+keybind = ctrl+enter=text:\r
+
