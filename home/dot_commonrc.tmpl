@@ -63,6 +63,10 @@ if command -v mise > /dev/null 2>&1; then
     eval "$(mise activate $current_shell)";
 fi
 
+if command -v try &> /dev/null; then
+    eval "$(try init ~/tries)"
+fi
+
 export CURRENT_SHELL=$current_shell
 
 {{ $argComplete := "register-python-argcomplete3" }}
