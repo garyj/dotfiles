@@ -7,7 +7,7 @@ idiomatic_version_file_enable_tools = ["[]"]
 [tools]
 bun = ['latest']
 go = ['latest']
-node = ['22', '24', 'latest']
+node = ['24', '22', 'latest']
 ruby = ['latest']
 rust = ['latest']
 usage = ['latest']  # Required for mise shell completions
