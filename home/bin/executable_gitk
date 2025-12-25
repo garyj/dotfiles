@@ -1,2 +1,2 @@
 #!/bin/zsh
-exec gitkraken "$@"
+mise exec node@24 -- gitkraken "$@"
