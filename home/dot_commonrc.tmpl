@@ -60,11 +60,28 @@ if command -v atuin >/dev/null 2>&1; then
 fi
 
 if command -v mise > /dev/null 2>&1; then
-    eval "$(mise activate $current_shell)";
+  eval "$(mise activate $current_shell)";
 fi
 
+# Auto-activate .venv on directory change (no .envrc needed)
+_auto_venv() {
+  if [[ -d .venv ]] && [[ -f .venv/bin/activate ]]; then
+    source .venv/bin/activate
+  elif [[ -n "$VIRTUAL_ENV" ]] && [[ ! -d .venv ]]; then
+    deactivate 2>/dev/null
+  fi
+}
+
+if [[ -n "$ZSH_VERSION" ]]; then
+  autoload -U add-zsh-hook
+  add-zsh-hook chpwd _auto_venv
+elif [[ -n "$BASH_VERSION" ]]; then
+  PROMPT_COMMAND="_auto_venv${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
+fi
+_auto_venv  # Run on shell start
+
 if command -v try &> /dev/null; then
-    eval "$(try init ~/tries)"
+  eval "$(try init ~/tries)"
 fi
 
 export CURRENT_SHELL=$current_shell
