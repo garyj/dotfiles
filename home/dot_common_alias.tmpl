@@ -82,7 +82,7 @@ alias py=python
 alias p=poetry
 
 # Prevent these from starting in home dir just in case
-clyo() {
+`() {
   if [ "$PWD" = "$HOME" ]; then
     echo "Refusing to run claude in home directory"
     return 1
@@ -90,7 +90,7 @@ clyo() {
   claude --dangerously-skip-permissions "$@"
 }
 
-gmyo() {
+`() {
   if [ "$PWD" = "$HOME" ]; then
     echo "Refusing to run gemini in home directory"
     return 1
@@ -122,39 +122,96 @@ alias wd='sudo wg-quick down wg0'
 # May require a once off
 # mkdir -p $HOME/.docker_servers_data/
 
-alias pgstart='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data -d postgres:16'
-alias pggeostart='docker run --rm --name postgres --hostname postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v $HOME/.docker_servers_data/postgres_pggis:/var/lib/postgresql/data -d postgis/postgis:15-3.3'
+pgstart() {
+  docker run --rm \
+    --name postgres \
+    --hostname postgres \
+    --user "$(id -u):$(id -g)" \
+    -p 5432:5432 \
+    -e POSTGRES_PASSWORD=postgres \
+    -v $HOME/.docker_servers_data/postgres:/var/lib/postgresql/data \
+    -d postgres:16
+}
+
+pggeostart() {
+  docker run --rm \
+    --name postgres \
+    --hostname postgres \
+    --user "$(id -u):$(id -g)" \
+    -p 5432:5432 \
+    -e POSTGRES_PASSWORD=postgres \
+    -v $HOME/.docker_servers_data/postgres_pggis:/var/lib/postgresql/data \
+    -d postgis/postgis:15-3.3
+}
 
 # Postgres with pgvector on port 5433
-alias pgvecstart='docker run --rm --name postgres --hostname postgres -p 5433:5432 \
-  -e POSTGRES_PASSWORD=postgres \
-  -v $HOME/.docker_servers_data/postgres_pgvec:/var/lib/postgresql/data \
-  -d ankane/pgvector'
+pgvecstart() {
+  docker run --rm \
+    --name postgres \
+    --hostname postgres \
+    --user "$(id -u):$(id -g)" \
+    -p 5433:5432 \
+    -e POSTGRES_PASSWORD=postgres \
+    -v $HOME/.docker_servers_data/postgres_pgvec:/var/lib/postgresql/data \
+    -d ankane/pgvector
+}
 
-alias pgstop='docker stop $(docker ps -q --filter name=postgres)'
+pgstop() {
+  docker stop $(docker ps -q --filter name=postgres)
+}
 
-alias pgadminstart='docker run --rm --name pgadmin --hostname pgadmin -p 5050:80 \
-  --add-host=host.docker.internal:host-gateway \
-  -e "PGADMIN_DEFAULT_EMAIL=a@a.com" -e "PGADMIN_DEFAULT_PASSWORD=a" \
-  -v $HOME/.docker_servers_data/pgadmin:/var/lib/pgadmin \
-  -d dpage/pgadmin4 \
-  && sleep 9 && \
-  x-www-browser http://localhost:5050'
-alias pgadminstop='docker stop $(docker ps -q --filter ancestor=dpage/pgadmin4 )'
+pgadminstart() {
+  docker run --rm \
+    --name pgadmin \
+    --hostname pgadmin \
+    --user "$(id -u):$(id -g)" \
+    -p 5050:80 \
+    --add-host=host.docker.internal:host-gateway \
+    -e "PGADMIN_DEFAULT_EMAIL=a@a.com" \
+    -e "PGADMIN_DEFAULT_PASSWORD=a" \
+    -v $HOME/.docker_servers_data/pgadmin:/var/lib/pgadmin \
+    -d dpage/pgadmin4 \
+    && sleep 9 \
+    && x-www-browser http://localhost:5050
+}
+
+pgadminstop() {
+  docker stop $(docker ps -q --filter ancestor=dpage/pgadmin4)
+}
 
 #  If mongodb does not start make sure the permissions on $HOME/.docker_servers_data/mongo are 777
-#alias d_mongo="docker run --rm --name mongo --hostname mongo -p 27017:27017 \
-#  -v \$HOME/.docker_servers_data/mongo:/data/db \
-#  -d mongodb/mongodb-community-server \
-#  --replSet rs0 \
-#  && sleep 2 \
-#  && docker exec mongo mongosh --eval 'rs.initiate({_id: \"rs0\", members: [{_id: 0, host: \"localhost:27017\"}]})'"
+#mongostart_replset() {
+#  if [ "$PWD" = "$HOME" ]; then
+#    echo "Refusing to run mongostart in home directory"
+#    return 1
+#  fi
+#  docker run --rm --name mongo --hostname mongo -p 27017:27017 \
+#    -v $HOME/.docker_servers_data/mongo:/data/db \
+#    -d mongodb/mongodb-community-server \
+#    --replSet rs0 \
+#    && sleep 2 \
+#    && docker exec mongo mongosh --eval 'rs.initiate({_id: "rs0", members: [{_id: 0, host: "localhost:27017"}]})'
+#}
 
-alias mongostart='docker run --rm --name mongo --hostname mongo -p 27017:27017 \
-  -v $HOME/.docker_servers_data/mongo:/data/db \
-  -d mongodb/mongodb-community-server'
+mongostart() {
+  docker run --rm \
+    --name mongo \
+    --hostname mongo \
+    --user "$(id -u):$(id -g)" \
+    -p 27017:27017 \
+    -v $HOME/.docker_servers_data/mongo:/data/db \
+    -d mongodb/mongodb-community-server
+}
 
-alias mongostop='docker stop $(docker ps -q --filter ancestor=mongodb/mongodb-community-server )'
+mongostop() {
+  docker stop $(docker ps -q --filter ancestor=mongodb/mongodb-community-server)
+}
 
 # Container for MongoDB Shell Access
-alias moishell='docker run -it --rm --name mongo_shell --entrypoint /bin/bash mongodb/mongodb-community-server'
+moishell() {
+  docker run -it --rm \
+    --name mongo_shell \
+    --user "$(id -u):$(id -g)" \
+    --entrypoint /bin/bash \
+    mongodb/mongodb-community-server
+}
