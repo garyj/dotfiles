@@ -10,3 +10,4 @@
 .python-version
 
 **/.claude/settings.local.json
+.local # maybe too generic?
