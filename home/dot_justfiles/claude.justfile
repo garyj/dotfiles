@@ -48,7 +48,7 @@ upgrade:
 mpa url:
     output=$(command claude plugin marketplace add "{{ url }}" 2>&1)
     if echo "$output" | grep -qi "already installed"; then
-        name=$(echo "$output" | grep -oP "Marketplace '\K[^']+")
+        name=$(echo "$output" | sed -n "s/.*Marketplace '\([^']*\)'.*/\1/p")
         echo "Already installed, will update instead: $name"
         just --justfile {{ justfile }} mpup "$name"
     else
