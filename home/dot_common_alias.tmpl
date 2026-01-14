@@ -1,4 +1,5 @@
 alias g=git
+alias ghb='gh browse . &'
 
 alias ccp="pwd | xclip -selection clipboard"
 
@@ -82,15 +83,15 @@ alias py=python
 alias p=poetry
 
 # Prevent these from starting in home dir just in case
-`() {
+clyo() {
   if [ "$PWD" = "$HOME" ]; then
     echo "Refusing to run claude in home directory"
     return 1
   fi
-  claude --dangerously-skip-permissions "$@"
+  command claude --dangerously-skip-permissions "$@"
 }
 
-`() {
+gmyo() {
   if [ "$PWD" = "$HOME" ]; then
     echo "Refusing to run gemini in home directory"
     return 1
@@ -98,7 +99,7 @@ alias p=poetry
   if [ -z "$GEMINI_API_KEY" ]; then
     echo "GEMINI_API_KEY is not in env (continuing)"
   fi
-  gemini --yolo "$@"
+  command gemini --yolo "$@"
 }
 
 # Set up Python Aliases for use with UV
