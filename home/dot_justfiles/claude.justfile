@@ -79,8 +79,8 @@ mpr name:
 
 # add/install a plugin
 [group("plugins")]
-@pla plugin:
-    command claude plugin install "{{ plugin }}"
+@pla plugin *ARGS:
+    command claude plugin install "{{ plugin }}" {{ARGS}}
 
 # remove/uninstall a plugin
 [group("plugins")]
