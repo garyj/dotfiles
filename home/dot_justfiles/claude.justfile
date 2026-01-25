@@ -43,9 +43,9 @@ upgrade:
 @version:
     command claude --version
 
-# add or update a marketplace
+# install or update a marketplace (renamed from mpa)
 [group("plugins"), script("bash")]
-mpa url:
+mpi url:
     output=$(command claude plugin marketplace add "{{ url }}" 2>&1)
     if echo "$output" | grep -qi "already installed"; then
         name=$(echo "$output" | sed -n "s/.*Marketplace '\([^']*\)'.*/\1/p")
@@ -77,9 +77,9 @@ mpr name:
 @mpl:
     command claude plugin marketplace list
 
-# add/install a plugin
+# install a plugin (renamed from pla)
 [group("plugins")]
-@pla plugin *ARGS:
+@pli plugin *ARGS:
     command claude plugin install "{{ plugin }}" {{ARGS}}
 
 # remove/uninstall a plugin
