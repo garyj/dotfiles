@@ -1,7 +1,8 @@
 # --------------------
 # Claude Code recipes
 # --------------------
-set quiet
+
+set quiet := true
 set dotenv-load := false
 set export := true
 
@@ -16,7 +17,6 @@ justfile := justfile_directory() + "/.justfiles/claude.justfile"
 [private]
 @fmt:
     just --justfile {{ justfile }} --fmt
-
 
 # BUN_CONFIG_DISABLE_COPY_FILE_RANGE for encryptfs otherwise the install fails
 # https://github.com/anthropics/claude-code/issues/8158
@@ -44,7 +44,8 @@ upgrade:
     command claude --version
 
 # install or update a marketplace (renamed from mpa)
-[group("plugins"), script("bash")]
+[group("plugins")]
+[script("bash")]
 mpi url:
     output=$(command claude plugin marketplace add "{{ url }}" 2>&1)
     if echo "$output" | grep -qi "already installed"; then
@@ -56,7 +57,8 @@ mpi url:
     fi
 
 # remove a marketplace (and its plugins)
-[group("plugins"), script("bash")]
+[group("plugins")]
+[script("bash")]
 mpr name:
     # Find and remove all plugins from this marketplace
     plugins=$(jq -r '.plugins | keys[] | select(endswith("@{{ name }}")) | split("@")[0]' ~/.claude/plugins/installed_plugins.json 2>/dev/null)
@@ -80,7 +82,7 @@ mpr name:
 # install a plugin (renamed from pla)
 [group("plugins")]
 @pli plugin *ARGS:
-    command claude plugin install "{{ plugin }}" {{ARGS}}
+    command claude plugin install "{{ plugin }}" {{ ARGS }}
 
 # remove/uninstall a plugin
 [group("plugins")]
