@@ -93,6 +93,15 @@ clyo() {
   command claude --dangerously-skip-permissions "$@"
 }
 
+# Claude with max thinking tokens (31999) for very hard tasks
+clyomax() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run claude in home directory"
+    return 1
+  fi
+  MAX_THINKING_TOKENS=31999 command claude --dangerously-skip-permissions "$@"
+}
+
 gmyo() {
   if [ "$PWD" = "$HOME" ]; then
     echo "Refusing to run gemini in home directory"
