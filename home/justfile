@@ -10,6 +10,7 @@ mod codex '.justfiles/codex.justfile'
 mod copilot '.justfiles/copilot.justfile'
 mod gemini '.justfiles/gemini.justfile'
 mod mise '.justfiles/mise.justfile'
+mod ralphtui '.justfiles/ralphtui.justfile'
 
 HOST := `hostname -s`
 
