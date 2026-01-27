@@ -1,7 +1,7 @@
 set dotenv-load := false
 set export := true
 
-justfile := justfile_directory() + "/.justfiles/mise.justfile"
+justfile := justfile_directory() + "/mise.justfile"
 
 # list all available recipes
 [private]

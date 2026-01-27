@@ -5,7 +5,7 @@
 set dotenv-load := false
 set export := true
 
-justfile := justfile_directory() + "/.justfiles/gemini.justfile"
+justfile := justfile_directory() + "/gemini.justfile"
 
 # list all available recipes
 [private]

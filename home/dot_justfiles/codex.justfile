@@ -5,7 +5,7 @@
 set dotenv-load := false
 set export := true
 
-justfile := justfile_directory() + "/.justfiles/codex.justfile"
+justfile := justfile_directory() + "/codex.justfile"
 
 # list all available recipes
 [private]

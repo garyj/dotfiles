@@ -6,7 +6,7 @@
 set dotenv-load := false
 set export := true
 
-justfile := justfile_directory() + "/.justfiles/ralphtui.justfile"
+justfile := justfile_directory() + "/ralphtui.justfile"
 
 # list all available recipes
 [private]
@@ -30,4 +30,4 @@ justfile := justfile_directory() + "/.justfiles/ralphtui.justfile"
 
 # display ralphtui version
 @version:
-    ralph-tui --version
+    ~/.cache/.bun/bin/ralph-tui --version

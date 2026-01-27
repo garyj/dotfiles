@@ -29,8 +29,9 @@ HOST := `hostname -s`
     just --fmt --unstable
     for f in .justfiles/*.justfile; do just --fmt --unstable -f "$f"; done
 
-# Upgrade all tools (uv and mise)
+# Upgrade all tools (uv and mise, and all justfiles)
 [group("maintenance")]
 @upgrade:
     uv tool upgrade --all
     just mise::upgrade
+    for f in .justfiles/*.justfile; do echo ">>> Running upgrade for $f"; just -f "$f" upgrade || true; done

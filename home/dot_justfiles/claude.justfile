@@ -6,7 +6,7 @@ set quiet := true
 set dotenv-load := false
 set export := true
 
-justfile := justfile_directory() + "/.justfiles/claude.justfile"
+justfile := justfile_directory() + "/claude.justfile"
 
 # list all available recipes
 [private]

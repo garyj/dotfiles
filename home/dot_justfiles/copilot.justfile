@@ -5,7 +5,7 @@
 set dotenv-load := false
 set export := true
 
-justfile := justfile_directory() + "/.justfiles/copilot.justfile"
+justfile := justfile_directory() + "/copilot.justfile"
 
 # list all available recipes
 [private]
