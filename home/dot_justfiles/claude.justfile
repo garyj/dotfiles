@@ -84,6 +84,11 @@ mpr name:
 @pli plugin *ARGS:
     command claude plugin install "{{ plugin }}" {{ ARGS }}
 
+# update a plugin
+[group("plugins")]
+@plup plugin *ARGS:
+    command claude plugin update "{{ plugin }}" {{ ARGS }}
+
 # remove/uninstall a plugin
 [group("plugins")]
 @plr plugin:
