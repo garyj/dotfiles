@@ -34,4 +34,4 @@ HOST := `hostname -s`
 @upgrade:
     uv tool upgrade --all
     just mise::upgrade
-    for f in .justfiles/*.justfile; do echo ">>> Running upgrade for $f"; just -f "$f" upgrade || true; done
+    for f in .justfiles/*.justfile; do echo "\033[1;36m>>> Running upgrade for $f\033[0m"; just -f "$f" upgrade || true; done
