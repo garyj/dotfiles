@@ -5,6 +5,7 @@ set unstable := true
 
 export JUST_UNSTABLE := "true"
 
+mod agent-browser '.justfiles/agent-browser.justfile'
 mod claude '.justfiles/claude.justfile'
 mod codex '.justfiles/codex.justfile'
 mod copilot '.justfiles/copilot.justfile'
