@@ -113,6 +113,17 @@ gmyo() {
   command gemini --yolo "$@"
 }
 
+cxyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run codex in home directory"
+    return 1
+  fi
+  if [ -z "$OPENAI_API_KEY" ]; then
+    echo "OPENAI_API_KEY is not in env (continuing)"
+  fi
+  command codex -yolo --enable collaboration_modes "$@"
+}
+
 # Set up Python Aliases for use with UV
 # https://andrich.me/2024/09/uv-i-am-somewhat-sold/
 alias python3.12='uv run --python=3.12 python3'
