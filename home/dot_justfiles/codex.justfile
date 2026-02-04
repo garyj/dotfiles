@@ -2,20 +2,7 @@
 # Codex recipes
 # ----------------------
 
-set dotenv-load := false
-set export := true
-
-justfile := justfile_directory() + "/codex.justfile"
-
-# list all available recipes
-[private]
-@default:
-    just --justfile {{ justfile }} --list
-
-# format this justfile
-[private]
-@fmt:
-    just --justfile {{ justfile }} --fmt
+import "_common.justfile"
 
 # open Codex configuration file in Sublime Text
 @config:
@@ -23,17 +10,18 @@ justfile := justfile_directory() + "/codex.justfile"
 
 # check for outdated Codex npm package
 @outdated:
-    npm outdated @openai/codex
+    npm outdated @openai/codex || true
 
 # install Codex CLI globally via npm
 @install:
     npm install -g @openai/codex
+    just --justfile {{ justfile() }} version
 
 # update Codex CLI to the latest version
 @upgrade:
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
     npm install -g @openai/codex
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
 
 # see Codex CLI usage
 @usage:

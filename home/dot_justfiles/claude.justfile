@@ -3,20 +3,8 @@
 # --------------------
 
 set quiet := true
-set dotenv-load := false
-set export := true
 
-justfile := justfile_directory() + "/claude.justfile"
-
-# list all available recipes
-[private]
-@default:
-    just --justfile {{ justfile }} --list
-
-# format this justfile
-[private]
-@fmt:
-    just --justfile {{ justfile }} --fmt
+import "_common.justfile"
 
 # BUN_CONFIG_DISABLE_COPY_FILE_RANGE for encryptfs otherwise the install fails
 # https://github.com/anthropics/claude-code/issues/8158
@@ -26,14 +14,15 @@ justfile := justfile_directory() + "/claude.justfile"
 install:
     export BUN_CONFIG_DISABLE_COPY_FILE_RANGE=true
     curl -fsSL https://claude.ai/install.sh | bash
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
 
 # update Claude Code
 [script("bash")]
 upgrade:
     export BUN_CONFIG_DISABLE_COPY_FILE_RANGE=true
+    just --justfile {{ justfile() }} version
     command claude update
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
 
 # see Claude Code API/CLI usage
 @usage:
@@ -51,7 +40,7 @@ mpi url:
     if echo "$output" | grep -qi "already installed"; then
         name=$(echo "$output" | sed -n "s/.*Marketplace '\([^']*\)'.*/\1/p")
         echo "Already installed, will update instead: $name"
-        just --justfile {{ justfile }} mpup "$name"
+        just --justfile {{ justfile() }} mpup "$name"
     else
         echo "$output"
     fi

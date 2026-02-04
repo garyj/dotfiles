@@ -2,20 +2,7 @@
 # Agent Browser recipes
 # ----------------------
 
-set dotenv-load := false
-set export := true
-
-justfile := justfile_directory() + "/agent-browser.justfile"
-
-# list all available recipes
-[private]
-@default:
-    just --justfile {{ justfile }} --list
-
-# format this justfile
-[private]
-@fmt:
-    just --justfile {{ justfile }} --fmt
+import "_common.justfile"
 
 # check if agent-browser is installed
 @installed:
@@ -25,13 +12,14 @@ justfile := justfile_directory() + "/agent-browser.justfile"
 @install:
     npm install -g agent-browser
     agent-browser install --with-deps
+    just --justfile {{ justfile() }} version
 
 # update agent-browser CLI to the latest version
 @upgrade:
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
     npm install -g agent-browser
     agent-browser install --with-deps
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
 
 # display agent-browser CLI version
 @version:

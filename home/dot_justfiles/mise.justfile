@@ -1,17 +1,4 @@
-set dotenv-load := false
-set export := true
-
-justfile := justfile_directory() + "/mise.justfile"
-
-# list all available recipes
-[private]
-@default:
-    just --justfile {{ justfile }} --list
-
-# format this justfile
-[private]
-@fmt:
-    just --justfile {{ justfile }} --fmt
+import "_common.justfile"
 
 # bootstrap mise by installing configured language versions
 @bootstrap:

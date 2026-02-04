@@ -3,31 +3,19 @@
 # https://ralph-tui.com/docs/getting-started/installation
 # ----------------------
 
-set dotenv-load := false
-set export := true
-
-justfile := justfile_directory() + "/ralphtui.justfile"
-
-# list all available recipes
-[private]
-@default:
-    just --justfile {{ justfile }} --list
-
-# format this justfile
-[private]
-@fmt:
-    just --justfile {{ justfile }} --fmt
+import "_common.justfile"
 
 # install ralphtui CLI
 @install:
     bun install -g ralph-tui
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
 
 # upgrade ralphtui to the latest version
 @upgrade:
+    just --justfile {{ justfile() }} version
     bun install -g ralph-tui
-    just --justfile {{ justfile }} version
+    just --justfile {{ justfile() }} version
 
 # display ralphtui version
 @version:
-    ~/.cache/.bun/bin/ralph-tui --version
+    ralph-tui --version
