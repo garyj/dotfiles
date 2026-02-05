@@ -1,10 +1,16 @@
+---
+name: handoff
+description: Creates a detailed handoff plan of the conversation for continuing the work in a new session. Use when ending a session and needing to preserve context for the next agent.
+disable-model-invocation: true
+---
+
 Creates a detailed handoff plan of the conversation for continuing the work in a new session.
 
 The user specified purpose:
 
 <purpose>$ARGUMENTS</purpose>
 
-You are creating a summary specifically so that it can be continued by another agent.  For this to work you MUST have a purpose.  If no specified purpose was provided in the `<purpose>...</purpose>` tag you must STOP IMMEDIATELY and ask the user what the purpose is.
+You are creating a summary specifically so that it can be continued by another agent. For this to work you MUST have a purpose. If no specified purpose was provided in the `<purpose>...</purpose>` tag you must STOP IMMEDIATELY and ask the user what the purpose is.
 
 Do not continue before asking for the purpose as you will otherwise not understand the instructions and do not assume a purpose!
 
@@ -34,13 +40,13 @@ Your plan should include the following sections:
 6. **Current Work**: Describe in detail precisely what was being worked on immediately before this handoff request, paying special attention to the most recent messages from both user and assistant. Include file names and code snippets where applicable.
 7. **Optional Next Step**: List the next step that you will take that is related to the most recent work you were doing. IMPORTANT: ensure that this step is DIRECTLY in line with the user's explicit requests, and the task you were working on immediately before this handoff request. If your last task was concluded, then only list next steps if they are explicitly in line with the users request. Do not start on tangential requests without confirming with the user first.
 
-Additionally create a "slug" for this handoff.  The "slug" is how we will refer to it later in a few places.  Examples:
+Additionally create a "slug" for this handoff. The "slug" is how we will refer to it later in a few places. Examples:
 
 - current-user-api-handler
 - implement-auth
 - fix-issue-42
 
-Together with the slug create a "Readable Summary".  Examples:
+Together with the slug create a "Readable Summary". Examples:
 
 - Implement Current User API Handler
 - Implement Authentication

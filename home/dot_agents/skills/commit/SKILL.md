@@ -1,7 +1,9 @@
 ---
+name: commit
+description: Create well-formatted commits with conventional commit format and emoji. Use when committing code changes, staging files, or creating atomic git commits.
 allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*), Bash(git log:*)
 argument-hint: [message] | --no-verify | --amend
-description: Create well-formatted commits with conventional commit format and emoji
+disable-model-invocation: true
 ---
 
 # Smart Git Commit
@@ -10,11 +12,11 @@ Create well-formatted commit: $ARGUMENTS
 
 ## Current Repository State
 
-- Git status: !git status --porcelain
-- Current branch: !git branch --show-current
-- Staged changes: !git diff --cached --stat
-- Unstaged changes: !git diff --stat
-- Recent commits: !git log --oneline -5
+- Git status: !`git status --porcelain`
+- Current branch: !`git branch --show-current`
+- Staged changes: !`git diff --cached --stat`
+- Unstaged changes: !`git diff --stat`
+- Recent commits: !`git log --oneline -5`
 
 **Note**: If the branch name contains a Jira issue (e.g., ABC-123) or GitHub issue (e.g., GH-456), automatically include it in the commit message.
 

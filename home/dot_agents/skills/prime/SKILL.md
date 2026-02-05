@@ -1,3 +1,8 @@
+---
+name: prime
+description: Understand the codebase and the project structure. Use when starting work on a new or unfamiliar project.
+---
+
 # Purpose
 
 Understand the codebase and the project.

@@ -38,3 +38,8 @@ HOST := `hostname -s`
     uv tool upgrade --all
     just mise::upgrade
     for f in .justfiles/*.justfile; do echo "\033[1;36m>>> Running upgrade for $f\033[0m"; just -f "$f" upgrade || true; done
+
+# Symlink shared agent skills into each agent's skills directory
+[group("setup")]
+@skills:
+    $HOME/.agents/agent-skills-link.sh
