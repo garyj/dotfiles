@@ -32,5 +32,20 @@
     executable = true
     stripComponents = 1
     path = "glow"
+
+[".agents/skills/skill-creator"]
+    type = "archive"
+    url = "https://github.com/vercel-labs/agent-browser/archive/main.tar.gz"
+    stripComponents = 3
+    refreshPeriod = "24h"
+    include = ["*/skills/skill-creator/**"]
+
+[".agents/skills/agent-browser"]
+    type = "archive"
+    url = "https://github.com/vercel-labs/agent-browser/archive/main.tar.gz"
+    stripComponents = 3
+    refreshPeriod = "24h"
+    include = ["*/skills/agent-browser/**"]
+
 {{ end -}}
 
