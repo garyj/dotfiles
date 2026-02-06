@@ -34,7 +34,7 @@ HOST := `hostname -s`
 [group("maintenance")]
 @upgrade:
     chezmoi upgrade
-    uv self upgrade
+    uv self update
     uv tool upgrade --all
     just mise::upgrade
     for f in .justfiles/*.justfile; do echo "\033[1;36m>>> Running upgrade for $f\033[0m"; just -f "$f" upgrade || true; done
