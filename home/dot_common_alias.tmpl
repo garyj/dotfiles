@@ -34,6 +34,8 @@ alias lsa="{{ $ls_command }} -lah"
 alias lss="{{ $ls_command }} -lahSr"
 # don't list directories
 alias lsnd="{{ $ls_command }} -lahd"
+# list only directories
+alias lsd="{{ $ls_command }} -lahd"
 # list all dot files
 alias lsdot="{{ $ls_command }} -lahd .*"
 
@@ -46,12 +48,13 @@ alias lx="eza --group-directories-first --classify --git -l"
 # Various Quick Shortcuts
 alias nbclean="jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*.ipynb"
 
-# Alias m to make (as I type it 100 time a day)
 alias m=make
 alias j=just
 alias jh="just --justfile ~/justfile"
 alias mi=mise
 alias eee="exec $SHELL"
+
+alias sshp="ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no"
 
 alias glow="glow -lp"
 
@@ -77,10 +80,6 @@ alias dconprune='docker container prune --force'
 alias dcf="docker compose logs -f"
 alias dc="docker compose"
 
-# Scrapy aliases
-alias sc='scrapy check'
-
-# Various Python Stuff
 alias py=python
 alias p=poetry
 
