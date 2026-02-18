@@ -53,6 +53,7 @@ alias j=just
 alias jh="just --justfile ~/justfile"
 alias mi=mise
 alias eee="exec $SHELL"
+alias t=tmux
 
 alias n="nohup nemo ./ >/dev/null 2>&1 &"
 
@@ -122,7 +123,7 @@ cxyo() {
   if [ -z "$OPENAI_API_KEY" ]; then
     echo "OPENAI_API_KEY is not in env (continuing)"
   fi
-  command codex -yolo --enable collaboration_modes "$@"
+  command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
 }
 
 # Set up Python Aliases for use with UV
@@ -222,9 +223,10 @@ mongostart() {
     --name mongo \
     --hostname mongo \
     --user "$(id -u):$(id -g)" \
+    --ulimit nofile=64000:64000 \
     -p 27017:27017 \
     -v $HOME/.docker_servers_data/mongo:/data/db \
-    -d mongodb/mongodb-community-server
+    -d mongodb/mongodb-community-server:latest
 }
 
 mongostop() {
@@ -236,6 +238,7 @@ moishell() {
   docker run -it --rm \
     --name mongo_shell \
     --user "$(id -u):$(id -g)" \
+    --ulimit nofile=64000:64000 \
     --entrypoint /bin/bash \
-    mongodb/mongodb-community-server
+    mongodb/mongodb-community-server:latest
 }
