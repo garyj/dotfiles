@@ -55,4 +55,4 @@ keybind = shift+enter=text:\x1b\r
 # disable strange full screen mode that happens when pressing ctrl+enter
 # make it behave like a standard Enter key
 keybind = ctrl+enter=text:\r
-
+keybind = f1=equalize_splits
