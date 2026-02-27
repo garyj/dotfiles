@@ -28,7 +28,7 @@ HOST := `hostname -s`
 [group("utils")]
 @fmt:
     just --fmt --unstable
-    for f in .justfiles/*.justfile; do just --fmt --unstable -f "$f"; done
+    for f in .justfiles/[!_]*.justfile; do just --fmt --unstable -f "$f"; done
 
 # Upgrade all tools (uv and mise, and all justfiles)
 [group("maintenance")]
@@ -37,7 +37,7 @@ HOST := `hostname -s`
     uv self update
     uv tool upgrade --all
     just mise::upgrade
-    for f in .justfiles/*.justfile; do echo "\033[1;36m>>> Running upgrade for $f\033[0m"; just -f "$f" upgrade || true; done
+    for f in .justfiles/[!_]*.justfile; do echo "\033[1;36m>>> Running upgrade for $f\033[0m"; just -f "$f" upgrade || true; done
 
 # Symlink shared agent skills into each agent's skills directory
 [group("setup")]
