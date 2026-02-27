@@ -5,9 +5,10 @@ import "_common.justfile"
     mise install golang
     mise install node
     mise install rust
+    mise install bun
     mise reshim
-    # mise current
-    # mise list
+    mise current
+    mise list
 
 # install latest language versions and refresh shims
 @upgrade:
