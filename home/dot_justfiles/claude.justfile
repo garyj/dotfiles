@@ -40,7 +40,7 @@ mpi url:
     if echo "$output" | grep -qi "already installed"; then
         name=$(echo "$output" | sed -n "s/.*Marketplace '\([^']*\)'.*/\1/p")
         echo "Already installed, will update instead: $name"
-        just --justfile {{ justfile() }} mpup "$name"
+        command claude plugin marketplace update "$name"
     else
         echo "$output"
     fi
