@@ -13,7 +13,11 @@ ulimit -S -n 131070
 
 umask 027
 
+{{- if .headless }}
 export EDITOR=emacs
+{{- else }}
+export EDITOR=codium
+{{- end }}
 
 if [ -f $HOME/.common_alias ]; then
   source $HOME/.common_alias
