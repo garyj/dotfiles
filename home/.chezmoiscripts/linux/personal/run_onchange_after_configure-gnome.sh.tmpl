@@ -416,6 +416,12 @@ if is_gnome; then
   gsettings set org.gnome.desktop.peripherals.keyboard delay 300
   gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 20
 
+  # Unbind GNOME's dock/dash favorite-app launcher shortcuts (Super+1 through Super+9)
+  # These conflict with workspace switching and must be cleared first
+  for i in 1 2 3 4 5 6 7 8 9; do
+    gsettings set org.gnome.shell.keybindings switch-to-application-${i} "@as []"
+  done
+
   # Workspace switching: Super+1 through Super+7
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
@@ -456,9 +462,9 @@ if is_gnome; then
   gsettings set org.gnome.desktop.wm.keybindings switch-group "['<Super>Tab']"
   gsettings set org.gnome.desktop.wm.keybindings switch-group-backward "['<Shift><Super>Tab']"
 
-  # Disable GNOME's default Super key overlay (opens Activities)
-  # so Super+letter shortcuts work without triggering Activities
-  gsettings set org.gnome.mutter overlay-key ''
+  # Keep Super key for Activities overview (opens on Super release only,
+  # does not interfere with Super+key combos like Super+1 for workspaces)
+  gsettings set org.gnome.mutter overlay-key 'Super_L'
 
   # Media keys
   gsettings set org.gnome.settings-daemon.plugins.media-keys calculator "['<Super>c']"
