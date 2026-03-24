@@ -3,57 +3,31 @@
 # Bring a window to focus by title, or launch the command if not found.
 # Usage: bringme.sh WINDOW_NAME COMMAND
 #
-# Works on both X11 (wmctrl) and GNOME Wayland (gdbus + GNOME Shell Eval).
+# Works on both X11 (wmctrl) and GNOME Wayland (window-tools@garyj extension).
 
 WINDOW_NAME=$1
 COMMAND=$2
 
 is_wayland() { [[ "$XDG_SESSION_TYPE" == "wayland" ]]; }
 
-# --- Wayland (GNOME Shell) ---------------------------------------------------
-# Uses gdbus to evaluate JavaScript inside GNOME Shell to find/activate windows.
-# Requires: gsettings set org.gnome.shell development-tools true
-#           (set automatically by the configure-gnome script)
-#
-# NOTE: org.gnome.Shell.Eval may be restricted in GNOME 46+. If this breaks,
-# replace with a small GNOME Shell extension that exposes a D-Bus method for
-# finding and activating windows by title.
+# --- Wayland (GNOME Shell via window-tools@garyj extension) -------------------
+# Requires the window-tools@garyj GNOME Shell extension to be enabled.
+# The extension exposes a D-Bus interface for finding and activating windows.
 
 bring_wayland() {
   local search="$1"
-  local js
-  js=$(cat <<'JSEOF'
-(function() {
-  let search = SEARCH_PLACEHOLDER;
-  let dominated = search.toLowerCase();
-  let windows = global.get_window_actors()
-    .map(a => a.meta_window)
-    .filter(w => w.get_title() && w.get_title().toLowerCase().includes(dominated));
-  if (windows.length === 0) return 'not_found';
-  windows[0].activate(global.get_current_time());
-  windows[0].change_workspace(global.workspace_manager.get_active_workspace());
-  return 'found:' + windows.length;
-})();
-JSEOF
-)
-  # Inject the search string (JSON-safe) into the JS
-  local escaped
-  escaped=$(printf '%s' "$search" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))')
-  js="${js/SEARCH_PLACEHOLDER/$escaped}"
-
   local result
   result=$(gdbus call --session \
-    --dest org.gnome.Shell \
-    --object-path /org/gnome/Shell \
-    --method org.gnome.Shell.Eval \
-    "$js" 2>&1)
+    --dest org.garyj.WindowTools \
+    --object-path /org/garyj/WindowTools \
+    --method org.garyj.WindowTools.ActivateByTitle \
+    "$search" 2>&1)
 
   if [[ "$result" == *"not_found"* ]]; then
     return 1
   elif [[ "$result" == *"found:"* ]]; then
     return 0
   else
-    # gdbus call failed (Shell.Eval not available, etc.)
     echo "bringme: gdbus error: $result" >&2
     return 1
   fi
