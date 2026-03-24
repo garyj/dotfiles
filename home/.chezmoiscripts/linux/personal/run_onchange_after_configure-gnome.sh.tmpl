@@ -466,6 +466,9 @@ if is_gnome; then
   # does not interfere with Super+key combos like Super+1 for workspaces)
   gsettings set org.gnome.mutter overlay-key 'Super_L'
 
+  # Enable Workspace Indicator extension (shows all workspaces in top bar)
+  gnome-extensions enable workspace-indicator@gnome-shell-extensions.gcampax.github.com 2>/dev/null || true
+
   # Media keys
   gsettings set org.gnome.settings-daemon.plugins.media-keys calculator "['<Super>c']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
