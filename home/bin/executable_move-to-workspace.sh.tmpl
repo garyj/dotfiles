@@ -1,0 +1,22 @@
+{{ if and (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+# Move the focused window to a workspace without following it.
+# Usage: move-to-workspace.sh <workspace-number>
+# Workspace numbers are 1-based.
+
+TARGET=$1
+
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  gdbus call --session \
+    --dest org.gnome.Shell \
+    --object-path /org/gnome/Shell \
+    --method org.gnome.Shell.Eval \
+    "let w = global.display.focus_window;
+     if (w) {
+       let ws = global.workspace_manager.get_workspace_by_index($TARGET - 1);
+       if (ws) w.change_workspace(ws);
+     }" > /dev/null 2>&1
+else
+  wmctrl -r :ACTIVE: -t $(($TARGET - 1))
+fi
+{{ end }}
