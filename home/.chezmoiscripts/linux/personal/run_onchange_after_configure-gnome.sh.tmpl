@@ -413,6 +413,9 @@ if is_gnome; then
   gsettings set org.gnome.desktop.peripherals.keyboard delay 300
   gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 20
 
+  # Alt+Tab only shows windows on the current workspace
+  gsettings set org.gnome.shell.app-switcher current-workspace-only true
+
   # Unbind GNOME's dock/dash favorite-app launcher shortcuts (Super+1 through Super+9)
   # These conflict with workspace switching and must be cleared first
   for i in 1 2 3 4 5 6 7 8 9; do
