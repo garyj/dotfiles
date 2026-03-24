@@ -474,10 +474,8 @@ if is_gnome; then
   gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
 
   # Nautilus file manager (replaces Nemo)
-  gsettings set org.gnome.nautilus.icon-view default-zoom-level 'standard'
-  gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
-  gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
-  gsettings set org.gnome.nautilus.preferences show-hidden-files false
+  gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view' || true
+  gsettings set org.gnome.nautilus.preferences show-hidden-files false || true
 
   # Custom shortcuts — GNOME uses a different schema path
   CUSTOM_BASE="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
