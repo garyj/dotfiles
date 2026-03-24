@@ -83,13 +83,15 @@
       "samba"
       "vlc"
       "xclip"
-      "gnome-screenshot"
-      "gnome-shell-extensions"
-      "swappy"
     )
   -}}
   {{ if eq .osid "linux-debian" -}}
-    {{  $packages = concat $packages (list "chromium" ) -}}
+      {{  $packages = concat $packages (list
+        "chromium"
+        "gnome-screenshot"
+        "gnome-shell-extensions"
+        "swappy"
+      ) -}}
   {{ else -}}
     {{  $packages = concat $packages (list "chromium-browser" ) -}}
   {{ end -}}
@@ -102,7 +104,6 @@
 
 {{   $snaps = concat $snaps (list
   "discord"
-  "dust"
   "ferdium"
   "obs-studio"
   "pdftk"
