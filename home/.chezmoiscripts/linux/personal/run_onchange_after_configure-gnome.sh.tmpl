@@ -468,6 +468,10 @@ if is_gnome; then
   gsettings set org.gnome.settings-daemon.plugins.media-keys calculator "['<Super>c']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
 
+  # Screen lock timeout — dim screen after 5 minutes, lock after another 55 minutes
+  gsettings set org.gnome.desktop.session idle-delay 300
+  gsettings set org.gnome.desktop.screensaver lock-delay 3300
+
   # Nautilus file manager (replaces Nemo)
   gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view' || true
   gsettings set org.gnome.nautilus.preferences show-hidden-files false || true
