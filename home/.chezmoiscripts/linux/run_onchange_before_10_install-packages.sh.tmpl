@@ -98,8 +98,6 @@
 {{ if (and (.personal) (not .headless)) -}}
 
 {{   $snaps = concat $snaps (list
-  "bruno"
-  "dbeaver-ce"
   "discord"
   "dust"
   "ferdium"
@@ -112,6 +110,7 @@
 -}}
 
 {{   $classicSnaps = concat $classicSnaps (list
+  "dbeaver-ce"
   "ghostty"
   "just"
   "snapcraft"
