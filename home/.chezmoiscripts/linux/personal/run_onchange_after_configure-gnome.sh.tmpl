@@ -7,93 +7,114 @@ set -eufo pipefail
 
 fc-cache
 
-# Keyboard
-gsettings set org.cinnamon.desktop.a11y.keyboard bouncekeys-delay 300
-gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-accel-time 300
-gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-init-delay 300
-gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-max-speed 10
-gsettings set org.cinnamon.desktop.a11y.keyboard slowkeys-delay 300
+# Detect desktop environment at runtime
+DE="${XDG_CURRENT_DESKTOP:-unknown}"
+DE_LOWER=$(echo "$DE" | tr '[:upper:]' '[:lower:]')
 
-# Mouse
-gsettings set org.cinnamon.desktop.a11y.mouse dwell-click-enabled false
-gsettings set org.cinnamon.desktop.a11y.mouse dwell-threshold 10
-gsettings set org.cinnamon.desktop.a11y.mouse dwell-time 1.2
-gsettings set org.cinnamon.desktop.a11y.mouse secondary-click-enabled false
-gsettings set org.cinnamon.desktop.a11y.mouse secondary-click-time 1.2
+is_cinnamon() { [[ "$DE_LOWER" == *"cinnamon"* ]]; }
+is_gnome()    { [[ "$DE_LOWER" == *"gnome"* ]]; }
 
-gsettings set org.cinnamon.desktop.peripherals.mouse double-click 400
-gsettings set org.cinnamon.desktop.peripherals.mouse drag-threshold 8
-gsettings set org.cinnamon.desktop.peripherals.mouse speed 1.0
+echo "Detected desktop environment: $DE"
 
-# Root level org.cinnamon configuration
-gsettings set org.cinnamon enabled-applets "[
-  'panel1:left:0:menu@cinnamon.org:0',
-  'panel1:left:1:separator@cinnamon.org:1',
-  'panel1:left:2:grouped-window-list@cinnamon.org:2',
-  'panel1:right:0:multicore-sys-monitor@ccadeptic23:19',
-  'panel1:right:2:qredshift@quintao:17',
-  'panel1:right:3:temperature@fevimu:18',
-  'panel1:right:4:scale@cinnamon.org:16',
-  'panel1:right:5:workspace-switcher@cinnamon.org:15',
-  'panel1:right:6:systray@cinnamon.org:3',
-  'panel1:right:7:xapp-status@cinnamon.org:4',
-  'panel1:right:8:notifications@cinnamon.org:5',
-  'panel1:right:9:printers@cinnamon.org:6',
-  'panel1:right:10:removable-drives@cinnamon.org:7',
-  'panel1:right:11:keyboard@cinnamon.org:8',
-  'panel1:right:12:favorites@cinnamon.org:9',
-  'panel1:right:13:network@cinnamon.org:10',
-  'panel1:right:14:sound@cinnamon.org:11',
-  'panel1:right:15:power@cinnamon.org:12',
-  'panel1:right:16:calendar@cinnamon.org:13',
-  'panel1:right:17:cornerbar@cinnamon.org:14'
-]"
 
-# Set Alt-Tab switcher delay
-gsettings set org.cinnamon alttab-switcher-delay 50
+# =============================================================================
+# Common Settings (both Cinnamon and GNOME)
+# =============================================================================
 
-# Set Alt-Tab switcher style
-gsettings set org.cinnamon alttab-switcher-style 'icons+preview'
+# Dark theme
+gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-# Set desklet snap interval
-gsettings set org.cinnamon desklet-snap-interval 25
+# Window focus and raising
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 7
+gsettings set org.gnome.desktop.wm.preferences auto-raise true
+gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 500
+gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
+gsettings set org.gnome.desktop.wm.preferences focus-new-windows 'smart'
+gsettings set org.gnome.desktop.wm.preferences raise-on-click true
 
-# Set panels autohide
-gsettings set org.cinnamon panels-autohide "['1:false']"
-
-# Set panels height
-gsettings set org.cinnamon panels-height "['1:30']"
-
-# Set window effect speed
-gsettings set org.cinnamon window-effect-speed 1
-
-# Set workspace OSD visibility
-gsettings set org.cinnamon workspace-osd-visible false
+# Resize with right button (Super+RightClick)
+gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
+gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
 
 # gnome-terminal settings
-gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar true
-profile=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
-# echo "Gnome TermianProfile: ${profile}"
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ background-color 'rgb(23,20,33)'
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ default-size-columns 100
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ default-size-rows 20
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ font 'Fira Code 14'
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ foreground-color 'rgb(208,207,204)'
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ preserve-working-directory 'always'
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ custom-command ''
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ use-custom-command false
-gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ use-system-font false
+if gsettings list-schemas | grep -q org.gnome.Terminal.Legacy.Settings; then
+  gsettings set org.gnome.Terminal.Legacy.Settings default-show-menubar true
+  profile=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ background-color 'rgb(23,20,33)'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ default-size-columns 100
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ default-size-rows 20
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ font 'Fira Code 14'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ foreground-color 'rgb(208,207,204)'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ preserve-working-directory 'always'
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ custom-command ''
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ use-custom-command false
+  gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${profile}/ use-system-font false
+fi
 
-# Set up Dark Theme ('prefer-dark' does not work on Cinnamon)
-gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark' #  doesn't do anything for Cinnamon :(
-gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
-gsettings set org.gnome.desktop.interface gtk-color-scheme 'prefer-dark'
 
-# Remove the background picture and just make it all black
-gsettings set org.cinnamon.desktop.background color-shading-type 'solid'
-gsettings set org.cinnamon.desktop.background picture-options 'none'
+# =============================================================================
+# Cinnamon-specific Settings
+# =============================================================================
 
-# Cinnamon Theme and Interface Settings
+if is_cinnamon; then
+  echo "Applying Cinnamon settings..."
+
+  # Keyboard accessibility
+  gsettings set org.cinnamon.desktop.a11y.keyboard bouncekeys-delay 300
+  gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-accel-time 300
+  gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-init-delay 300
+  gsettings set org.cinnamon.desktop.a11y.keyboard mousekeys-max-speed 10
+  gsettings set org.cinnamon.desktop.a11y.keyboard slowkeys-delay 300
+
+  # Mouse accessibility
+  gsettings set org.cinnamon.desktop.a11y.mouse dwell-click-enabled false
+  gsettings set org.cinnamon.desktop.a11y.mouse dwell-threshold 10
+  gsettings set org.cinnamon.desktop.a11y.mouse dwell-time 1.2
+  gsettings set org.cinnamon.desktop.a11y.mouse secondary-click-enabled false
+  gsettings set org.cinnamon.desktop.a11y.mouse secondary-click-time 1.2
+
+  gsettings set org.cinnamon.desktop.peripherals.mouse double-click 400
+  gsettings set org.cinnamon.desktop.peripherals.mouse drag-threshold 8
+  gsettings set org.cinnamon.desktop.peripherals.mouse speed 1.0
+
+  # Panel applets
+  gsettings set org.cinnamon enabled-applets "[
+    'panel1:left:0:menu@cinnamon.org:0',
+    'panel1:left:1:separator@cinnamon.org:1',
+    'panel1:left:2:grouped-window-list@cinnamon.org:2',
+    'panel1:right:0:multicore-sys-monitor@ccadeptic23:19',
+    'panel1:right:2:qredshift@quintao:17',
+    'panel1:right:3:temperature@fevimu:18',
+    'panel1:right:4:scale@cinnamon.org:16',
+    'panel1:right:5:workspace-switcher@cinnamon.org:15',
+    'panel1:right:6:systray@cinnamon.org:3',
+    'panel1:right:7:xapp-status@cinnamon.org:4',
+    'panel1:right:8:notifications@cinnamon.org:5',
+    'panel1:right:9:printers@cinnamon.org:6',
+    'panel1:right:10:removable-drives@cinnamon.org:7',
+    'panel1:right:11:keyboard@cinnamon.org:8',
+    'panel1:right:12:favorites@cinnamon.org:9',
+    'panel1:right:13:network@cinnamon.org:10',
+    'panel1:right:14:sound@cinnamon.org:11',
+    'panel1:right:15:power@cinnamon.org:12',
+    'panel1:right:16:calendar@cinnamon.org:13',
+    'panel1:right:17:cornerbar@cinnamon.org:14'
+  ]"
+
+  # Cinnamon general
+  gsettings set org.cinnamon alttab-switcher-delay 50
+  gsettings set org.cinnamon alttab-switcher-style 'icons+preview'
+  gsettings set org.cinnamon desklet-snap-interval 25
+  gsettings set org.cinnamon panels-autohide "['1:false']"
+  gsettings set org.cinnamon panels-height "['1:30']"
+  gsettings set org.cinnamon window-effect-speed 1
+  gsettings set org.cinnamon workspace-osd-visible false
+
+  # Background
+  gsettings set org.cinnamon.desktop.background color-shading-type 'solid'
+  gsettings set org.cinnamon.desktop.background picture-options 'none'
+
+  # Theme
 {{ if eq .osid "linux-linuxmint" -}}
   gsettings set org.cinnamon.theme name 'Mint-Y-Dark'
   gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
@@ -107,303 +128,483 @@ gsettings set org.cinnamon.desktop.background picture-options 'none'
   gsettings set org.cinnamon.desktop.interface cursor-theme 'Adwaita'
 {{- end }}
 
-
-gsettings set org.cinnamon.desktop.interface cursor-blink-time 1200
-gsettings set org.cinnamon.desktop.interface cursor-size 24
-
-gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark'
-gsettings set org.cinnamon.desktop.interface text-scaling-factor 1.0
-gsettings set org.cinnamon.desktop.interface toolkit-accessibility false
-
-# Resizes with Alt+RightClick
-# https://unix.stackexchange.com/questions/28514/how-to-get-altright-mouse-to-resize-windows-again
-gsettings set org.cinnamon.desktop.wm.preferences resize-with-right-button true
-gsettings set org.cinnamon.desktop.wm.preferences mouse-button-modifier '<Super>'
-
-gsettings set org.gnome.desktop.wm.preferences resize-with-right-button true
-gsettings set org.gnome.desktop.wm.preferences mouse-button-modifier '<Super>'
-
-# Configure Cinnamon/Gnome window focus and raising
-# https://askubuntu.com/questions/1205036/gnome-focus-new-windows-strict-not-working-in-one-situation
-gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 7
-gsettings set org.cinnamon.desktop.wm.preferences auto-raise true
-gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 500
-gsettings set org.cinnamon.desktop.wm.preferences focus-mode 'sloppy'
-gsettings set org.cinnamon.desktop.wm.preferences focus-new-windows 'smart'
-gsettings set org.cinnamon.desktop.wm.preferences raise-on-click true
-
-gsettings set org.gnome.desktop.wm.preferences num-workspaces 7
-gsettings set org.gnome.desktop.wm.preferences auto-raise true
-gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 500
-gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
-gsettings set org.gnome.desktop.wm.preferences focus-new-windows 'smart'
-gsettings set org.gnome.desktop.wm.preferences raise-on-click true
-
-# Configure Key Repease Delay and interval
-# https://askubuntu.com/a/1031070/739169
-gsettings set org.cinnamon.desktop.peripherals.keyboard delay 300
-gsettings set org.cinnamon.desktop.peripherals.keyboard repeat-interval 20
-
-# Set keybindings for switching workspaces
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-1 "['<Super>1']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-2 "['<Super>2']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-3 "['<Super>3']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-4 "['<Super>4']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-5 "['<Super>5']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-6 "['<Super>6']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-7 "['<Super>7']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-down "['F3']"
-
-# Set keybindings for window management
-gsettings set org.cinnamon.desktop.keybindings.wm maximize "@as []"
-gsettings set org.cinnamon.desktop.keybindings.wm minimize "['<Alt>F3']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-ne "['<Primary><Alt>KP_Page_Up']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-nw "['<Primary><Alt>KP_Home']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-se "['<Primary><Alt>KP_Next']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-sw "['<Primary><Alt>KP_End']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-e "['<Primary><Alt>KP_Right']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-n "['<Primary><Alt>KP_Up']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-s "['<Primary><Alt>KP_Down']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-w "['<Primary><Alt>KP_Left']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-1 "['<Primary><Alt>1']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-2 "['<Primary><Alt>2']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-3 "['<Primary><Alt>3']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-4 "['<Primary><Alt>4']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-5 "['<Primary><Alt>5']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-6 "['<Primary><Alt>6']"
-gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-7 "['<Primary><Alt>7']"
-
-# Set keybindings for panel run dialog
-gsettings set org.cinnamon.desktop.keybindings.wm panel-run-dialog "['<Alt>F2', '<Super>r']"
-
-# Set keybindings for switching groups
-gsettings set org.cinnamon.desktop.keybindings.wm switch-group "['<Super>Tab']"
-gsettings set org.cinnamon.desktop.keybindings.wm switch-group-backward "['<Shift><Super>Tab']"
-
-# Set keybinding for toggling maximized
-gsettings set org.cinnamon.desktop.keybindings.wm toggle-maximized "['<Primary>F1']"
-
-# Set keybinding for toggling window above
-gsettings set org.cinnamon.desktop.keybindings.wm toggle-above "['<Primary>F2']"
-
-# Unset keybinding for unmaximizing
-gsettings set org.cinnamon.desktop.keybindings.wm unmaximize "@as []"
-
-# Unset keybinding for toggling fullscreen
-gsettings set org.cinnamon.desktop.keybindings.wm toggle-fullscreen "@as []"
-
-# Unset keybinding for showing desktop
-gsettings set org.cinnamon.desktop.keybindings.wm show-desktop "@as []"
-
-
-# Disable Some Sounds
-gsettings set org.cinnamon.sounds login-enabled false
-gsettings set org.cinnamon.sounds logout-enabled false
-gsettings set org.cinnamon.sounds notification-enabled false
-gsettings set org.cinnamon.sounds switch-enabled false
-gsettings set org.cinnamon.sounds tile-enabled false
-# gsettings set org.cinnamon.sounds unplug-enabled false
-# gsettings set org.cinnamon.sounds plug-enabled false
-
-
-# Shortcuts
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ binding "['<Super>apostrophe']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ command 'code'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ name 'VS Code'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ binding "['<Super>f']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ command 'firefox-devedition'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ name 'Firefox Developer'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ binding "['<Super>g']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ command 'google-chrome --profile-directory=Default'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ name 'Chrome'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ binding "['<Super>h']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ command 'chromium --password-store=basic'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ name 'Chromium'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ binding "['<Super>w']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ command 'remmina'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ name 'remmina'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ binding "['<Super>q']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ command 'remmina -c /home/garyj/.local/share/remmina/group_rdp_local-rest-garyj_192-168-1-41.remmina'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ name 'rd-rest'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ binding "['<Super>backslash']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ command 'bringme.sh 1Password 1password'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ name 'Bring 1Password'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom7/ binding "['<Super>slash']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom7/ command 'bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom7/ name 'Bringme LobeChat'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom8/ binding "['<Super>s']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom8/ command 'bringme.sh "Scratch" "codium $HOME/scratch"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom8/ name 'Scratch '
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom9/ binding "['<Super>equal']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom9/ command "bringme.sh \"DiscoDiscoSexyPkm\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop.keybindings/custom-keybindings/custom9/ name 'DiscoDisco - VsCode'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ binding "['<Super>semicolon']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ command "bringme.sh GitKraken \"$HOME/bin/gitk\""
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ name 'Gitkraken'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ binding "['<Primary>Print']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ command 'flameshot gui'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ name 'Screenshot - Flameshot - Area'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ binding "['<Super>l']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ command 'bringme.sh Clocks gnome-clocks'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ name 'Gnome Clocks'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ binding "['<Super>minus']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ command 'bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ name 'DiscoDisco - Obsidian'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ binding "['<Super>p']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ command 'nemo Pictures'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ name 'Nemo Pictures'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ binding "['<Super>d']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ command 'nemo Downloads'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ name 'Nemo Downloads'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ binding "['<Super>KP_Multiply']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ command 'bringme.sh Ferdium ferdium'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ name 'Bring Ferdium'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ binding "['<Alt>1']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ command 'bash -c "wmctrl -r :ACTIVE: -t 0 &&  wmctrl -s 0"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ name 'Send to Workspace 1'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ binding "['<Alt>2']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ command 'bash -c "wmctrl -r :ACTIVE: -t 1 &&  wmctrl -s 1"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ name 'Send to Workspace 2'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ binding "['<Alt>3']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ command 'bash -c "wmctrl -r :ACTIVE: -t 2 &&  wmctrl -s 2"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ name 'Send to Workspace 3'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ binding "['<Alt>4']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ command 'bash -c "wmctrl -r :ACTIVE: -t 3 &&  wmctrl -s 3"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ name 'Send to Workspace 4'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ binding "['<Alt>5']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ command 'bash -c "wmctrl -r :ACTIVE: -t 4 &&  wmctrl -s 4"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ name 'Send to Workspace 5'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ binding "['<Super>KP_Subtract']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ command 'bringme.sh Slack slack'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ name 'Bring Slack'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ binding "['Calculator']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ command 'bringme.sh Hubstaff hubstaff'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ name 'Bring Hubstaff'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ binding "['<Super>k']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ command 'xkill'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ name 'xkill'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ binding "['<Super>Return']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'ghostty'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ name 'Ghostty'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ binding "['<Super>m']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ command 'mongodb-compass'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ name 'Compass'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ binding "['<Super>KP_2', '<Super>z']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ command 'google-chrome --profile-directory=garyjpacman'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ name 'Chrome  - PACMAN'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ binding "['<Super>KP_3', '<Super>x']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ command 'google-chrome --profile-directory=garyjcom1'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ name 'Chrome - C1'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ binding "['<Super>KP_4', '<Super>j']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ command 'google-chrome --profile-directory=garyjjad'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ name 'Chrome - Jad'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ binding "['<Alt>6']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ command 'bash -c "wmctrl -r :ACTIVE: -t 5 &&  wmctrl -s 5"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ name 'Send to Workspace 6'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ binding "['<Alt>7']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ command 'bash -c "wmctrl -r :ACTIVE: -t 6 &&  wmctrl -s 6"'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ name 'Send to Workspace 7'
-
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom32/ binding "['<Super>KP_4', '<Super>o']"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom32/ command 'google-chrome --profile-directory=garyjclaude'
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom32/ name 'Chrome - Claude'
-
-
-gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
-gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
-gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
-
-
-
-# ! MAKE SURE WHEN ADDING COMMANDS ABOVE YOU ADD THEM TO THE LIST BELOW
-gsettings set org.cinnamon.desktop.keybindings custom-list "[\
-'custom0',\
-'custom1',\
-'custom2',\
-'custom3',\
-'custom4',\
-'custom5',\
-'custom6',\
-'custom7',\
-'custom8',\
-'custom9',\
-'custom10',\
-'custom11',\
-'custom12',\
-'custom13',\
-'custom14',\
-'custom15',\
-'custom16',\
-'custom17',\
-'custom18',\
-'custom19',\
-'custom20',\
-'custom21',\
-'custom22',\
-'custom23',\
-'custom24',\
-'custom25',\
-'custom26',\
-'custom27',\
-'custom28',\
-'custom29',\
-'custom30',\
-'custom31',\
-'custom32',\
-'__dummy__'\
-]"
-
-# Set Gedit Theme otherwise we get nasty white highlight current line with white text :(
-# gsettings set org.gnome.gedit.preferences.editor scheme 'cobalt'
-
-##### --- NEMO ---- #####
-# Compact View settings
-gsettings set org.nemo.compact-view default-zoom-level 'standard'
-
-# Icon View settings
-gsettings set org.nemo.icon-view default-zoom-level 'standard'
-
-# List View settings
-gsettings set org.nemo.list-view default-zoom-level 'standard'
-
-# Preferences
-gsettings set org.nemo.preferences click-policy 'single'
-gsettings set org.nemo.preferences default-folder-viewer 'list-view'
-gsettings set org.nemo.preferences show-hidden-files false
-
-# Sidebar panel settings
-gsettings set org.nemo.sidebar-panels.tree show-only-directories true
+  # Interface
+  gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark'
+  gsettings set org.cinnamon.desktop.interface cursor-blink-time 1200
+  gsettings set org.cinnamon.desktop.interface cursor-size 24
+  gsettings set org.cinnamon.desktop.interface text-scaling-factor 1.0
+  gsettings set org.cinnamon.desktop.interface toolkit-accessibility false
+
+  # Window management
+  gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 7
+  gsettings set org.cinnamon.desktop.wm.preferences auto-raise true
+  gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 500
+  gsettings set org.cinnamon.desktop.wm.preferences focus-mode 'sloppy'
+  gsettings set org.cinnamon.desktop.wm.preferences focus-new-windows 'smart'
+  gsettings set org.cinnamon.desktop.wm.preferences raise-on-click true
+  gsettings set org.cinnamon.desktop.wm.preferences resize-with-right-button true
+  gsettings set org.cinnamon.desktop.wm.preferences mouse-button-modifier '<Super>'
+
+  # Keyboard repeat
+  gsettings set org.cinnamon.desktop.peripherals.keyboard delay 300
+  gsettings set org.cinnamon.desktop.peripherals.keyboard repeat-interval 20
+
+  # Workspace switching
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-1 "['<Super>1']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-2 "['<Super>2']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-3 "['<Super>3']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-4 "['<Super>4']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-5 "['<Super>5']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-6 "['<Super>6']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-7 "['<Super>7']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-down "['F3']"
+
+  # Move window to workspace
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-1 "['<Primary><Alt>1']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-2 "['<Primary><Alt>2']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-3 "['<Primary><Alt>3']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-4 "['<Primary><Alt>4']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-5 "['<Primary><Alt>5']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-6 "['<Primary><Alt>6']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-7 "['<Primary><Alt>7']"
+
+  # Window management keybindings
+  gsettings set org.cinnamon.desktop.keybindings.wm maximize "@as []"
+  gsettings set org.cinnamon.desktop.keybindings.wm minimize "['<Alt>F3']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-ne "['<Primary><Alt>KP_Page_Up']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-nw "['<Primary><Alt>KP_Home']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-se "['<Primary><Alt>KP_Next']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-corner-sw "['<Primary><Alt>KP_End']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-e "['<Primary><Alt>KP_Right']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-n "['<Primary><Alt>KP_Up']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-s "['<Primary><Alt>KP_Down']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-side-w "['<Primary><Alt>KP_Left']"
+
+  # Misc keybindings
+  gsettings set org.cinnamon.desktop.keybindings.wm panel-run-dialog "['<Alt>F2', '<Super>r']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-group "['<Super>Tab']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-group-backward "['<Shift><Super>Tab']"
+  gsettings set org.cinnamon.desktop.keybindings.wm toggle-maximized "['<Primary>F1']"
+  gsettings set org.cinnamon.desktop.keybindings.wm toggle-above "['<Primary>F2']"
+  gsettings set org.cinnamon.desktop.keybindings.wm unmaximize "@as []"
+  gsettings set org.cinnamon.desktop.keybindings.wm toggle-fullscreen "@as []"
+  gsettings set org.cinnamon.desktop.keybindings.wm show-desktop "@as []"
+
+  # Sounds
+  gsettings set org.cinnamon.sounds login-enabled false
+  gsettings set org.cinnamon.sounds logout-enabled false
+  gsettings set org.cinnamon.sounds notification-enabled false
+  gsettings set org.cinnamon.sounds switch-enabled false
+  gsettings set org.cinnamon.sounds tile-enabled false
+
+  # Custom shortcuts
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ binding "['<Super>apostrophe']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ command 'code'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom0/ name 'VS Code'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ binding "['<Super>f']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ command 'firefox-devedition'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom1/ name 'Firefox Developer'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ binding "['<Super>g']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ command 'google-chrome --profile-directory=Default'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ name 'Chrome'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ binding "['<Super>h']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ command 'chromium --password-store=basic'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ name 'Chromium'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ binding "['<Super>w']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ command 'remmina'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ name 'remmina'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ binding "['<Super>q']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ command 'remmina -c /home/garyj/.local/share/remmina/group_rdp_local-rest-garyj_192-168-1-41.remmina'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom5/ name 'rd-rest'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ binding "['<Super>backslash']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ command 'bringme.sh 1Password 1password'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ name 'Bring 1Password'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ binding "['<Super>slash']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ command 'bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ name 'Bringme LobeChat'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom8/ binding "['<Super>s']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom8/ command 'bringme.sh "Scratch" "codium $HOME/scratch"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom8/ name 'Scratch'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom9/ binding "['<Super>equal']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom9/ command "bringme.sh \"DiscoDiscoSexyPkm\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom9/ name 'DiscoDisco - VsCode'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ binding "['<Super>semicolon']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ command "bringme.sh GitKraken \"$HOME/bin/gitk\""
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom10/ name 'Gitkraken'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ binding "['<Primary>Print']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ command 'flameshot gui'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom11/ name 'Screenshot - Flameshot - Area'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ binding "['<Super>l']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ command 'bringme.sh Clocks gnome-clocks'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ name 'Gnome Clocks'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ binding "['<Super>minus']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ command 'bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ name 'DiscoDisco - Obsidian'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ binding "['<Super>p']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ command 'nemo Pictures'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ name 'Nemo Pictures'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ binding "['<Super>d']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ command 'nemo Downloads'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ name 'Nemo Downloads'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ binding "['<Super>KP_Multiply']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ command 'bringme.sh Ferdium ferdium'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ name 'Bring Ferdium'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ binding "['<Alt>1']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ command 'bash -c "wmctrl -r :ACTIVE: -t 0 &&  wmctrl -s 0"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ name 'Send to Workspace 1'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ binding "['<Alt>2']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ command 'bash -c "wmctrl -r :ACTIVE: -t 1 &&  wmctrl -s 1"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom18/ name 'Send to Workspace 2'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ binding "['<Alt>3']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ command 'bash -c "wmctrl -r :ACTIVE: -t 2 &&  wmctrl -s 2"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom19/ name 'Send to Workspace 3'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ binding "['<Alt>4']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ command 'bash -c "wmctrl -r :ACTIVE: -t 3 &&  wmctrl -s 3"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom20/ name 'Send to Workspace 4'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ binding "['<Alt>5']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ command 'bash -c "wmctrl -r :ACTIVE: -t 4 &&  wmctrl -s 4"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom21/ name 'Send to Workspace 5'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ binding "['<Super>KP_Subtract']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ command 'bringme.sh Slack slack'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom22/ name 'Bring Slack'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ binding "['Calculator']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ command 'bringme.sh Hubstaff hubstaff'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom23/ name 'Bring Hubstaff'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ binding "['<Super>k']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ command 'xkill'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ name 'xkill'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ binding "['<Super>Return']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'ghostty'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ name 'Ghostty'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ binding "['<Super>m']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ command 'mongodb-compass'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ name 'Compass'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ binding "['<Super>KP_2', '<Super>z']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ command 'google-chrome --profile-directory=garyjpacman'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom27/ name 'Chrome  - PACMAN'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ binding "['<Super>KP_3', '<Super>x']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ command 'google-chrome --profile-directory=garyjcom1'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom28/ name 'Chrome - C1'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ binding "['<Super>KP_4', '<Super>j']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ command 'google-chrome --profile-directory=garyjjad'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom29/ name 'Chrome - Jad'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ binding "['<Alt>6']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ command 'bash -c "wmctrl -r :ACTIVE: -t 5 &&  wmctrl -s 5"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom30/ name 'Send to Workspace 6'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ binding "['<Alt>7']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ command 'bash -c "wmctrl -r :ACTIVE: -t 6 &&  wmctrl -s 6"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom31/ name 'Send to Workspace 7'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom32/ binding "['<Super>KP_4', '<Super>o']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom32/ command 'google-chrome --profile-directory=garyjclaude'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom32/ name 'Chrome - Claude'
+
+  gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
+  gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
+  gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
+
+  # Register custom keybinding list
+  gsettings set org.cinnamon.desktop.keybindings custom-list "[\
+  'custom0',\
+  'custom1',\
+  'custom2',\
+  'custom3',\
+  'custom4',\
+  'custom5',\
+  'custom6',\
+  'custom7',\
+  'custom8',\
+  'custom9',\
+  'custom10',\
+  'custom11',\
+  'custom12',\
+  'custom13',\
+  'custom14',\
+  'custom15',\
+  'custom16',\
+  'custom17',\
+  'custom18',\
+  'custom19',\
+  'custom20',\
+  'custom21',\
+  'custom22',\
+  'custom23',\
+  'custom24',\
+  'custom25',\
+  'custom26',\
+  'custom27',\
+  'custom28',\
+  'custom29',\
+  'custom30',\
+  'custom31',\
+  'custom32',\
+  '__dummy__'\
+  ]"
+
+  # Nemo file manager
+  gsettings set org.nemo.compact-view default-zoom-level 'standard'
+  gsettings set org.nemo.icon-view default-zoom-level 'standard'
+  gsettings set org.nemo.list-view default-zoom-level 'standard'
+  gsettings set org.nemo.preferences click-policy 'single'
+  gsettings set org.nemo.preferences default-folder-viewer 'list-view'
+  gsettings set org.nemo.preferences show-hidden-files false
+  gsettings set org.nemo.sidebar-panels.tree show-only-directories true
+fi
+
+
+# =============================================================================
+# GNOME Shell Settings (Debian GNOME, Ubuntu GNOME, etc.)
+# =============================================================================
+
+if is_gnome; then
+  echo "Applying GNOME Shell settings..."
+
+  # Enable Shell.Eval so bringme.sh can find/activate windows via gdbus on Wayland
+  gsettings set org.gnome.shell development-tools true
+
+  # Use fixed workspaces (GNOME defaults to dynamic)
+  gsettings set org.gnome.mutter dynamic-workspaces false
+
+  # Background — solid black, no wallpaper
+  gsettings set org.gnome.desktop.background color-shading-type 'solid'
+  gsettings set org.gnome.desktop.background picture-options 'none'
+  gsettings set org.gnome.desktop.background primary-color '#000000'
+
+  # Theme
+  gsettings set org.gnome.desktop.interface gtk-theme 'Adwaita-dark'
+  gsettings set org.gnome.desktop.interface icon-theme 'Adwaita'
+  gsettings set org.gnome.desktop.interface cursor-theme 'Adwaita'
+
+  # Interface
+  gsettings set org.gnome.desktop.interface cursor-blink-time 1200
+  gsettings set org.gnome.desktop.interface cursor-size 24
+  gsettings set org.gnome.desktop.interface text-scaling-factor 1.0
+  gsettings set org.gnome.desktop.interface toolkit-accessibility false
+
+  # Keyboard repeat rate
+  gsettings set org.gnome.desktop.peripherals.keyboard delay 300
+  gsettings set org.gnome.desktop.peripherals.keyboard repeat-interval 20
+
+  # Workspace switching: Super+1 through Super+7
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>4']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-7 "['<Super>7']"
+
+  # Move window to workspace: Ctrl+Alt+1 through Ctrl+Alt+7
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Primary><Alt>1']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Primary><Alt>2']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Primary><Alt>3']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Primary><Alt>4']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Primary><Alt>5']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Primary><Alt>6']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 "['<Primary><Alt>7']"
+
+  # Move window to workspace AND follow: Alt+1 through Alt+7
+  # (native GNOME keybinding — replaces the wmctrl custom shortcuts from Cinnamon)
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Primary><Alt>1', '<Alt>1']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Primary><Alt>2', '<Alt>2']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Primary><Alt>3', '<Alt>3']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-4 "['<Primary><Alt>4', '<Alt>4']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Primary><Alt>5', '<Alt>5']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Primary><Alt>6', '<Alt>6']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 "['<Primary><Alt>7', '<Alt>7']"
+
+  # Window management keybindings
+  gsettings set org.gnome.desktop.wm.keybindings maximize "@as []"
+  gsettings set org.gnome.desktop.wm.keybindings minimize "['<Alt>F3']"
+  gsettings set org.gnome.desktop.wm.keybindings toggle-maximized "['<Primary>F1']"
+  gsettings set org.gnome.desktop.wm.keybindings toggle-above "['<Primary>F2']"
+  gsettings set org.gnome.desktop.wm.keybindings unmaximize "@as []"
+  gsettings set org.gnome.desktop.wm.keybindings toggle-fullscreen "@as []"
+  gsettings set org.gnome.desktop.wm.keybindings show-desktop "@as []"
+  gsettings set org.gnome.desktop.wm.keybindings panel-run-dialog "['<Alt>F2', '<Super>r']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-group "['<Super>Tab']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-group-backward "['<Shift><Super>Tab']"
+
+  # Disable GNOME's default Super key overlay (opens Activities)
+  # so Super+letter shortcuts work without triggering Activities
+  gsettings set org.gnome.mutter overlay-key ''
+
+  # Media keys
+  gsettings set org.gnome.settings-daemon.plugins.media-keys calculator "['<Super>c']"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
+  gsettings set org.gnome.settings-daemon.plugins.media-keys screenshot-clip "@as []"
+
+  # Nautilus file manager (replaces Nemo)
+  gsettings set org.gnome.nautilus.icon-view default-zoom-level 'standard'
+  gsettings set org.gnome.nautilus.list-view default-zoom-level 'small'
+  gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view'
+  gsettings set org.gnome.nautilus.preferences show-hidden-files false
+
+  # Custom shortcuts — GNOME uses a different schema path
+  CUSTOM_BASE="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
+  CUSTOM_PATH="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom0/ binding '<Super>apostrophe'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom0/ command 'code'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom0/ name 'VS Code'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom1/ binding '<Super>f'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom1/ command 'firefox-devedition'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom1/ name 'Firefox Developer'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom2/ binding '<Super>g'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom2/ command 'google-chrome --profile-directory=Default'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom2/ name 'Chrome'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom3/ binding '<Super>h'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom3/ command 'chromium --password-store=basic'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom3/ name 'Chromium'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom4/ binding '<Super>w'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom4/ command 'remmina'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom4/ name 'remmina'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom5/ binding '<Super>q'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom5/ command 'remmina -c /home/garyj/.local/share/remmina/group_rdp_local-rest-garyj_192-168-1-41.remmina'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom5/ name 'rd-rest'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ binding '<Super>backslash'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ command 'bringme.sh 1Password 1password'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ name 'Bring 1Password'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ binding '<Super>slash'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ command 'bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ name 'Bringme LobeChat'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ binding '<Super>s'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ command 'bringme.sh "Scratch" "codium $HOME/scratch"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ name 'Scratch'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom9/ binding '<Super>equal'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom9/ command "bringme.sh \"DiscoDiscoSexyPkm\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom9/ name 'DiscoDisco - VsCode'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ binding '<Super>semicolon'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ command "bringme.sh GitKraken \"$HOME/bin/gitk\""
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ name 'Gitkraken'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ binding '<Primary>Print'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ command 'flameshot gui'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ name 'Screenshot - Flameshot - Area'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ binding '<Super>l'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ command 'bringme.sh Clocks gnome-clocks'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ name 'Gnome Clocks'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ binding '<Super>minus'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ command 'bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ name 'DiscoDisco - Obsidian'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom14/ binding '<Super>p'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom14/ command 'nautilus Pictures'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom14/ name 'Nautilus Pictures'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom15/ binding '<Super>d'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom15/ command 'nautilus Downloads'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom15/ name 'Nautilus Downloads'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ binding '<Super>KP_Multiply'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ command 'bringme.sh Ferdium ferdium'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ name 'Bring Ferdium'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ binding '<Super>KP_Subtract'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ command 'bringme.sh Slack slack'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ name 'Bring Slack'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom18/ binding 'Calculator'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom18/ command 'bringme.sh Hubstaff hubstaff'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom18/ name 'Bring Hubstaff'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom19/ binding '<Super>Return'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom19/ command 'ghostty'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom19/ name 'Ghostty'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom20/ binding '<Super>m'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom20/ command 'mongodb-compass'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom20/ name 'Compass'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom21/ binding '<Super>z'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom21/ command 'google-chrome --profile-directory=garyjpacman'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom21/ name 'Chrome - PACMAN'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom22/ binding '<Super>x'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom22/ command 'google-chrome --profile-directory=garyjcom1'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom22/ name 'Chrome - C1'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom23/ binding '<Super>j'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom23/ command 'google-chrome --profile-directory=garyjjad'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom23/ name 'Chrome - Jad'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom24/ binding '<Super>o'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom24/ command 'google-chrome --profile-directory=garyjclaude'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom24/ name 'Chrome - Claude'
+
+  # Register the custom keybinding list with GNOME
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "[\
+    '${CUSTOM_PATH}/custom0/',\
+    '${CUSTOM_PATH}/custom1/',\
+    '${CUSTOM_PATH}/custom2/',\
+    '${CUSTOM_PATH}/custom3/',\
+    '${CUSTOM_PATH}/custom4/',\
+    '${CUSTOM_PATH}/custom5/',\
+    '${CUSTOM_PATH}/custom6/',\
+    '${CUSTOM_PATH}/custom7/',\
+    '${CUSTOM_PATH}/custom8/',\
+    '${CUSTOM_PATH}/custom9/',\
+    '${CUSTOM_PATH}/custom10/',\
+    '${CUSTOM_PATH}/custom11/',\
+    '${CUSTOM_PATH}/custom12/',\
+    '${CUSTOM_PATH}/custom13/',\
+    '${CUSTOM_PATH}/custom14/',\
+    '${CUSTOM_PATH}/custom15/',\
+    '${CUSTOM_PATH}/custom16/',\
+    '${CUSTOM_PATH}/custom17/',\
+    '${CUSTOM_PATH}/custom18/',\
+    '${CUSTOM_PATH}/custom19/',\
+    '${CUSTOM_PATH}/custom20/',\
+    '${CUSTOM_PATH}/custom21/',\
+    '${CUSTOM_PATH}/custom22/',\
+    '${CUSTOM_PATH}/custom23/',\
+    '${CUSTOM_PATH}/custom24/'\
+  ]"
+fi
+
+echo "Desktop configuration complete for: $DE"
 
 {{ end }}
