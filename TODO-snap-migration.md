@@ -16,7 +16,7 @@ Migrating snap packages to Flatpak or native alternatives on Debian.
 
 ## APT/Cargo Replacements
 
-- [ ] **dust** — `sudo apt install du-dust` or `cargo install du-dust`
+- [x] **dust** — moved to mise (`config.toml`)
 - [ ] **pdftk** — `sudo apt install pdftk`
 - [ ] **just** — `sudo apt install just` or install via mise
 

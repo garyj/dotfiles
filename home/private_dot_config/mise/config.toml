@@ -4,12 +4,14 @@ experimental = true
 not_found_auto_install = false
 idiomatic_version_file_enable_tools = ["[]"]
 
+# Registry of available tools: https://mise.jdx.dev/registry.html
 [tools]
 bun = ['latest']
 go = ['latest']
 node = ['24', '22', 'latest']
 # ruby = ['latest']
 rust = ['latest']
+dust = ['latest']
 usage = ['latest']  # Required for mise shell completions
 
 [tasks.bootstrap]
