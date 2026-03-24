@@ -514,8 +514,8 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ name 'Gitkraken'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ binding '<Primary>Print'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ command 'flameshot gui'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ name 'Screenshot - Flameshot - Area'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ command '{{ .chezmoi.homeDir }}/bin/screenshot.sh'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ name 'Screenshot - Area + Annotate'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ binding '<Super>l'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh Clocks gnome-clocks'

@@ -1,0 +1,12 @@
+{{ if and (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+# Screenshot + annotate workflow.
+# Captures an area via gnome-screenshot, then opens Swappy for markup.
+# Ctrl+C in Swappy = copy to clipboard + close
+# Ctrl+S in Swappy = save to ~/Pictures/Screenshots/ + close
+
+mkdir -p ~/Pictures/Screenshots
+TMPFILE=$(mktemp /tmp/screenshot-XXXXXX.png)
+gnome-screenshot -a -f "$TMPFILE" && swappy -f "$TMPFILE"
+rm -f "$TMPFILE"
+{{ end }}
