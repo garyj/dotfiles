@@ -452,6 +452,10 @@ if is_gnome; then
   gsettings set org.gnome.desktop.wm.keybindings switch-group "['<Super>Tab']"
   gsettings set org.gnome.desktop.wm.keybindings switch-group-backward "['<Shift><Super>Tab']"
 
+  # Unbind GNOME's Quick Settings panel shortcut (Super+S) so it doesn't
+  # steal from our custom keybinding for Scratch
+  gsettings set org.gnome.shell.keybindings toggle-quick-settings "@as []"
+
   # Keep Super key for Activities overview (opens on Super release only,
   # does not interfere with Super+key combos like Super+1 for workspaces)
   gsettings set org.gnome.mutter overlay-key 'Super_L'
