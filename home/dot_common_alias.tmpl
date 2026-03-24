@@ -3,6 +3,15 @@ alias ghb='gh browse . &'
 
 alias ccp="pwd | xclip -selection clipboard"
 
+# Copy file realpath to clipboard
+ccf() {
+  if [ -z "$1" ]; then
+    echo "Usage: ccf <filename>"
+    return 1
+  fi
+  realpath -- "$1" | xclip -selection clipboard
+}
+
 {{- if lookPath "bat" }}
 alias cat=bat
 {{- else if lookPath "batcat" }}
