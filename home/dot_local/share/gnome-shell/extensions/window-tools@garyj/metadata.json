@@ -1,0 +1,7 @@
+{
+  "uuid": "window-tools@garyj",
+  "name": "Window Tools",
+  "description": "D-Bus interface for finding/activating windows and moving windows between workspaces",
+  "shell-version": ["48"],
+  "version": 1
+}
