@@ -58,9 +58,10 @@ mpr name:
     # Remove the marketplace
     command claude plugin marketplace remove "{{ name }}"
 
-# update a marketplace
+# update a marketplace (or all if no name given)
 [group("plugins")]
-@mpup name:
+[script("bash")]
+mpup name="":
     command claude plugin marketplace update "{{ name }}"
 
 # list marketplaces
@@ -73,10 +74,19 @@ mpr name:
 @pli plugin *ARGS:
     command claude plugin install "{{ plugin }}" {{ ARGS }}
 
-# update a plugin
+# update a plugin (or all if no name given)
 [group("plugins")]
-@plup plugin *ARGS:
-    command claude plugin update "{{ plugin }}" {{ ARGS }}
+[script("bash")]
+plup *plugin:
+    if [ -z "{{ plugin }}" ]; then
+        plugins=$(jq -r '.plugins | keys[]' ~/.claude/plugins/installed_plugins.json 2>/dev/null)
+        for p in $plugins; do
+            echo "Updating plugin: $p"
+            command claude plugin update "$p" || true
+        done
+    else
+        command claude plugin update "{{ plugin }}"
+    fi
 
 # remove/uninstall a plugin
 [group("plugins")]
@@ -96,5 +106,4 @@ mpr name:
 # list installed plugins
 [group("plugins")]
 @pll:
-    # why is there no `claude plugin list`? :(
-    jq -r '.plugins | keys[] | split("@") | "\(.[0]) (from \(.[1]))"' ~/.claude/plugins/installed_plugins.json
+    command claude plugin list
