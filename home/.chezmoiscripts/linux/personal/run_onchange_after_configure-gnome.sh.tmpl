@@ -466,7 +466,6 @@ if is_gnome; then
   gsettings set org.gnome.nautilus.preferences show-hidden-files false || true
 
   # Custom shortcuts — GNOME uses a different schema path
-  HOMEDIR="{{ .chezmoi.homeDir }}"
   CUSTOM_BASE="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
   CUSTOM_PATH="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
 
@@ -495,23 +494,23 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom5/ name 'rd-rest'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ binding '<Super>backslash'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ command '${HOMEDIR}/bin/bringme.sh 1Password 1password'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh 1Password 1password'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ name 'Bring 1Password'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ binding '<Super>slash'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ command '${HOMEDIR}/bin/bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ name 'Bringme LobeChat'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ binding '<Super>s'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ command '${HOMEDIR}/bin/bringme.sh "Scratch" "codium $HOME/scratch"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "Scratch" "codium $HOME/scratch"'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ name 'Scratch'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom9/ binding '<Super>equal'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom9/ command "${HOMEDIR}/bin/bringme.sh \"DiscoDiscoSexyPkm\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom9/ command "{{ .chezmoi.homeDir }}/bin/bringme.sh \"DiscoDiscoSexyPkm\" 'code $HOME/DiscoDisco --profile \"DiscoDiscoPKM\"'"
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom9/ name 'DiscoDisco - VsCode'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ binding '<Super>semicolon'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ command "${HOMEDIR}/bin/bringme.sh GitKraken \"$HOME/bin/gitk\""
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ command "{{ .chezmoi.homeDir }}/bin/bringme.sh GitKraken \"$HOME/bin/gitk\""
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom10/ name 'Gitkraken'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ binding '<Primary>Print'
@@ -519,11 +518,11 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom11/ name 'Screenshot - Flameshot - Area'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ binding '<Super>l'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ command '${HOMEDIR}/bin/bringme.sh Clocks gnome-clocks'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh Clocks gnome-clocks'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ name 'Gnome Clocks'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ binding '<Super>minus'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ command '${HOMEDIR}/bin/bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ name 'DiscoDisco - Obsidian'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom14/ binding '<Super>p'
@@ -535,15 +534,15 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom15/ name 'Nautilus Downloads'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ binding '<Super>KP_Multiply'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ command '${HOMEDIR}/bin/bringme.sh Ferdium ferdium'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh Ferdium ferdium'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ name 'Bring Ferdium'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ binding '<Super>KP_Subtract'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ command '${HOMEDIR}/bin/bringme.sh Slack slack'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh Slack slack'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ name 'Bring Slack'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom18/ binding 'Calculator'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom18/ command '${HOMEDIR}/bin/bringme.sh Hubstaff hubstaff'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom18/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh Hubstaff hubstaff'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom18/ name 'Bring Hubstaff'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom19/ binding '<Super>Return'
@@ -572,31 +571,31 @@ if is_gnome; then
 
   # Move window to workspace WITHOUT following (Ctrl+Alt+1-7)
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom25/ binding '<Primary><Alt>1'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom25/ command '${HOMEDIR}/bin/move-to-workspace.sh 1'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom25/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 1'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom25/ name 'Send to Workspace 1'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom26/ binding '<Primary><Alt>2'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom26/ command '${HOMEDIR}/bin/move-to-workspace.sh 2'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom26/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 2'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom26/ name 'Send to Workspace 2'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom27/ binding '<Primary><Alt>3'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom27/ command '${HOMEDIR}/bin/move-to-workspace.sh 3'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom27/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 3'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom27/ name 'Send to Workspace 3'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom28/ binding '<Primary><Alt>4'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom28/ command '${HOMEDIR}/bin/move-to-workspace.sh 4'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom28/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 4'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom28/ name 'Send to Workspace 4'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom29/ binding '<Primary><Alt>5'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom29/ command '${HOMEDIR}/bin/move-to-workspace.sh 5'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom29/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 5'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom29/ name 'Send to Workspace 5'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom30/ binding '<Primary><Alt>6'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom30/ command '${HOMEDIR}/bin/move-to-workspace.sh 6'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom30/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 6'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom30/ name 'Send to Workspace 6'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom31/ binding '<Primary><Alt>7'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom31/ command '${HOMEDIR}/bin/move-to-workspace.sh 7'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom31/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 7'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom31/ name 'Send to Workspace 7'
 
   # Register the custom keybinding list with GNOME
