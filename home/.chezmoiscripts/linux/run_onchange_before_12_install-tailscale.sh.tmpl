@@ -1,0 +1,13 @@
+{{ if and (eq .osid "linux-debian" "linux-raspbian" "linux-ubuntu" "linux-linuxmint") .personal -}}
+
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Install Tailscale via official install script.
+# After install, authenticate manually with: sudo tailscale up
+
+if ! command -v tailscale &>/dev/null; then
+  curl -fsSL https://tailscale.com/install.sh | sh
+fi
+
+{{ end -}}
