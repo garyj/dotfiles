@@ -27,7 +27,7 @@ font-thicken = true
 
 confirm-close-surface = false
 quit-after-last-window-closed = true
-shell-integration-features = cursor, sudo, title
+shell-integration-features = cursor,sudo,title,ssh-terminfo,ssh-env
 
 # Inverting seems to work better with Solarized
 selection-invert-fg-bg = true
