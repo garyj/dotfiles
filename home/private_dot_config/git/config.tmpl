@@ -23,61 +23,64 @@
 
 [alias]
 
+	# resolves to main or master depending on the repo
+	default-branch = "!git rev-parse --verify refs/heads/main >/dev/null 2>&1 && echo main || echo master"
+
 	ll 	= log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
-	move = "!f() { MESSAGE=$(git log -1 HEAD --pretty=format:%s); git reset HEAD~ --soft; git stash; git checkout $1; git stash pop; git add .;	git commit -m\"$MESSAGE\";};f"
-	cmllm = "!f() { git diff --cached | llm -t git-commit-msg > /tmp/commit_msg.txt && code-insiders --wait /tmp/commit_msg.txt && git commit -F /tmp/commit_msg.txt && rm /tmp/commit_msg.txt; }; f"
 
 	cleanbranches = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -d
 	cleanbranchesforrealsy = !git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
 
-	updm = !git checkout master && git pull && git checkout - && git merge --ff-only master
-	rebm = !git checkout master && git pull && git checkout - && git rebase master
+	updm = "!git checkout $(git default-branch) && git pull && git checkout - && git merge --ff-only $(git default-branch)"
+	rebm = "!git checkout $(git default-branch) && git pull && git checkout - && git rebase $(git default-branch)"
 
+	# commonly used
 	a = add
 	ab = absorb
-	ap = add -p
-	amc = am --continue
 	b = branch
-	bm = branch --merged
-	bnm = branch --no-merged
 	c = commit
-	cl = clone
 	ca = commit --amend
 	cane = commit --amend --no-edit
 	cf = commit --fixup
+	cl = clone
 	cm = commit --message
 	co = checkout
 	cob = checkout -b
-	com = checkout master
+	com = "!git checkout $(git default-branch)"
 	cp = cherry-pick
 	d = diff
 	dc = diff --cached
-	dom = diff origin/master
 	fo = fetch origin
-	fu = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
-	g = grep --line-number
-	mbhom = merge-base HEAD origin/master
-	mff = merge --ff-only
-	ol = log --pretty=oneline
 	l = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-	lfol = log --follow --
+	mff = merge --ff-only
 	p = push
 	pf = push --force-with-lease
-	prb = pull --rebase
 	r = restore
-	ra = rebase --abort
-	rc = rebase --continue
 	remv = remote -v
 	ri = rebase --interactive
+	rom = "!git rebase origin/$(git default-branch)"
 	rl = reflog
-	riom = rebase --interactive origin/master
-	rpo = remote prune origin
 	s = status -sb
-	sh = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git show"
 	stp = stash push --include-untracked --message
-	ss = commit --message snapshot --no-gpg-sign
-	su = submodule update
 	wd = diff --patience --word-diff
+
+	# rarely used
+	ap = add -p                            # Stage individual hunks interactively
+	amc = am --continue                    # Resume applying a mailbox patch series
+	bm = branch --merged                   # List branches already merged into current
+	bnm = branch --no-merged               # List branches not yet merged into current
+	dom = "!git diff origin/$(git default-branch)"  # Compare working tree against origin's default branch
+	fu = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"  # Fzf-pick a recent commit and create a fixup for it
+	lfol = log --follow --                 # Show log for a file, following renames
+	incoming = "!git fetch && git log --oneline ..@{u}"  # Show commits on remote that you don't have locally
+	ol = log --pretty=oneline              # Compact one-line-per-commit log
+	prb = pull --rebase                    # Pull and rebase local commits on top
+	ra = rebase --abort                    # Bail out of a rebase in progress
+	rc = rebase --continue                 # Continue after resolving rebase conflicts
+	rpo = remote prune origin              # Remove local refs to deleted remote branches
+	sh = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git show"  # Fzf-pick a recent commit and show its diff
+	su = submodule update                  # Pull latest for all submodules
+
 
 [branch]
 	sort = -committerdate
