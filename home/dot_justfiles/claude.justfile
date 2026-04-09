@@ -70,11 +70,13 @@ mpup name="":
     command claude plugin marketplace list
 
 # install a plugin (renamed from pla)
+[no-cd]
 [group("plugins")]
 @pli plugin *ARGS:
     command claude plugin install "{{ plugin }}" {{ ARGS }}
 
 # update a plugin (or all if no name given)
+[no-cd]
 [group("plugins")]
 [script("bash")]
 plup *plugin:
@@ -85,25 +87,29 @@ plup *plugin:
             command claude plugin update "$p" || true
         done
     else
-        command claude plugin update "{{ plugin }}"
+        command claude plugin update {{ plugin }}
     fi
 
-# remove/uninstall a plugin
+# remove/uninstall a plugin (use --scope project|local for scoped plugins)
+[no-cd]
 [group("plugins")]
-@plr plugin:
-    command claude plugin uninstall "{{ plugin }}"
+@plr plugin *ARGS:
+    command claude plugin uninstall "{{ plugin }}" {{ ARGS }}
 
-# disable a plugin
+# disable a plugin (use --scope project|local for scoped plugins)
+[no-cd]
 [group("plugins")]
-@pld plugin:
-    command claude plugin disable "{{ plugin }}"
+@pld plugin *ARGS:
+    command claude plugin disable "{{ plugin }}" {{ ARGS }}
 
-# enable a plugin
+# enable a plugin (use --scope project|local for scoped plugins)
+[no-cd]
 [group("plugins")]
-@ple plugin:
-    command claude plugin enable "{{ plugin }}"
+@ple plugin *ARGS:
+    command claude plugin enable "{{ plugin }}" {{ ARGS }}
 
 # list installed plugins
+[no-cd]
 [group("plugins")]
 @pll:
     command claude plugin list
