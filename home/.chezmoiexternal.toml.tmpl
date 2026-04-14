@@ -47,5 +47,12 @@
     refreshPeriod = "24h"
     include = ["*/skills/agent-browser/**"]
 
+[".agents/skills/sentry-cli"]
+    type = "archive"
+    url = "https://github.com/getsentry/cli/archive/main.tar.gz"
+    stripComponents = 5
+    refreshPeriod = "24h"
+    include = ["*/plugins/sentry-cli/skills/sentry-cli/**"]
+
 {{ end -}}
 

@@ -12,6 +12,8 @@ mod copilot '.justfiles/copilot.justfile'
 mod gemini '.justfiles/gemini.justfile'
 mod mise '.justfiles/mise.justfile'
 mod ralphtui '.justfiles/ralphtui.justfile'
+mod sentry '.justfiles/sentry.justfile'
+
 
 HOST := `hostname -s`
 
