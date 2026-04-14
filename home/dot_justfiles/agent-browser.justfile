@@ -1,6 +1,10 @@
 # ----------------------
 # Agent Browser recipes
 # ----------------------
+#
+# Binary is managed here. The skill itself is installed by chezmoi via
+# `.chezmoiexternal.toml.tmpl` into ~/.agents/skills/agent-browser/ and
+# symlinked into agent dirs by dot_agents/agent-skills-link.sh.
 
 import "_common.justfile"
 
@@ -29,10 +33,4 @@ import "_common.justfile"
 @help:
     command agent-browser --help
 
-# add agent-browser skill to AI coding assistant
-@skill:
-    npx --yes skills add vercel-labs/agent-browser
-
-# update agent-browser skill in AI coding assistant
-@skill-update:
-    npx --yes skills update vercel-labs/agent-browser
+# Skill is managed by chezmoi externals — see .chezmoiexternal.toml.tmpl
