@@ -142,6 +142,18 @@ cxyo() {
   command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
 }
 
+# Copilot CLI with yolo mode
+cpyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run copilot in home directory"
+    return 1
+  fi
+  if [ -z "$GITHUB_TOKEN" ]; then
+    echo "GITHUB_TOKEN is not in env (continuing)"
+  fi
+  command copilot --yolo "$@"
+}
+
 # Set up Python Aliases for use with UV
 # https://andrich.me/2024/09/uv-i-am-somewhat-sold/
 alias python3.12='uv run --python=3.12 python3'
