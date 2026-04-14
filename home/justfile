@@ -14,7 +14,6 @@ mod mise '.justfiles/mise.justfile'
 mod ralphtui '.justfiles/ralphtui.justfile'
 mod sentry '.justfiles/sentry.justfile'
 
-
 HOST := `hostname -s`
 
 [private]
@@ -26,11 +25,17 @@ HOST := `hostname -s`
 @bootstrap:
     just mise::bootstrap
 
-# Format and overwrite justfile
-[group("utils")]
-@fmt:
-    just --fmt --unstable
-    for f in .justfiles/[!_]*.justfile; do just --fmt --unstable -f "$f"; done
+# Install everything on a new machine (mise + all CLIs + skill symlinks)
+[group("setup")]
+@install:
+    just mise::bootstrap
+    for f in .justfiles/[!_]*.justfile; do echo "\033[1;36m>>> Installing from $f\033[0m"; just -f "$f" install || true; done
+    just skills
+
+# Symlink shared agent skills into each agent's skills directory
+[group("setup")]
+@skills:
+    $HOME/.agents/agent-skills-link.sh
 
 # Upgrade all tools (uv and mise, and all justfiles)
 [group("maintenance")]
@@ -41,7 +46,9 @@ HOST := `hostname -s`
     just mise::upgrade
     for f in .justfiles/[!_]*.justfile; do echo "\033[1;36m>>> Running upgrade for $f\033[0m"; just -f "$f" upgrade || true; done
 
-# Symlink shared agent skills into each agent's skills directory
-[group("setup")]
-@skills:
-    $HOME/.agents/agent-skills-link.sh
+# Format and overwrite justfile
+[group("utils")]
+@fmt:
+    just --fmt --unstable
+    for f in .justfiles/[!_]*.justfile; do just --fmt --unstable -f "$f"; done
+
