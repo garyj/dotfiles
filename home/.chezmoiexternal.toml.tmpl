@@ -54,5 +54,12 @@
     refreshPeriod = "24h"
     include = ["*/plugins/sentry-cli/skills/sentry-cli/**"]
 
+[".agents/skills/worktrunk"]
+    type = "archive"
+    url = "https://github.com/max-sixty/worktrunk/archive/main.tar.gz"
+    stripComponents = 3
+    refreshPeriod = "24h"
+    include = ["*/skills/worktrunk/**"]
+
 {{ end -}}
 
