@@ -4,3 +4,8 @@ githubUser: garyj
 langs:
   python: "3.14"
   mongodb: "7.0"
+
+# Pinned Tier-3 CLI tools. Future: templatize configs that reference these.
+# See memory: feedback_install_discipline.md + project_deps_scanner_skill.md
+tools:
+  worktrunk: "0.38.0"  # mise+aqua, audited clean 2026-04-17

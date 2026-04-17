@@ -63,6 +63,10 @@ if command -v mise > /dev/null 2>&1; then
   eval "$(mise activate $current_shell)";
 fi
 
+if command -v wt > /dev/null 2>&1; then
+  eval "$(wt config shell init $current_shell)";
+fi
+
 # Auto-activate .venv on directory change (no .envrc needed)
 _auto_venv() {
   if [[ -d .venv ]] && [[ -f .venv/bin/activate ]]; then

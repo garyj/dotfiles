@@ -14,6 +14,8 @@ node = ['24', '22', 'latest']
 ruby = ['latest']
 rust = ['latest']
 usage = ['latest']  # Required for mise shell completions
+# Tier-3 CLI tools pinned in .chezmoidata.yaml (audited; bump via scanner skill / manual review)
+"aqua:max-sixty/worktrunk" = ['{{ .tools.worktrunk }}']
 
 [tasks.bootstrap]
 description = "Bootstrap our CLI"
