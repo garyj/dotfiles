@@ -1,16 +1,14 @@
 import "_common.justfile"
 
-# bootstrap mise by installing configured language versions
+# install every tool declared in ~/.config/mise/config.toml
 @bootstrap:
-    mise install golang
-    mise install node
-    mise install rust
-    mise install bun
-    mise reshim
-    mise current
-    mise list
-
-# install latest language versions and refresh shims
-@upgrade:
     mise install
     mise reshim
+    mise current
+
+# upgrade tools to newest compatible version (respects pins)
+@upgrade:
+    mise upgrade
+    mise reshim
+    mise current
+
