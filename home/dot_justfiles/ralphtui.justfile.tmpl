@@ -7,14 +7,14 @@ import "_common.justfile"
 
 # install ralphtui CLI
 @install:
-    bun install -g ralph-tui
-    just --justfile {{ justfile() }} version
+    bun install -g ralph-tui@{{ .tools.ralph_tui }}
+    just --justfile {{`{{ justfile() }}`}} version
 
 # upgrade ralphtui to the latest version
 @upgrade:
-    just --justfile {{ justfile() }} version
-    bun install -g ralph-tui
-    just --justfile {{ justfile() }} version
+    just --justfile {{`{{ justfile() }}`}} version
+    bun install -g ralph-tui@{{ .tools.ralph_tui }}
+    just --justfile {{`{{ justfile() }}`}} version
 
 # display ralphtui version
 @version:

@@ -7,14 +7,14 @@ idiomatic_version_file_enable_tools = ["[]"]
 # Registry of available tools: https://mise.jdx.dev/registry.html
 [tools]
 bun = ['latest']
-dust = ['latest']
-entireio-cli = ['latest']
+entireio-cli = ['latest']  # tier-2: entireio org includes GitHub CEO (ashtom); fast-moving, floating is defensible
 go = ['latest']
 node = ['24', '22', 'latest']
 ruby = ['latest']
 rust = ['latest']
 usage = ['latest']  # Required for mise shell completions
 # Tier-3 CLI tools pinned in .chezmoidata.yaml (audited; bump via scanner skill / manual review)
+dust = ['{{ .tools.dust }}']
 "aqua:max-sixty/worktrunk" = ['{{ .tools.worktrunk }}']
 
 [tasks.bootstrap]
