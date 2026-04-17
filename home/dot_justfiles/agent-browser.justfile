@@ -20,7 +20,7 @@ import "_common.justfile"
 
 # update agent-browser CLI to the latest version
 @upgrade:
-    just --justfile {{ justfile() }} version
+    -just --justfile {{ justfile() }} version
     npm install -g agent-browser
     agent-browser install --with-deps
     just --justfile {{ justfile() }} version

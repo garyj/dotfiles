@@ -19,7 +19,7 @@ import "_common.justfile"
 
 # update Copilot CLI to the latest version
 @upgrade:
-    just --justfile {{ justfile() }} version
+    -just --justfile {{ justfile() }} version
     npm install -g @github/copilot
     just --justfile {{ justfile() }} version
 

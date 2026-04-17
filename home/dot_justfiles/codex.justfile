@@ -19,7 +19,7 @@ import "_common.justfile"
 
 # update Codex CLI to the latest version
 @upgrade:
-    just --justfile {{ justfile() }} version
+    -just --justfile {{ justfile() }} version
     npm install -g @openai/codex
     just --justfile {{ justfile() }} version
 

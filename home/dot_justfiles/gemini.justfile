@@ -15,7 +15,7 @@ import "_common.justfile"
 
 # update Gemini CLI to the latest version
 @upgrade:
-    just --justfile {{ justfile() }} version
+    -just --justfile {{ justfile() }} version
     npm install -g @google/gemini-cli@latest
     just --justfile {{ justfile() }} version
 

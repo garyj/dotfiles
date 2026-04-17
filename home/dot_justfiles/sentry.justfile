@@ -15,7 +15,7 @@ import "_common.justfile"
 
 # update Sentry CLI to the latest version
 @upgrade:
-    command sentry --version
+    -command sentry --version
     npm install -g sentry
     command sentry --version
 
