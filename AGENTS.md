@@ -117,6 +117,8 @@ There is no automated test suite. Validate changes with:
 
 ## Commit & Pull Request Guidelines
 
+**Do not commit without explicit approval.** Make the edit, show `git diff --staged` (or `chezmoi diff` when relevant), and wait for the user to say "commit", invoke `/commit`, or otherwise confirm. The user reviews each change before it lands — do not assume a prior "yes" extends to later unrelated edits.
+
 Commit messages typically start with a lowercase verb and colon (e.g., `add: ...`, `update: ...`). Keep them short and action-oriented.
 
 For pull requests, include:
