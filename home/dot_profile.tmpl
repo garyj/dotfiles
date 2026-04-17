@@ -7,6 +7,7 @@ paths=(
   "$HOME/go/bin"
   "$HOME/.atuin/bin"
   "$HOME/.local/bin"
+  "$HOME/.npm-global/bin"
   "$HOME/bin"
   "$HOME/.cache/.bun/bin"
 )
@@ -17,3 +18,8 @@ for dir in "${paths[@]}"; do
     export PATH="$dir:$PATH"
   fi
 done
+
+# Node-version-independent prefix for global npm installs. Without this, npm puts
+# globals under ~/.local/share/mise/installs/node/<version>/lib/node_modules/, which
+# mise deletes on every node upgrade — silently wiping every `npm install -g` CLI.
+export NPM_CONFIG_PREFIX="$HOME/.npm-global"

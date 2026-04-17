@@ -63,6 +63,13 @@ if command -v mise > /dev/null 2>&1; then
   eval "$(mise activate $current_shell)";
 fi
 
+# mise activate prepends the active node's bin to PATH, which can shadow
+# ~/.npm-global/bin (set via NPM_CONFIG_PREFIX in .profile). Re-prepend here
+# so freshly-installed npm globals always beat stale copies under mise node dirs.
+if [ -d "$HOME/.npm-global/bin" ]; then
+  export PATH="$HOME/.npm-global/bin:$PATH"
+fi
+
 if command -v wt > /dev/null 2>&1; then
   eval "$(wt config shell init $current_shell)";
 fi
