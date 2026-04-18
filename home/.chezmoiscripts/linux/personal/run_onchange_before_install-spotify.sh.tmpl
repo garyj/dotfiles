@@ -4,23 +4,14 @@
 
 # Spotify via vendor apt repo — replaces the Spotify snap.
 # Reference: https://www.spotify.com/download/linux/
-# apt handles updates after first install; no pin needed.
 
 set -euo pipefail
 
-if command -v spotify >/dev/null 2>&1; then
-  echo "Spotify already installed"
-  exit 0
-fi
+{{ template "add-apt-repo" . }}
 
-sudo install -m 0755 -d /usr/share/keyrings
-
-curl -fsSL https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.asc | \
-  gpg --dearmor | sudo tee /usr/share/keyrings/spotify.gpg > /dev/null
-sudo chmod 0644 /usr/share/keyrings/spotify.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/spotify.gpg] https://repository.spotify.com stable non-free" | \
-  sudo tee /etc/apt/sources.list.d/spotify.list > /dev/null
+add_apt_repo spotify \
+  https://download.spotify.com/debian/pubkey_5384CE82BA52C83A.asc \
+  "deb [signed-by=/usr/share/keyrings/spotify.gpg] https://repository.spotify.com stable non-free"
 
 sudo apt-get update
 sudo apt-get install -y spotify-client

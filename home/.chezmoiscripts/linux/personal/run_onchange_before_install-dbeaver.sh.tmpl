@@ -4,23 +4,14 @@
 
 # DBeaver Community via vendor apt repo — replaces the dbeaver-ce snap.
 # Reference: https://github.com/dbeaver/dbeaver/wiki/Installation
-# apt handles updates after first install; no pin needed.
 
 set -euo pipefail
 
-if command -v dbeaver >/dev/null 2>&1; then
-  echo "DBeaver already installed"
-  exit 0
-fi
+{{ template "add-apt-repo" . }}
 
-sudo install -m 0755 -d /usr/share/keyrings
-
-curl -fsSL https://dbeaver.io/debs/dbeaver.gpg.key | \
-  gpg --dearmor | sudo tee /usr/share/keyrings/dbeaver.gpg > /dev/null
-sudo chmod 0644 /usr/share/keyrings/dbeaver.gpg
-
-echo "deb [signed-by=/usr/share/keyrings/dbeaver.gpg] https://dbeaver.io/debs/dbeaver-ce /" | \
-  sudo tee /etc/apt/sources.list.d/dbeaver.list > /dev/null
+add_apt_repo dbeaver \
+  https://dbeaver.io/debs/dbeaver.gpg.key \
+  "deb [signed-by=/usr/share/keyrings/dbeaver.gpg] https://dbeaver.io/debs/dbeaver-ce /"
 
 sudo apt-get update
 sudo apt-get install -y dbeaver-ce

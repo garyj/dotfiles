@@ -39,11 +39,28 @@ These variables are defined in `home/.chezmoi.toml.tmpl` and control which confi
 home/                           # Chezmoi source directory (.chezmoiroot points here)
 ├── .chezmoiscripts/linux/      # Installation scripts (run_onchange_* pattern)
 │   └── personal/               # Scripts only for personal machines
+├── .chezmoitemplates/          # Reusable template snippets — {{ template "name" . }}
 ├── bin/                        # Custom shell scripts and installers
 ├── private_dot_config/         # XDG config files (~/.config/*)
 ├── dot_*                       # Dotfiles that go in $HOME
 └── *.tmpl                      # Templated files with conditional sections
 ```
+
+### Vendor apt repo installers
+
+New third-party apt repos go in `home/.chezmoiscripts/linux/personal/` as
+`run_onchange_before_install-<name>.sh.tmpl`. Use the `add-apt-repo` helper
+(`home/.chezmoitemplates/add-apt-repo`) via `{{ template "add-apt-repo" . }}`
+— it handles keyring + sources atomically at the correct 0644 mode. Model
+after `install-spotify.sh.tmpl` or `install-dbeaver.sh.tmpl`. Scripts with
+extra requirements (debsig-verify, fingerprint checks, codename substitution)
+keep their bespoke flow — see `install-onepassword.tmpl`,
+`install-browser-firefox-dev.tmpl`, `install-ghostty.sh.tmpl` as exemplars.
+
+Do not add `command -v <binary>` guards in these scripts: `run_onchange_`
+already gates on template hash, and a secondary guard silently blocks
+legitimate updates (new key URL, changed sources line) from reaching an
+already-installed machine.
 
 ### Naming Conventions
 

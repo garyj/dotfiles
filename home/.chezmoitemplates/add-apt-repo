@@ -1,0 +1,27 @@
+# Shared helper: install a vendor apt repository.
+#
+# Usage:
+#   add_apt_repo <name> <key_url> <sources_line>
+#
+#   name         basename used for the keyring and sources file
+#                (e.g. "spotify" → /usr/share/keyrings/spotify.gpg
+#                and /etc/apt/sources.list.d/spotify.list)
+#   key_url      URL to the vendor's OpenPGP public key (binary or ASCII-armored)
+#   sources_line full "deb [signed-by=/usr/share/keyrings/<name>.gpg] ..." line
+#
+# Why `install -m 0644` and not `tee`: umask 027 (set in dot_commonrc.tmpl)
+# causes `sudo tee` to create keyrings at 0640, which apt's sqv verifier
+# (running as _apt) cannot read. `install -m` always applies the explicit
+# mode regardless of umask, and overwrites atomically — safe to re-run.
+
+add_apt_repo() {
+  local name="$1" key_url="$2" sources_line="$3"
+
+  sudo install -m 0755 -d /usr/share/keyrings
+
+  curl -fsSL "$key_url" | gpg --dearmor | \
+    sudo install -m 0644 /dev/stdin "/usr/share/keyrings/${name}.gpg"
+
+  echo "$sources_line" | \
+    sudo tee "/etc/apt/sources.list.d/${name}.list" > /dev/null
+}
