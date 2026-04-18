@@ -100,34 +100,6 @@
   {{ end -}}
 {{ end -}}
 
-{{ $snaps := list -}}
-{{ $classicSnaps := list -}}
-
-{{ if (and (.personal) (not .headless)) -}}
-
-{{   $snaps = concat $snaps (list
-  "discord"
-  "ferdium"
-  "obs-studio"
-  "pdftk"
-  "slack"
-  "spotify"
-  "telegram-desktop"
-  )
--}}
-
-{{   $classicSnaps = concat $classicSnaps (list
-  "dbeaver-ce"
-  "ghostty"
-  "just"
-  "snapcraft"
-  "sublime-text"
-  "obsidian"
-  )
--}}
-
-{{ end -}}
-
 #!/usr/bin/env bash
 
 set -euo pipefail
@@ -139,24 +111,5 @@ echo --- Deb Packages: {{ $packages }} ---
 
 sudo apt-get update
 sudo apt-get install {{ $packages | join " " }} -y
-
-echo --- Snaps: {{ $snaps }} ---
-echo --- Classic Snaps: {{ $classicSnaps }} ---
-
-{{ if lookPath "snap" }}
-{{   range $snaps }}
-( snap info {{ . }} | grep -q ^installed: ) || sudo snap install {{ . }}
-{{   end }}
-{{   range $classicSnaps }}
-( snap info {{ . }} | grep -q ^installed: ) || sudo snap install --classic {{ . }}
-{{   end }}
-{{ end }}
-
-{{ if or (eq .osid "linux-linuxmint") (eq .osid "linux-debian") -}}
-# Neither Mint nor Debian add the Snap icons to the menu, hence we need to copy them
-if [ -d /var/lib/snapd/desktop/applications ]; then
-  cp /var/lib/snapd/desktop/applications/*.desktop {{ .chezmoi.homeDir }}/.local/share/applications
-fi
-{{- end }}
 
 {{ end }}
