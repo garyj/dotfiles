@@ -1,0 +1,34 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) .personal -}}
+{{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") -}}
+#!/usr/bin/env bash
+
+# Ghostty via debian.griffo.io — community apt repo endorsed by upstream.
+# Reference: https://ghostty.org/docs/install/binary
+# One-shot: runs once on fresh install; `apt upgrade` handles updates after.
+
+# Script is not designed for Linux Mint since debian.griffo.io does not publish official Mint packages for ghostty
+# Have to muck around with ubuntu code names, etc, was a pain when tried.
+# On Mint can maybe use:  https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh
+
+set -euo pipefail
+
+if command -v ghostty >/dev/null 2>&1; then
+  echo "Ghostty already installed"
+  exit 0
+fi
+
+. /etc/os-release
+SUITE="${VERSION_CODENAME:?VERSION_CODENAME missing from /etc/os-release}"
+
+sudo install -m 0755 -d /usr/share/keyrings
+
+curl -fsSL https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc | \
+  gpg --dearmor | sudo tee /usr/share/keyrings/debian.griffo.io.gpg > /dev/null
+
+echo "deb [signed-by=/usr/share/keyrings/debian.griffo.io.gpg] https://debian.griffo.io/apt ${SUITE} main" | \
+  sudo tee /etc/apt/sources.list.d/debian.griffo.io.list > /dev/null
+
+sudo apt-get update
+sudo apt-get install -y ghostty
+{{ end -}}
+{{ end -}}
