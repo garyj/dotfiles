@@ -1,0 +1,30 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) .personal -}}
+{{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint") -}}
+#!/usr/bin/env bash
+
+# Install flatpak, add Flathub as a per-user remote, and install a curated
+# list of publisher-verified apps. Each ID is confirmed verified via
+# Flathub's /api/v2/verification/<id>/status endpoint. See
+# tmp/docs/migrate-off-snap.md for the migration rationale.
+#
+# Adding a new app: append its ID to the install args. The run_onchange_
+# hash changes, chezmoi re-runs, flatpak skips already-installed refs.
+
+set -euo pipefail
+
+if ! command -v flatpak >/dev/null 2>&1; then
+  sudo apt-get update
+  sudo apt-get install -y flatpak
+fi
+
+flatpak remote-add --user --if-not-exists \
+  flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+flatpak install --user -y --noninteractive flathub \
+  com.obsproject.Studio \
+  com.discordapp.Discord \
+  org.ferdium.Ferdium \
+  md.obsidian.Obsidian \
+  org.telegram.desktop
+{{ end -}}
+{{ end -}}
