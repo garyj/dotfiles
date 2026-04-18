@@ -30,6 +30,14 @@ atuin login -u "$USERNAME" -p "$PASSWORD" -k "$MNEMONIC"
 # so search works immediately.
 atuin sync -f
 atuin store rebuild history
+
+# Self-heal: if any records were encrypted with a phantom key during the
+# fresh-install window (before the canonical key landed), drop them. Safe
+# because we just logged in with the correct key from 1Password.
+if ! atuin store verify 2>&1 | grep -q "verified OK"; then
+  echo "Purging phantom records from pre-login window..."
+  atuin store purge
+fi
 atuin store verify
 
 {{ end -}}
