@@ -6,17 +6,15 @@ set -euo pipefail
 # Deploy Atuin encryption key from 1Password to the configured key_path.
 # This ensures the same key is used across all machines for history sync.
 
-KEY_PATH="{{ onepasswordRead "op://Personal/Atuin Config/key_path" }}"
+KEY_PATH="{{ onepasswordRead "op://Personal/Atuin Config/key_path" | trim }}"
+KEY_PATH="${KEY_PATH/#\~/$HOME}"
 KEY_DIR="$(dirname "$KEY_PATH")"
 
 mkdir -p "$KEY_DIR"
 chmod 700 "$KEY_DIR"
 
 # onepasswordRead content hash: {{ onepasswordRead "op://Personal/Atuin Config/key_content" | sha256sum }}
-cat > "$KEY_PATH" <<'ATUIN_KEY'
-{{ onepasswordRead "op://Personal/Atuin Config/key_content" }}
-ATUIN_KEY
-
+printf '%s' '{{ onepasswordRead "op://Personal/Atuin Config/key_content" | trim }}' > "$KEY_PATH"
 chmod 600 "$KEY_PATH"
 
 {{ end -}}

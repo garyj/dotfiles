@@ -1,0 +1,35 @@
+{{- if not .ephemeral -}}
+
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure this machine is authenticated to the Atuin sync server using the
+# canonical credentials stored in 1Password. Idempotent: exits early if a
+# valid session already exists and the local store verifies.
+#
+# Ordering: runs after 21_deploy-atuin-key so the encryption key is already
+# on disk when `atuin login -k` is called.
+
+# Fast path: if we can see a synced account and the store decrypts, no action.
+if atuin status 2>/dev/null | grep -q "^Username:" \
+  && atuin store verify 2>&1 | grep -q "verified OK"; then
+  exit 0
+fi
+
+USERNAME='{{ onepasswordRead "op://Personal/Atuin Config/username_hoth" | trim }}'
+PASSWORD='{{ onepasswordRead "op://Personal/Atuin Config/password_hoth" | trim }}'
+MNEMONIC='{{ onepasswordRead "op://Personal/Atuin Config/key_mnemonic" | trim }}'
+
+# Clear any stale session; ignore errors (e.g. already logged out).
+atuin logout >/dev/null 2>&1 || true
+
+# Always log in with -k to prevent atuin from minting a fresh key.
+atuin login -u "$USERNAME" -p "$PASSWORD" -k "$MNEMONIC"
+
+# Pull all records from server, then rebuild the decrypted local history
+# so search works immediately.
+atuin sync -f
+atuin store rebuild history
+atuin store verify
+
+{{ end -}}
