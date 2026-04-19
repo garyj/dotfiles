@@ -8,10 +8,10 @@
 #
 # ANATOMY OF THE FINAL OUTPUT
 #
-#   ┌── from `wt list statusline --format=claude-code` ───────────┐ ┌─ this script ─┐
-#   ~/d/p/pdj master ?^ ● | Opus 4.7 (1M context) ○ 4% │ ⏱ 12m $0.42 ($2.02/hr) +85 -12 │ 5h 73% (Sat) 7d 17% (Fri)
-#                                                     │                                │
-#                                                 wt base                       session telemetry          rate limits
+#   ┌── from `wt list statusline --format=claude-code` (+ our tweaks) ┐ ┌─ this script ─┐
+#   ~/d/p/pdj master ?^ ● | Opus 4.7 ○ 4% 130k │ ⏱ 12m $0.42 ($2.02/hr) +85 -12 │ 5h 73% (Sat) 7d 17% (Fri)
+#                                                 │                                │
+#                                             wt base                      session telemetry           rate limits
 #
 # WORKTRUNK BASE (what comes before the first "│")
 #   ~/d/p/pdj          Tilde-compressed worktree path
@@ -20,9 +20,12 @@
 #   ^ / ↑              Ahead of default branch (commits not on main)
 #   ! / ⇡              Modified tracked files / ahead of remote (unpushed)
 #   ●                  CI status (green = pass, red = fail, neutral = unknown)
-#   Opus 4.7 (1M ...)  Model label
+#   Opus 4.7           Model label (we strip wt's trailing "(1M context)" suffix)
 #   ○                  Moon-phase context gauge (🌑 fresh → 🌕 full)
 #   4%                 Percent of the model's context window used
+#   130k               Input tokens in current context (input + cache_read +
+#                      cache_creation from the last API call — same formula
+#                      wt's 4% uses). Appended by this script.
 #
 # SESSION TELEMETRY (first "│…│" block)
 #   ⏱ 12m              Session duration — how long this Claude session has run
@@ -59,25 +62,49 @@ input=$(cat)
 # ─── BASE: worktrunk's worktree-aware output ────────────────────────────────
 # Handles everything before the first "│" separator. If wt fails or isn't on
 # PATH, $base is empty — the widget sections still render below.
-base=$(printf '%s' "$input" | wt list statusline --format=claude-code 2>/dev/null)
+#
+# We strip wt's trailing " (1M context)" / " (200K context)" suffix from the
+# model label: it's static info (the model's max window), and we'd rather use
+# that horizontal space for the live token count appended below. The regex
+# tolerates ANSI color codes around the parenthesised group.
+base=$(printf '%s' "$input" \
+    | wt list statusline --format=claude-code 2>/dev/null \
+    | sed -E 's/ \([^)]*context\)//')
 
 # ─── Extract all augmented fields in one jq call ────────────────────────────
-# Tab-separated output is consumed by a single `read`. Numeric fields default
-# to 0; rate-limit fields use `// empty` so they're empty strings when absent
-# (API-key billing), which lets the rate widget self-suppress cleanly.
-IFS=$'\t' read -r duration_ms cost lines_added lines_removed \
-    five_pct five_resets seven_pct seven_resets < <(
+# One value per line, consumed by `readarray` so empty elements are preserved
+# by position. IFS-based `read` won't work here: tab is IFS whitespace, and
+# bash collapses consecutive whitespace separators — so `\t\t\t` between three
+# empty fields would be treated as ONE separator, sliding every later field up
+# and (e.g.) landing a 65995-token count where seven-day % belongs. All fields
+# use a fallback (numbers → 0, optional fields → "") to guarantee a stable
+# 11-line output regardless of which stdin keys are absent.
+readarray -t fields < <(
     printf '%s' "$input" | jq -r '[
         (.cost.total_duration_ms // 0),
         (.cost.total_cost_usd // 0),
         (.cost.total_lines_added // 0),
         (.cost.total_lines_removed // 0),
-        (.rate_limits.five_hour.used_percentage // empty),
-        (.rate_limits.five_hour.resets_at // empty),
-        (.rate_limits.seven_day.used_percentage // empty),
-        (.rate_limits.seven_day.resets_at // empty)
-    ] | @tsv' 2>/dev/null
+        (.rate_limits.five_hour.used_percentage // ""),
+        (.rate_limits.five_hour.resets_at // ""),
+        (.rate_limits.seven_day.used_percentage // ""),
+        (.rate_limits.seven_day.resets_at // ""),
+        (.context_window.current_usage.input_tokens // 0),
+        (.context_window.current_usage.cache_creation_input_tokens // 0),
+        (.context_window.current_usage.cache_read_input_tokens // 0)
+    ] | .[]' 2>/dev/null
 )
+duration_ms=${fields[0]:-0}
+cost=${fields[1]:-0}
+lines_added=${fields[2]:-0}
+lines_removed=${fields[3]:-0}
+five_pct=${fields[4]-}
+five_resets=${fields[5]-}
+seven_pct=${fields[6]-}
+seven_resets=${fields[7]-}
+ctx_input=${fields[8]:-0}
+ctx_cache_create=${fields[9]:-0}
+ctx_cache_read=${fields[10]:-0}
 
 # ─── ANSI colors ────────────────────────────────────────────────────────────
 DIM=$'\033[2m'
@@ -116,12 +143,35 @@ format_reset() {
     fi
 }
 
+# Token count → compact string: "1.2M" / "130k" / "8.5k" / "842". Empty when 0.
+# Uses "k" for thousands and "M" for millions to match common Claude Code
+# conventions. Under 10k we show one decimal (8.5k) so small changes register;
+# at 10k+ we drop it since the precision is noise on a status line.
+format_tokens() {
+    local n=${1:-0}
+    [ "$n" -le 0 ] 2>/dev/null && return
+    if   [ "$n" -ge 1000000 ]; then awk -v n="$n" 'BEGIN { printf "%.1fM", n/1000000 }'
+    elif [ "$n" -ge 10000 ];   then awk -v n="$n" 'BEGIN { printf "%.0fk", n/1000 }'
+    elif [ "$n" -ge 1000 ];    then awk -v n="$n" 'BEGIN { printf "%.1fk", n/1000 }'
+    else                            printf '%d' "$n"
+    fi
+}
+
 # Rate-limit traffic light by used percent (see color key in header comment).
 rate_color() {
     awk -v p="$1" 'BEGIN { exit !(p < 75) }' && { printf '%s' "$GREEN"; return; }
     awk -v p="$1" 'BEGIN { exit !(p < 90) }' && { printf '%s' "$YELLOW"; return; }
     printf '%s' "$RED"
 }
+
+# ─── Token count (appended to base, next to wt's ○ X% context gauge) ────────
+# Formula matches wt's percentage: input + cache_read + cache_creation from
+# the last API call. Before the first API call these are all 0 → we skip.
+# Suppressed entirely when base is empty (wt absent), since a bare " 130k"
+# at the start of the line would be meaningless.
+ctx_total=$(( ${ctx_input:-0} + ${ctx_cache_create:-0} + ${ctx_cache_read:-0} ))
+tok_str=$(format_tokens "$ctx_total")
+[ -n "$base" ] && [ -n "$tok_str" ] && base+=" ${DIM}${tok_str}${RESET}"
 
 # ─── WIDGET: Session telemetry (duration + cost + burn + lines shipped) ─────
 # Each sub-widget self-skips when its data is zero/missing, so fresh sessions
