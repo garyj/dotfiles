@@ -2,6 +2,16 @@
 
 #!/usr/bin/env bash
 set -euo pipefail
-curl --proto '=https' --tlsv1.2 -LsSf https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh | sh -s -- --no-modify-path
+
+# Run the installer in a tmpdir so it cannot drop ./bin/atuin into the
+# chezmoi script directory — past installer versions did this, and the
+# next `chezmoi apply` then tried to execute the binary as a script.
+tmpdir=$(mktemp -d)
+trap 'rm -rf "$tmpdir"' EXIT
+cd "$tmpdir"
+
+curl --proto '=https' --tlsv1.2 -LsSf \
+  https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh \
+  | sh -s -- --no-modify-path
 
 {{end -}}
