@@ -3,6 +3,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Add atuin to PATH (installer puts it at ~/.atuin/bin, not in PATH yet)
+export PATH="$HOME/.atuin/bin:$PATH"
+
 # Ensure this machine is authenticated to the Atuin sync server using the
 # canonical credentials stored in 1Password. Idempotent: exits early if a
 # valid session already exists and the local store verifies.
