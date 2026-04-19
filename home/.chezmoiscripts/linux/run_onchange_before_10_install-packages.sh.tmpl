@@ -20,6 +20,7 @@
     "bubblewrap"
     "bzip2"
     "ca-certificates"
+    "chromium"
     "clang"
     "direnv"
     "emacs-nox"
@@ -95,8 +96,6 @@
         "gnome-shell-extensions"
         "swappy"
       ) -}}
-  {{ else -}}
-    {{  $packages = concat $packages (list "chromium-browser" ) -}}
   {{ end -}}
 {{ end -}}
 
