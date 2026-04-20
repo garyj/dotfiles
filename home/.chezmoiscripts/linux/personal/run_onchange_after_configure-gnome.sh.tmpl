@@ -251,7 +251,7 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom12/ name 'Gnome Clocks'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ binding "['<Super>minus']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ command 'bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ command 'bringme.sh "DiscoDisco - Obsidian" "flatpak run md.obsidian.Obsidian $HOME/DiscoDisco"'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom13/ name 'DiscoDisco - Obsidian'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom14/ binding "['<Super>p']"
@@ -263,7 +263,7 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom15/ name 'Nemo Downloads'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ binding "['<Super>KP_Multiply']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ command 'bringme.sh Ferdium ferdium'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ command 'bringme.sh Ferdium "flatpak run org.ferdium.Ferdium"'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom16/ name 'Bring Ferdium'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom17/ binding "['<Alt>1']"
@@ -538,7 +538,7 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom12/ name 'Gnome Clocks'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ binding '<Super>minus'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "DiscoDisco - Obsidian" "obsidian $HOME/DiscoDisco"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "DiscoDisco - Obsidian" "flatpak run md.obsidian.Obsidian $HOME/DiscoDisco"'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom13/ name 'DiscoDisco - Obsidian'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom14/ binding '<Super>p'
@@ -550,7 +550,7 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom15/ name 'Nautilus Downloads'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ binding '<Super>KP_Multiply'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh Ferdium ferdium'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh Ferdium "flatpak run org.ferdium.Ferdium"'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom16/ name 'Bring Ferdium'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom17/ binding '<Super>KP_Subtract'
