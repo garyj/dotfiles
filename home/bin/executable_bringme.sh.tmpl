@@ -38,7 +38,10 @@ bring_wayland() {
 bring_x11() {
   local search="$1"
   local matches
-  matches=($(wmctrl -l | awk -v pat="$search" 'tolower($0) ~ tolower(pat) {print $1}'))
+  # -lx adds WM_CLASS to the output so the substring match can hit either
+  # the window title or the class (e.g. "ChromiumAI"). Class is set once at
+  # launch and never changes, making class-based matches bulletproof.
+  matches=($(wmctrl -lx | awk -v pat="$search" 'tolower($0) ~ tolower(pat) {print $1}'))
 
   if [ "${#matches[@]}" = "0" ]; then
     return 1

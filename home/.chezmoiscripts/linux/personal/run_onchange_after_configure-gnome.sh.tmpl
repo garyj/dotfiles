@@ -210,10 +210,6 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ command 'google-chrome --profile-directory=Default'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom2/ name 'Chrome'
 
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ binding "['<Super>h']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ command 'chromium --password-store=basic'
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom3/ name 'Chromium'
-
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ binding "['<Super>w']"
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ command 'remmina'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom4/ name 'remmina'
@@ -227,8 +223,8 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ name 'Bring 1Password'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ binding "['<Super>slash']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ command 'bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ name 'Bringme LobeChat'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ command 'bringme.sh "ChromiumAI" "chromium --class=ChromiumAI --user-data-dir=$HOME/.config/chromium-ai --password-store=basic"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ name 'Bring Chromium'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom8/ binding "['<Super>s']"
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom8/ command 'bringme.sh "Scratch" "codium $HOME/scratch"'
@@ -343,7 +339,6 @@ if is_cinnamon; then
   'custom0',\
   'custom1',\
   'custom2',\
-  'custom3',\
   'custom4',\
   'custom5',\
   'custom6',\
@@ -497,10 +492,6 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom2/ command 'google-chrome --profile-directory=Default'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom2/ name 'Chrome'
 
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom3/ binding '<Super>h'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom3/ command 'chromium --password-store=basic'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom3/ name 'Chromium'
-
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom4/ binding '<Super>w'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom4/ command 'remmina'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom4/ name 'remmina'
@@ -514,8 +505,8 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom6/ name 'Bring 1Password'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ binding '<Super>slash'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "LobeHub" "chromium https://lobe.jarrel.io/chat"'
-  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ name 'Bringme LobeChat'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "ChromiumAI" "chromium --class=ChromiumAI --user-data-dir={{ .chezmoi.homeDir }}/.config/chromium-ai --password-store=basic"'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom7/ name 'Bring Chromium'
 
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ binding '<Super>s'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom8/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "Scratch" "codium $HOME/scratch"'
@@ -623,7 +614,6 @@ if is_gnome; then
     '${CUSTOM_PATH}/custom0/',\
     '${CUSTOM_PATH}/custom1/',\
     '${CUSTOM_PATH}/custom2/',\
-    '${CUSTOM_PATH}/custom3/',\
     '${CUSTOM_PATH}/custom4/',\
     '${CUSTOM_PATH}/custom5/',\
     '${CUSTOM_PATH}/custom6/',\
