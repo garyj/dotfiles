@@ -3,7 +3,7 @@ email: gary@jarrel.com.au
 githubUser: garyj
 langs:
   python: "3.14"
-  mongodb: "7.0"
+  mongodb: "8.2"
 
 # Pinned Tier-3 CLI tools. Future: templatize configs that reference these.
 # See memory: feedback_install_discipline.md + project_deps_scanner_skill.md

@@ -254,7 +254,7 @@ mongostart() {
     --ulimit nofile=64000:64000 \
     -p 27017:27017 \
     -v $HOME/.docker_servers_data/mongo:/data/db \
-    -d mongodb/mongodb-community-server:latest
+    -d mongodb/mongodb-community-server:{{ .langs.mongodb }}-ubuntu2204
 }
 
 mongostop() {
@@ -268,5 +268,5 @@ moishell() {
     --user "$(id -u):$(id -g)" \
     --ulimit nofile=64000:64000 \
     --entrypoint /bin/bash \
-    mongodb/mongodb-community-server:latest
+    mongodb/mongodb-community-server:{{ .langs.mongodb }}-ubuntu2204
 }
