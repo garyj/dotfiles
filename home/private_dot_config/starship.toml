@@ -24,7 +24,12 @@ success_symbol = "[➜](bold #50fa7b)"
 style = "bold #f1fa8c"
 
 [directory]
-style = "bold #50fa7b"
+style = "#50fa7b"
+before_repo_root_style = "dimmed #50fa7b"
+repo_root_style = "bold #bd93f9"
+truncate_to_repo = false
+truncation_length = 1
+fish_style_pwd_dir_length = 1
 
 # [direnv]
 # disabled = true
@@ -35,7 +40,7 @@ style = "bold #50fa7b"
 # symbol = "🐳 "
 
 [git_branch]
-style = "bold #ff79c6"
+style = "#ff79c6"
 symbol = " "
 
 [git_status]
