@@ -1,0 +1,24 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .ephemeral) .personal (or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint")) -}}
+#!/usr/bin/env bash
+
+# MongoDB Tools (mongodb-org-tools + mongodb-atlas) via vendor apt repo.
+# Reference: https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/
+#
+# Key URL pinned to server-8.0.asc: MongoDB has not published server-8.2.asc;
+# the 8.2 Release files are signed by the 8.0 packaging key (keyid
+# 41DE058A4E7DCA05). Revisit when upstream publishes an 8.2 key.
+
+set -euo pipefail
+
+. /etc/os-release   # exports UBUNTU_CODENAME; also clobbers VERSION — set MONGO_VERSION after
+MONGO_VERSION={{ .langs.mongodb }}
+
+{{ template "add-apt-repo" . }}
+
+add_apt_repo mongodb-org \
+  https://pgp.mongodb.com/server-8.0.asc \
+  "deb [signed-by=/usr/share/keyrings/mongodb-org.gpg arch=amd64,arm64] https://repo.mongodb.org/apt/ubuntu ${UBUNTU_CODENAME}/mongodb-org/${MONGO_VERSION} multiverse"
+
+sudo apt-get update
+sudo apt-get install -y mongodb-org-tools mongodb-atlas
+{{ end -}}
