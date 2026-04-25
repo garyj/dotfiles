@@ -24,6 +24,13 @@ echo "Detected desktop environment: $DE"
 # Dark theme
 gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
+# Also tell the xapp portal (xdg-desktop-portal-xapp) — this is what Chrome,
+# Electron, and libadwaita apps read via org.freedesktop.portal.Settings on
+# Cinnamon, where x-cinnamon-portals.conf lists xapp before gtk.
+if gsettings list-schemas | grep -qx org.x.apps.portal; then
+  gsettings set org.x.apps.portal color-scheme 'prefer-dark'
+fi
+
 # Window focus and raising
 gsettings set org.gnome.desktop.wm.preferences num-workspaces 7
 gsettings set org.gnome.desktop.wm.preferences auto-raise true
