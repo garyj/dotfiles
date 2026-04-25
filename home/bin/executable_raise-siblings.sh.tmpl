@@ -1,0 +1,61 @@
+{{ if not .headless -}}
+#!/usr/bin/env bash
+# Raise every window that shares the focused window's WM_CLASS, on the current
+# workspace. The originally focused window is re-activated last so it stays on
+# top with focus retained.
+#
+# Usage:
+#   raise-siblings.sh                # acts on the currently focused window
+#   raise-siblings.sh <decimal-id>   # acts on a specific window (debug)
+#   raise-siblings.sh --dry-run [id] # prints what would be raised; raises nothing
+#
+# X11 only — relies on wmctrl + xdotool. No-op on Wayland.
+set -euo pipefail
+
+[[ "${XDG_SESSION_TYPE:-}" == "wayland" ]] && exit 0
+
+dry=0
+if [[ "${1:-}" == "--dry-run" ]]; then
+  dry=1
+  shift
+fi
+
+target_dec=${1:-$(xdotool getactivewindow 2>/dev/null || true)}
+[[ -z "${target_dec:-}" ]] && exit 0
+
+target_hex=$(printf '0x%08x' "$target_dec")
+
+# WM_CLASS prints as: WM_CLASS(STRING) = "instance", "class"
+# Match on the class (second quoted field) so multi-window apps group correctly.
+target_class=$(xprop -id "$target_dec" WM_CLASS 2>/dev/null \
+  | awk -F'"' '/WM_CLASS/ {print $4; exit}')
+[[ -z "${target_class:-}" ]] && exit 0
+
+desktop=$(xdotool get_desktop 2>/dev/null)
+
+if (( dry )); then
+  printf 'target=%s class=%q desktop=%s\n' "$target_hex" "$target_class" "$desktop"
+fi
+
+while read -r id _rest; do
+  [[ "$id" == "$target_hex" ]] && continue
+
+  win_desktop=$(xdotool get_desktop_for_window "$id" 2>/dev/null) || continue
+  [[ "$win_desktop" == "$desktop" ]] || continue
+
+  win_class=$(xprop -id "$id" WM_CLASS 2>/dev/null \
+    | awk -F'"' '/WM_CLASS/ {print $4; exit}')
+  [[ "$win_class" == "$target_class" ]] || continue
+
+  if (( dry )); then
+    title=$(xdotool getwindowname "$id" 2>/dev/null || echo '?')
+    printf '  raise %s  %s\n' "$id" "$title"
+  else
+    xdotool windowraise "$id" || true
+  fi
+done < <(wmctrl -l)
+
+(( dry )) && exit 0
+
+xdotool windowactivate "$target_dec" || true
+{{ end }}

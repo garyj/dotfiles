@@ -347,6 +347,10 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom34/ command 'bringme.sh "- Discord" "flatpak run com.discordapp.Discord"'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom34/ name 'Bring Discord'
 
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom35/ binding "['<Super>u']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom35/ command 'raise-siblings.sh'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom35/ name 'Raise sibling windows (same class)'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -387,6 +391,7 @@ if is_cinnamon; then
   'custom32',\
   'custom33',\
   'custom34',\
+  'custom35',\
   '__dummy__'\
   ]"
 
