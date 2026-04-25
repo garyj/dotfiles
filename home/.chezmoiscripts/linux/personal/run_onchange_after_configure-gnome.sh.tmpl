@@ -156,6 +156,12 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.peripherals.keyboard delay 300
   gsettings set org.cinnamon.desktop.peripherals.keyboard repeat-interval 20
 
+  # Screen saver: idle for 1 hour before activation; lock immediately on activation
+  gsettings set org.cinnamon.desktop.session idle-delay 3600
+  gsettings set org.cinnamon.desktop.screensaver idle-activation-enabled true
+  gsettings set org.cinnamon.desktop.screensaver lock-enabled true
+  gsettings set org.cinnamon.desktop.screensaver lock-delay 0
+
   # Workspace switching
   gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-1 "['<Super>1']"
   gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-2 "['<Super>2']"
@@ -480,9 +486,10 @@ if is_gnome; then
   gsettings set org.gnome.settings-daemon.plugins.media-keys calculator "['<Super>c']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
 
-  # Screen lock timeout — dim screen after 5 minutes, lock after another 55 minutes
-  gsettings set org.gnome.desktop.session idle-delay 300
-  gsettings set org.gnome.desktop.screensaver lock-delay 3300
+  # Screen saver: idle for 1 hour before activation; lock immediately on activation
+  gsettings set org.gnome.desktop.session idle-delay 3600
+  gsettings set org.gnome.desktop.screensaver lock-enabled true
+  gsettings set org.gnome.desktop.screensaver lock-delay 0
 
   # Nautilus file manager (replaces Nemo)
   gsettings set org.gnome.nautilus.preferences default-folder-viewer 'list-view' || true
