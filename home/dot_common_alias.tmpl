@@ -102,6 +102,90 @@ alias dc="docker compose"
 alias py=python
 alias p=poetry
 
+# Worktrunk shortcut experiment: smart switch/create + shell completion.
+# wtscc <target> runs `wt switch -x 'code-insiders . && claude' <target>` for
+# existing local/remote branches, and adds `--create` when <target> is not yet a
+# branch. Special Worktrunk targets (-, ^, @, pr:N, mr:N) pass straight through.
+# _wtscc_candidates feeds zsh/bash completion from git worktrees, local branches,
+# remote branches, and Worktrunk shortcuts. Remove this whole block if it does
+# not stick.
+alias wts='wt switch'
+wtscc() {
+  local execute='code-insiders . && claude'
+  local branch=""
+  local skip_next=0
+  local arg
+
+  for arg in "$@"; do
+    if [ "$skip_next" -eq 1 ]; then
+      skip_next=0
+      continue
+    fi
+
+    case "$arg" in
+      --)
+        break
+        ;;
+      -b|--base|-C|--config|--format)
+        skip_next=1
+        ;;
+      --base=*|--config=*|--format=*)
+        ;;
+      -*)
+        ;;
+      *)
+        branch="$arg"
+        break
+        ;;
+    esac
+  done
+
+  case "$branch" in
+    ""|"-"|"^"|"@"|pr:*|mr:*)
+      wt switch -x "$execute" "$@"
+      return
+      ;;
+  esac
+
+  if ! git rev-parse --git-dir >/dev/null 2>&1; then
+    wt switch -x "$execute" "$@"
+    return
+  fi
+
+  if git show-ref --verify --quiet "refs/heads/$branch" || \
+    git for-each-ref --format='%(refname:lstrip=3)' refs/remotes | command grep -Fvx HEAD | command grep -Fx -- "$branch" >/dev/null; then
+    wt switch -x "$execute" "$@"
+  else
+    wt switch --create -x "$execute" "$@"
+  fi
+}
+
+_wtscc_candidates() {
+  git rev-parse --git-dir >/dev/null 2>&1 || return
+  {
+    git worktree list --porcelain 2>/dev/null | awk '/^branch / { sub(/^refs\/heads\//, "", $2); print $2 }'
+    git for-each-ref --format='%(refname:short)' refs/heads 2>/dev/null
+    git for-each-ref --format='%(refname:lstrip=3)' refs/remotes 2>/dev/null | command grep -Fvx HEAD
+    printf '%s\n' - ^ @
+  } | sort -u
+}
+
+if [ -n "$ZSH_VERSION" ] && command -v compdef >/dev/null 2>&1; then
+  _wtscc() {
+    local -a candidates expl
+    candidates=("${(@f)$(_wtscc_candidates)}")
+    _wanted worktrunk-targets expl 'worktrunk target' compadd "$expl[@]" -a candidates
+  }
+  compdef _wtscc wtscc
+elif [ -n "$BASH_VERSION" ] && command -v complete >/dev/null 2>&1; then
+  _wtscc() {
+    local current="${COMP_WORDS[COMP_CWORD]}"
+    COMPREPLY=($(compgen -W "$(_wtscc_candidates)" -- "$current"))
+  }
+  complete -F _wtscc wtscc
+fi
+# End Worktrunk shortcut experiment.
+
 # Prevent these from starting in home dir just in case
 clyo() {
   if [ "$PWD" = "$HOME" ]; then
