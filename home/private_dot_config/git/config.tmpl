@@ -72,7 +72,8 @@
 	dom = "!git diff origin/$(git default-branch)"  # Compare working tree against origin's default branch
 	fu = "!git log -n 16 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"  # Fzf-pick a recent commit and create a fixup for it
 	lfol = log --follow --                 # Show log for a file, following renames
-	incoming = "!git fetch && git log --oneline ..@{u}"  # Show commits on remote that you don't have locally
+	in = "!git fetch && git log --oneline ..@{u}"  # Show commits on remote that you don't have locally
+	out = "!git fetch && git log --oneline @{u}.."  # Show local commits not yet pushed to upstream
 	ol = log --pretty=oneline              # Compact one-line-per-commit log
 	prb = pull --rebase                    # Pull and rebase local commits on top
 	ra = rebase --abort                    # Bail out of a rebase in progress
