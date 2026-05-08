@@ -73,6 +73,8 @@ alias n="nohup nemo ./ >/dev/null 2>&1 &"
 alias n="nohup nautilus ./ >/dev/null 2>&1 &"
 {{- end }}
 
+alias gt="nohup ghostty --working-directory=./ >/dev/null 2>&1 &"
+
 alias sshp="ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no"
 
 alias glow="glow -lp"
@@ -169,6 +171,8 @@ alias xit='exit'
 # Wireguard networks
 alias wu='sudo wg-quick up wg0'
 alias wd='sudo wg-quick down wg0'
+
+alias wts='wt switch'
 
 # Docker Services - various commands to run services without installing them on localhost
 
