@@ -5,10 +5,25 @@ worktree-path = "{{ repo_path }}/.worktrees/{{ branch | sanitize }}"
 [commit.generation]
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
 
-# Ordered pipeline: copy must finish before direnv allow (.envrc is gitignored,
-# so it only arrives via copy-ignored).
+# Don't copy .venv — Python virtualenvs bake absolute paths, copying breaks
+# them. Don't copy .envrc — we symlink it from the primary worktree so edits
+# in the main checkout propagate to every worktree.
+[step.copy-ignored]
+exclude = [".venv/", ".envrc"]
+
+# Ordered pipeline:
+#   1. copy other gitignored files (caches, build artifacts)
+#   2. symlink .envrc from the primary worktree (if it has one)
+#   3. uv sync to materialize a fresh .venv (if this is a uv project)
+#   4. direnv allow (the symlinked .envrc resolves fine)
 [[post-start]]
 copy = "wt step copy-ignored"
+
+[[post-start]]
+envrc = "if [ -f {{ primary_worktree_path }}/.envrc ] && [ ! -e .envrc ]; then ln -s {{ primary_worktree_path }}/.envrc .envrc; fi"
+
+[[post-start]]
+uv-sync = "if [ -f pyproject.toml ] && command -v uv >/dev/null 2>&1; then uv sync; fi"
 
 [[post-start]]
 direnv = "if [ -f .envrc ]; then direnv allow; fi"
