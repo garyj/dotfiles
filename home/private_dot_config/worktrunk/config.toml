@@ -9,7 +9,7 @@ command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence 
 # them. Don't copy .envrc — we symlink it from the primary worktree so edits
 # in the main checkout propagate to every worktree.
 [step.copy-ignored]
-exclude = [".venv/", ".envrc"]
+exclude = [".venv/", ".envrc", "cdk.out/"]
 
 # Ordered pipeline:
 #   1. copy other gitignored files (caches, build artifacts)
