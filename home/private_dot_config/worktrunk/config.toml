@@ -14,8 +14,9 @@ exclude = [".venv/", ".envrc", "cdk.out/"]
 # Ordered pipeline:
 #   1. copy other gitignored files (caches, build artifacts)
 #   2. symlink .envrc from the primary worktree (if it has one)
-#   3. uv sync to materialize a fresh .venv (if this is a uv project)
-#   4. direnv allow (the symlinked .envrc resolves fine)
+#   3. update git submodules (if this repo uses submodules)
+#   4. uv sync to materialize a fresh .venv (if this is a uv project)
+#   5. direnv allow (the symlinked .envrc resolves fine)
 [[post-start]]
 copy = "wt step copy-ignored"
 
@@ -23,7 +24,10 @@ copy = "wt step copy-ignored"
 envrc = "if [ -f {{ primary_worktree_path }}/.envrc ] && [ ! -e .envrc ]; then ln -s {{ primary_worktree_path }}/.envrc .envrc; fi"
 
 [[post-start]]
-uv-sync = "if [ -f pyproject.toml ] && command -v uv >/dev/null 2>&1; then uv sync; fi"
+submodules = "if [ -f .gitmodules ]; then git submodule update --remote; fi"
+
+[[post-start]]
+uv-sync = "if [ -f pyproject.toml ] && command -v uv >/dev/null 2>&1; then uv sync --all-groups --all-extras; fi"
 
 [[post-start]]
 direnv = "if [ -f .envrc ]; then direnv allow; fi"
