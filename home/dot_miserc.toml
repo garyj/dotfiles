@@ -1,0 +1,3 @@
+# always ignore tries, as they mainly come from github land
+[settings]
+ignored_config_paths = ["~/tries"]
