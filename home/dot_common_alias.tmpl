@@ -1,5 +1,10 @@
 alias g=git
-alias ghb='gh browse . &'
+alias ghb='gh browse . >/dev/null 2>&1 &'
+ghbe() {
+  gh browse . >/dev/null 2>&1 &
+  disown
+  exit
+}
 
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   alias ccp="pwd | wl-copy"
