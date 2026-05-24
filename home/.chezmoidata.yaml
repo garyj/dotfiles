@@ -8,7 +8,8 @@ langs:
 # Pinned Tier-3 CLI tools. Future: templatize configs that reference these.
 # See memory: feedback_install_discipline.md + project_deps_scanner_skill.md
 tools:
-  worktrunk: "0.53.0"
+  ast_grep: "0.42.3"
+  worktrunk: "0.53.0"      # installed via mise + skill installed in
   dust: "1.2.4"            # mise+aqua (bootandy/dust)
   ralph_tui: "0.11.0"      # bun install -g (subsy/ralph-tui)
 
