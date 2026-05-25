@@ -32,7 +32,7 @@ if gsettings list-schemas | grep -qx org.x.apps.portal; then
 fi
 
 # Window focus and raising
-gsettings set org.gnome.desktop.wm.preferences num-workspaces 7
+gsettings set org.gnome.desktop.wm.preferences num-workspaces 9
 gsettings set org.gnome.desktop.wm.preferences auto-raise true
 gsettings set org.gnome.desktop.wm.preferences auto-raise-delay 500
 gsettings set org.gnome.desktop.wm.preferences focus-mode 'sloppy'
@@ -143,7 +143,7 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.interface toolkit-accessibility false
 
   # Window management
-  gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 7
+  gsettings set org.cinnamon.desktop.wm.preferences num-workspaces 9
   gsettings set org.cinnamon.desktop.wm.preferences auto-raise true
   gsettings set org.cinnamon.desktop.wm.preferences auto-raise-delay 500
   gsettings set org.cinnamon.desktop.wm.preferences focus-mode 'sloppy'
@@ -170,6 +170,8 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-5 "['<Super>5']"
   gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-6 "['<Super>6']"
   gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-7 "['<Super>7']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-8 "['<Super>8']"
+  gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-9 "['<Super>9']"
   gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-down "['F4']"
 
   # Move window to workspace
@@ -180,6 +182,8 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-5 "['<Primary><Alt>5']"
   gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-6 "['<Primary><Alt>6']"
   gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-7 "['<Primary><Alt>7']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-8 "['<Primary><Alt>8']"
+  gsettings set org.cinnamon.desktop.keybindings.wm move-to-workspace-9 "['<Primary><Alt>9']"
 
   # Window management keybindings
   gsettings set org.cinnamon.desktop.keybindings.wm maximize "@as []"
@@ -351,6 +355,14 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom35/ command 'raise-siblings.sh'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom35/ name 'Raise sibling windows (same class)'
 
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom36/ binding "['<Alt>8']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom36/ command 'bash -c "wmctrl -r :ACTIVE: -t 7 &&  wmctrl -s 7"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom36/ name 'Send to Workspace 8'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom37/ binding "['<Alt>9']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom37/ command 'bash -c "wmctrl -r :ACTIVE: -t 8 &&  wmctrl -s 8"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom37/ name 'Send to Workspace 9'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -392,6 +404,8 @@ if is_cinnamon; then
   'custom33',\
   'custom34',\
   'custom35',\
+  'custom36',\
+  'custom37',\
   '__dummy__'\
   ]"
 
@@ -445,7 +459,7 @@ if is_gnome; then
     gsettings set org.gnome.shell.keybindings switch-to-application-${i} "@as []"
   done
 
-  # Workspace switching: Super+1 through Super+7
+  # Workspace switching: Super+1 through Super+9
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>1']"
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>2']"
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>3']"
@@ -453,8 +467,10 @@ if is_gnome; then
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>5']"
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>6']"
   gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-7 "['<Super>7']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-8 "['<Super>8']"
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-9 "['<Super>9']"
 
-  # Move window to workspace AND follow: Alt+1 through Alt+7
+  # Move window to workspace AND follow: Alt+1 through Alt+9
   gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-1 "['<Alt>1']"
   gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-2 "['<Alt>2']"
   gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-3 "['<Alt>3']"
@@ -462,6 +478,8 @@ if is_gnome; then
   gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 "['<Alt>5']"
   gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-6 "['<Alt>6']"
   gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-7 "['<Alt>7']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-8 "['<Alt>8']"
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-9 "['<Alt>9']"
 
   # Window management keybindings
   gsettings set org.gnome.desktop.wm.keybindings maximize "@as []"
@@ -637,6 +655,14 @@ if is_gnome; then
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom33/ command '{{ .chezmoi.homeDir }}/bin/bringme.sh "- Discord" "flatpak run com.discordapp.Discord"'
   gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom33/ name 'Bring Discord'
 
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom34/ binding '<Primary><Alt>8'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom34/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 8'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom34/ name 'Send to Workspace 8'
+
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom35/ binding '<Primary><Alt>9'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom35/ command '{{ .chezmoi.homeDir }}/bin/move-to-workspace.sh 9'
+  gsettings set ${CUSTOM_BASE}:${CUSTOM_PATH}/custom35/ name 'Send to Workspace 9'
+
   # Register the custom keybinding list with GNOME
   gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "[\
     '${CUSTOM_PATH}/custom0/',\
@@ -671,7 +697,9 @@ if is_gnome; then
     '${CUSTOM_PATH}/custom30/',\
     '${CUSTOM_PATH}/custom31/',\
     '${CUSTOM_PATH}/custom32/',\
-    '${CUSTOM_PATH}/custom33/'\
+    '${CUSTOM_PATH}/custom33/',\
+    '${CUSTOM_PATH}/custom34/',\
+    '${CUSTOM_PATH}/custom35/'\
   ]"
 fi
 
