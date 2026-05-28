@@ -1,0 +1,19 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .ephemeral) .personal -}}
+{{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint") -}}
+#!/usr/bin/env bash
+
+# Stripe CLI via vendor apt repo.
+# Reference: https://docs.stripe.com/stripe-cli
+
+set -euo pipefail
+
+{{ template "add-apt-repo" . }}
+
+add_apt_repo stripe \
+  https://packages.stripe.dev/api/security/keypair/stripe-cli-gpg/public \
+  "deb [signed-by=/usr/share/keyrings/stripe.gpg] https://packages.stripe.dev/stripe-cli-debian-local stable main"
+
+sudo apt-get update
+sudo apt-get install -y stripe
+{{ end -}}
+{{ end -}}
