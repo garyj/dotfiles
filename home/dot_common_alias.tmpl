@@ -20,6 +20,17 @@ else
   }
 fi
 
+# Count open X11 connections vs the server cap (default 256).
+# Handy when GUI apps refuse to launch with "Maximum number of clients reached".
+xconns() {
+  local disp="${DISPLAY#:}"
+  disp="${disp%%.*}"
+  local count cap
+  count=$(ss -x | grep -c "@/tmp/.X11-unix/X${disp:-0}")
+  cap=$(ps -o cmd= -C Xorg | grep -oP 'maxclients \K[0-9]+' || echo 256)
+  echo "X11 connections: ${count} / ${cap}"
+}
+
 {{- if lookPath "bat" }}
 alias cat=bat
 {{- else if lookPath "batcat" }}
@@ -70,6 +81,7 @@ alias j=just
 alias jh="just --justfile ~/justfile"
 alias mi=mise
 alias eee="exec $SHELL"
+alias e="exit"
 alias t=tmux
 
 {{- if lookPath "nemo" }}
@@ -100,6 +112,7 @@ alias d=docker
 alias dpsa='docker ps -a'
 
 alias dstopall='docker stop $(docker ps -q)'
+alias dcleanall='docker stop $(docker ps -q) && docker container prune -f'
 alias drmall='docker rm $(docker ps -a -q)'
 alias dconprune='docker container prune --force'
 
