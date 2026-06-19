@@ -17,3 +17,10 @@ tools:
 externals:
   zsh_syntax_highlighting: "0.8.0"   # zsh-users/zsh-syntax-highlighting (no v prefix)
   zsh_autosuggestions: "v0.7.1"      # zsh-users/zsh-autosuggestions
+
+# GUI apps shipped as .deb on GitHub releases (no apt repo). Pinned by version +
+# sha256; the installer verifies the download before apt installs it.
+deb_apps:
+  handy:                             # cjpais/Handy, offline speech-to-text
+    version: "0.8.3"
+    sha256: "a1b355e7f55b9fc6d81cdeb5a30e44fdb4e0c492aad4fb7f023d212cf6ec3a33"
