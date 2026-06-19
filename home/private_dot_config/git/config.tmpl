@@ -42,6 +42,7 @@
 	ca = commit --amend
 	cane = commit --amend --no-edit
 	cf = commit --fixup
+	cfa = "!f() { target=$1; git commit --fixup=\"$target\" && GIT_EDITOR=true git rebase -i --autosquash \"$target~1\"; }; f"
 	cl = clone
 	cm = commit --message
 	co = checkout
