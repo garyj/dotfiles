@@ -156,11 +156,15 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.peripherals.keyboard delay 300
   gsettings set org.cinnamon.desktop.peripherals.keyboard repeat-interval 20
 
-  # Screen saver: idle for 1 hour before activation; lock immediately on activation
+  # Screen saver: idle for 1 hour before activation; lock immediately on activation.
+  # Blank the monitor 5 minutes AFTER the saver (3900 > 3600), not at the same
+  # instant, so the screensaver is actually visible before the display powers down.
   gsettings set org.cinnamon.desktop.session idle-delay 3600
   gsettings set org.cinnamon.desktop.screensaver idle-activation-enabled true
   gsettings set org.cinnamon.desktop.screensaver lock-enabled true
   gsettings set org.cinnamon.desktop.screensaver lock-delay 0
+  gsettings set org.cinnamon.settings-daemon.plugins.power sleep-display-ac 3900
+  gsettings set org.cinnamon.settings-daemon.plugins.power sleep-display-battery 3900
 
   # Workspace switching
   gsettings set org.cinnamon.desktop.keybindings.wm switch-to-workspace-1 "['<Super>1']"
@@ -509,7 +513,10 @@ if is_gnome; then
   gsettings set org.gnome.settings-daemon.plugins.media-keys calculator "['<Super>c']"
   gsettings set org.gnome.settings-daemon.plugins.media-keys home "['<Super>e']"
 
-  # Screen saver: idle for 1 hour before activation; lock immediately on activation
+  # Screen saver: idle for 1 hour before activation; lock immediately on activation.
+  # Note: modern GNOME has no separate display-off timer (the old
+  # settings-daemon 'sleep-display-ac' key was removed); the display blanks at
+  # idle-delay. Don't re-add that key here - it errors out under 'set -e'.
   gsettings set org.gnome.desktop.session idle-delay 3600
   gsettings set org.gnome.desktop.screensaver lock-enabled true
   gsettings set org.gnome.desktop.screensaver lock-delay 0
