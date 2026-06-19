@@ -292,3 +292,11 @@ moishell() {
     --entrypoint /bin/bash \
     mongodb/mongodb-community-server:{{ .langs.mongodb }}-ubuntu2204
 }
+
+{{- if lookPath "agentsview" }}
+{{- $avPort := 9090 }}
+# AgentsView: local session viewer on {{ $avPort }} (no auto-open; browse to http://127.0.0.1:{{ $avPort }} yourself)
+alias avstart="nohup agentsview serve --no-browser --port {{ $avPort }} >/dev/null 2>&1 &"
+alias avstop="pkill -f 'bin/agentsview serve'"
+alias avstat="pgrep -af 'bin/agentsview serve'"
+{{- end }}

@@ -16,6 +16,7 @@ $HOME/.local/bin/uv python install 3.15 # pre-release; resolves to latest 3.15 b
 $HOME/.local/bin/uv python install "$DEFAULT_PYTHON_VERSION" --default --preview
 
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" "poetry<2" --with poetry-plugin-export
+$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" agentsview
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" cookiecutter
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" djlint
 $HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" files-to-prompt
