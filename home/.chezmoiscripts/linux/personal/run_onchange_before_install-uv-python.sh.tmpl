@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 
-# Install uv into ~/.local/bin and do not modify our bash/zsh rc files
-curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 sh
+# Install uv into ~/.local/bin and do not modify our bash/zsh rc files.
+# Pin UV_INSTALL_DIR so the installer uses a normalized path: with XDG_DATA_HOME
+# set but XDG_BIN_HOME unset, uv would otherwise derive $XDG_DATA_HOME/../bin and
+# its literal string shadow-check would falsely flag uv/uvx as shadowed in PATH.
+curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR="$HOME/.local/bin" sh
 
 DEFAULT_PYTHON_VERSION={{- .langs.python }} # Set the default Python version
 
 # if adding a new default version remember to update the .common_aliases file
 $HOME/.local/bin/uv python install 3.13
 $HOME/.local/bin/uv python install 3.14
+$HOME/.local/bin/uv python install 3.15 # pre-release; resolves to latest 3.15 beta until stable ships
 
 $HOME/.local/bin/uv python install "$DEFAULT_PYTHON_VERSION" --default --preview
 
