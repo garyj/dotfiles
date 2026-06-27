@@ -4,24 +4,48 @@
 # Installed from the pinned upstream GitHub release into /usr/local/bin. Kept off
 # mise so the systemd backup timer finds it on the default PATH. Bump the version
 # in .chezmoidata.yaml (github_bins.restic); Renovate proposes updates.
-# Reference: https://github.com/restic/restic
+#
+# Integrity: restic ships a GPG-signed SHA256SUMS with each release. We pin the
+# maintainer's key fingerprint as the trust anchor and require the signature to be
+# made by exactly that key, then check the binary against the verified checksum.
+# No hand-maintained hash, yet a tampered download is still rejected.
+# Signing key: https://restic.net/gpg-key-alex.asc
+# Reference:   https://github.com/restic/restic
 
 set -euo pipefail
 
 version="{{ .github_bins.restic.version }}"
-url="https://github.com/restic/restic/releases/download/v${version}/restic_${version}_linux_amd64.bz2"
+# restic release signing key (Alexander Neumann); see restic docs, "Verifying Downloads".
+key_fp="CF8F18F2844575973F79D4E191A6868BD3F7A907"
+base="https://github.com/restic/restic/releases/download/v${version}"
+asset="restic_${version}_linux_amd64.bz2"
 
 # No install guard here: run_onchange already gates on this script's content, so
-# it re-runs (re-download + re-install) exactly when the pinned version changes -
-# matching the repo's no-guard rule for installers.
+# it re-runs (re-download + re-verify + re-install) exactly when the pinned
+# version changes - matching the repo's no-guard rule for installers.
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
 echo "[restic] downloading ${version}..."
-curl -fsSL -o "$tmp/restic.bz2" "$url"
+curl -fsSL -o "$tmp/$asset"         "$base/$asset"
+curl -fsSL -o "$tmp/SHA256SUMS"     "$base/SHA256SUMS"
+curl -fsSL -o "$tmp/SHA256SUMS.asc" "$base/SHA256SUMS.asc"
+curl -fsSL -o "$tmp/key.asc"        "https://restic.net/gpg-key-alex.asc"
 
-bunzip2 "$tmp/restic.bz2"
-sudo install -m 0755 "$tmp/restic" /usr/local/bin/restic
+echo "[restic] verifying SHA256SUMS signature against pinned key..."
+export GNUPGHOME="$tmp/gnupg"
+mkdir -p "$GNUPGHOME"
+chmod 700 "$GNUPGHOME"
+gpg --batch --quiet --import "$tmp/key.asc"
+gpg --batch --status-fd=1 --verify "$tmp/SHA256SUMS.asc" "$tmp/SHA256SUMS" 2>/dev/null \
+  | grep -q "VALIDSIG ${key_fp}" \
+  || { echo "[restic] ERROR: SHA256SUMS is not signed by the pinned restic key" >&2; exit 1; }
+
+echo "[restic] verifying ${asset} checksum..."
+( cd "$tmp" && sha256sum --ignore-missing -c SHA256SUMS )
+
+bunzip2 "$tmp/$asset"
+sudo install -m 0755 "$tmp/restic_${version}_linux_amd64" /usr/local/bin/restic
 
 echo "[restic] installed: $(restic version)"
 {{ end -}}
