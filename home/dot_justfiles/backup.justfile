@@ -43,4 +43,4 @@ import "_common.justfile"
 
 # restic is pinned in .chezmoidata.yaml (github_bins.restic) - bump it there
 @upgrade:
-    echo "restic is pinned in .chezmoidata.yaml (github_bins.restic); bump version+sha there"
+    echo "restic is pinned in .chezmoidata.yaml (github_bins.restic); bump the version there"

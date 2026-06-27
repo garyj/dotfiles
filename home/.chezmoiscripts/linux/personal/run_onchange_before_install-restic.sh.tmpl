@@ -1,28 +1,24 @@
 {{ if and .personal (or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint")) -}}
 #!/usr/bin/env bash
 #
-# Installed from the pinned upstream GitHub release and verified by sha256
-# before landing in /usr/local/bin. kept off mise so the systemd backup timer finds it
-# on the default PATH. Bump version+sha256 in .chezmoidata.yaml (github_bins.restic).
+# Installed from the pinned upstream GitHub release into /usr/local/bin. Kept off
+# mise so the systemd backup timer finds it on the default PATH. Bump the version
+# in .chezmoidata.yaml (github_bins.restic); Renovate proposes updates.
 # Reference: https://github.com/restic/restic
 
 set -euo pipefail
 
 version="{{ .github_bins.restic.version }}"
-sha256="{{ .github_bins.restic.sha256 }}"
 url="https://github.com/restic/restic/releases/download/v${version}/restic_${version}_linux_amd64.bz2"
 
 # No install guard here: run_onchange already gates on this script's content, so
-# it re-runs (re-download + re-verify + re-install) exactly when the pinned
-# version or sha256 changes - matching the repo's no-guard rule for installers.
+# it re-runs (re-download + re-install) exactly when the pinned version changes -
+# matching the repo's no-guard rule for installers.
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
 echo "[restic] downloading ${version}..."
 curl -fsSL -o "$tmp/restic.bz2" "$url"
-
-echo "[restic] verifying sha256..."
-echo "${sha256}  ${tmp}/restic.bz2" | sha256sum -c -
 
 bunzip2 "$tmp/restic.bz2"
 sudo install -m 0755 "$tmp/restic" /usr/local/bin/restic

@@ -3,15 +3,14 @@
 #!/usr/bin/env bash
 
 # Handy: free, offline speech-to-text (local Whisper/Parakeet; WisprFlow-style).
-# Installed from the pinned GitHub release .deb and verified by sha256 before
-# apt resolves its dependencies (libgtk-layer-shell0, appindicator, webkit2gtk).
+# Installed from the pinned GitHub release .deb; apt then resolves its
+# dependencies (libgtk-layer-shell0, appindicator, webkit2gtk).
 # Bump the pin in .chezmoidata.yaml (deb_apps.handy) to upgrade.
 # Reference: https://github.com/cjpais/Handy
 
 set -euo pipefail
 
 version="{{ .deb_apps.handy.version }}"
-sha256="{{ .deb_apps.handy.sha256 }}"
 url="https://github.com/cjpais/Handy/releases/download/v${version}/Handy_${version}_amd64.deb"
 
 tmp="$(mktemp -d)"
@@ -20,9 +19,6 @@ deb="${tmp}/handy_${version}_amd64.deb"
 
 echo "Downloading Handy ${version}..."
 curl -fsSL -o "$deb" "$url"
-
-echo "Verifying sha256..."
-echo "${sha256}  ${deb}" | sha256sum -c -
 
 # apt resolves and installs the .deb's declared dependencies from the configured repos.
 sudo apt-get update
