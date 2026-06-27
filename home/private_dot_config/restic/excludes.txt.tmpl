@@ -1,0 +1,3 @@
+{{ range .backup.excludes -}}
+{{ if hasPrefix "~/" . }}{{ printf "%s/%s" $.chezmoi.homeDir (trimPrefix "~/" .) }}{{ else }}{{ . }}{{ end }}
+{{ end -}}

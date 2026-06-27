@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+#
+# restic-backup - thin wrapper around restic for the local backup repo.
+# Managed by chezmoi; edit the template, not ~/bin/restic-backup.
+# What/where to back up is configured in home/.chezmoidata/backup.yaml.
+#
+# Scheduled use (systemd timer, hourly):
+#   restic-backup                # back up, then forget old snapshots
+#
+# Manual use - any restic command is passed straight through, already pointed
+# at the repo with the password loaded:
+#   restic-backup snapshots
+#   restic-backup mount /tmp/restore
+#   restic-backup restore latest --target /tmp/restore --include ~/some/file
+#   restic-backup check          # verify repo integrity
+#   restic-backup prune          # reclaim space (heavier; run occasionally)
+
+set -euo pipefail
+
+# restic is a pinned binary in /usr/local/bin; ensure it's found even under
+# systemd's minimal PATH.
+export PATH="/usr/local/bin:$PATH"
+
+export RESTIC_REPOSITORY="{{ .backup.local_repo }}"
+export RESTIC_PASSWORD_FILE="{{ .chezmoi.homeDir }}/.config/restic/password"
+config_dir="{{ .chezmoi.homeDir }}/.config/restic"
+
+# Run restic gently so an hourly backup never fights interactive work.
+restic_gentle() { nice -n 19 ionice -c 3 restic "$@"; }
+
+do_backup() {
+  local rc=0
+  restic_gentle backup \
+    --files-from "$config_dir/sources.txt" \
+    --exclude-file "$config_dir/excludes.txt" \
+    --exclude-caches \
+    --tag automated "$@" || rc=$?
+
+  # restic exits 3 when some files couldn't be read (e.g. a file vanished
+  # mid-run). The rest was still backed up, so keep going - but say so, so a
+  # persistently unreadable source isn't completely silent.
+  if [ "$rc" -eq 3 ]; then
+    echo "restic-backup: warning - some files were unreadable (exit 3); backed up the rest." >&2
+  elif [ "$rc" -ne 0 ]; then
+    return "$rc"
+  fi
+
+  # Thin out old snapshots. Cheap metadata op - no --prune here; pruning
+  # (repacking pack files) is heavier and run occasionally, not every hour.
+  # A forget failure is housekeeping, not a failed backup - warn, don't fail.
+  restic_gentle forget \
+    --tag automated \
+    --keep-hourly {{ .backup.retention.keep_hourly }} \
+    --keep-daily {{ .backup.retention.keep_daily }} \
+    --keep-weekly {{ .backup.retention.keep_weekly }} \
+    --keep-monthly {{ .backup.retention.keep_monthly }} \
+    --keep-yearly {{ .backup.retention.keep_yearly }} \
+    || echo "restic-backup: warning - retention (forget) failed; the snapshot was still captured." >&2
+}
+
+# Dispatch: no args (or `backup`) runs the configured backup below; any other
+# restic command is passed straight through, already pointed at the repo.
+if [ "$#" -gt 0 ] && [ "$1" != "backup" ]; then
+  exec restic "$@"
+fi
+# Strip an optional leading `backup` so extra args (e.g. --dry-run) reach restic.
+if [ "${1:-}" = "backup" ]; then shift; fi
+
+# Refuse to back up if the repo's disk isn't mounted - otherwise we'd write to
+# the root filesystem, the very disk /extra exists to outlive.
+{{ if .backup.require_mounted -}}
+if ! mountpoint -q "{{ .backup.require_mounted }}"; then
+  echo "restic-backup: {{ .backup.require_mounted }} not mounted; refusing to back up to the root disk." >&2
+  exit 1
+fi
+{{ end -}}
+
+# The configured backup. Serialise so two runs never overlap; if one is already
+# going, skip quietly (exit 0) so the timer stays green.
+exec 9>"$config_dir/.lock"
+if ! flock -n 9; then
+  echo "restic-backup: a run is already in progress; skipping." >&2
+  exit 0
+fi
+
+do_backup "$@"

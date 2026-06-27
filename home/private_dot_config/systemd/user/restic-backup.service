@@ -1,0 +1,13 @@
+[Unit]
+Description=Restic local backup
+# Started by restic-backup.timer; no [Install] section so it only runs on the
+# timer, not at login.
+
+[Service]
+Type=oneshot
+ExecStart=%h/bin/restic-backup
+Nice=19
+IOSchedulingClass=idle
+# Never kill a legitimate long backup (the first run can be large); restic is
+# atomic per-snapshot and the wrapper's flock already prevents overlapping runs.
+TimeoutStartSec=infinity

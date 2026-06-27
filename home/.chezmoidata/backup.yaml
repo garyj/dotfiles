@@ -1,0 +1,95 @@
+# Backup configuration - the single source of truth for what restic backs up.
+# Edit this file, then run `chezmoi apply`. You never need to touch the wrapper
+# script (~/bin/restic-backup) or the systemd units.
+#
+# Phase 1: local repo only, on this machine's /extra disk. A remote offsite
+# copy comes in Phase 2.
+backup:
+  # Where the local restic repo lives on this machine. /extra is a separate
+  # physical disk from the (encrypted) root, so it survives the main drive dying.
+  local_repo: /extra/garyj/restic
+
+  # Refuse to run unless this path is a real mountpoint. Prevents silently
+  # backing up to the root disk if /extra fails to mount. Leave empty on a
+  # single-disk machine whose repo legitimately lives on the root filesystem.
+  require_mounted: /extra
+
+  # Paths to back up. A leading ~/ is expanded to your home directory at
+  # `chezmoi apply` time.
+  sources:
+    - ~/dev
+    - ~/cowork
+    - ~/tries
+    - ~/Documents
+    - ~/Desktop
+    - ~/Pictures
+    - ~/.config
+    - ~/.local/share
+    - ~/.local/bin
+    - ~/.ssh
+    - ~/.gnupg
+    - ~/.zshrc
+    - ~/.bashrc
+    - ~/.profile
+    - ~/.zsh_history
+    - ~/Videos
+    - ~/Music
+
+  # Exclude rules. `**/foo` matches a folder named foo anywhere; `~/foo` is one
+  # specific path. These are all regenerable caches / build artefacts.
+  excludes:
+    # dependency & build artefacts (regenerable, usually also in git)
+    - "**/node_modules"
+    - "**/.venv"
+    - "**/venv"
+    - "**/__pycache__"
+    - "**/.pytest_cache"
+    - "**/.mypy_cache"
+    - "**/.ruff_cache"
+    - "**/.tox"
+    - "**/*.pyc"
+    - "**/target"
+    - "**/dist"
+    - "**/build"
+    - "**/.next"
+    - "**/.nuxt"
+    - "**/.svelte-kit"
+    - "**/.turbo"
+    - "**/.parcel-cache"
+    - "**/coverage"
+    # app & browser caches (keep the profile, drop the cache)
+    - "**/Cache"
+    - "**/Cache_Data"
+    - "**/Code Cache"
+    - "**/GPUCache"
+    - "**/ShaderCache"
+    - "**/Service Worker/CacheStorage"
+    # user-level caches & big regenerable stores
+    - ~/.cache
+    - ~/.npm
+    - ~/.cargo/registry
+    - ~/.cargo/git
+    - ~/.rustup/toolchains
+    - ~/go/pkg
+    - ~/.gradle/caches
+    - ~/.m2/repository
+    - ~/.docker
+    - ~/.local/share/Trash
+    - ~/.local/share/Steam
+    - ~/.local/share/flatpak
+    - ~/.local/share/containers
+    - ~/.local/share/mise/installs
+    - ~/snap
+    - ~/.var/app
+    # junk
+    - "**/*.tmp"
+    - "**/*.swp"
+    - "**/.DS_Store"
+
+  # How many snapshots `restic forget` keeps after each backup.
+  retention:
+    keep_hourly: 24
+    keep_daily: 7
+    keep_weekly: 4
+    keep_monthly: 6
+    keep_yearly: 0

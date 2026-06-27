@@ -1,0 +1,55 @@
+{{ if and .personal (or (eq .osid "linux-linuxmint") (eq .osid "linux-ubuntu")) -}}
+#!/usr/bin/env bash
+#
+# Provision the local restic backup: verify restic is installed, initialise the
+# repo on first run, and enable the hourly user timer. Idempotent; re-runs when this
+# script or the configured repo path ({{ .backup.local_repo }}) changes.
+
+set -euo pipefail
+
+repo="{{ .backup.local_repo }}"
+export RESTIC_REPOSITORY="$repo"
+export RESTIC_PASSWORD_FILE="$HOME/.config/restic/password"
+
+# 1. restic itself is installed (pinned, sha-verified) by
+#    personal/run_onchange_before_install-restic, which runs first. Just verify.
+if ! command -v restic >/dev/null 2>&1; then
+  echo "[restic] ERROR: restic not found - it should come from the package list." >&2
+  echo "[restic] Re-run: chezmoi apply" >&2
+  exit 1
+fi
+
+# 2. The password file is rendered from 1Password during `chezmoi apply`.
+#    -s (exists and non-empty): an empty file would init a blank-passphrase repo.
+if [ ! -s "$RESTIC_PASSWORD_FILE" ]; then
+  echo "[restic] ERROR: password file missing or empty at $RESTIC_PASSWORD_FILE" >&2
+  echo "[restic] Create 1Password item 'op://Personal/Restic Backup/password'," >&2
+  echo "[restic] then re-run: chezmoi apply" >&2
+  exit 1
+fi
+
+# 3. Refuse to touch the repo unless its disk is actually mounted - otherwise
+#    mkdir + init would silently build the backup on the root filesystem.
+{{ if .backup.require_mounted -}}
+if ! mountpoint -q "{{ .backup.require_mounted }}"; then
+  echo "[restic] ERROR: {{ .backup.require_mounted }} is not mounted; refusing to init on the root disk." >&2
+  exit 1
+fi
+{{ end -}}
+
+# 4. Initialise the repo on first run. `cat config` is a precise existence probe:
+#    a transient error won't masquerade as "uninitialised" and trigger a re-init.
+mkdir -p "$(dirname "$repo")"
+if restic cat config >/dev/null 2>&1; then
+  echo "[restic] repo already initialised at $repo"
+else
+  echo "[restic] initialising repo at $repo"
+  restic init
+fi
+
+# 5. Enable the hourly timer, and linger so it fires with no graphical login.
+systemctl --user daemon-reload
+systemctl --user enable --now restic-backup.timer
+sudo loginctl enable-linger "$USER"
+systemctl --user list-timers restic-backup.timer --no-pager || true
+{{ end -}}

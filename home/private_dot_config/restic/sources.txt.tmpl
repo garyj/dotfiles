@@ -1,0 +1,3 @@
+{{ range .backup.sources -}}
+{{ if hasPrefix "~/" . }}{{ printf "%s/%s" $.chezmoi.homeDir (trimPrefix "~/" .) }}{{ else }}{{ . }}{{ end }}
+{{ end -}}

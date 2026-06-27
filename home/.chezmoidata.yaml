@@ -23,3 +23,11 @@ deb_apps:
   handy:                             # cjpais/Handy, offline speech-to-text
     version: "0.8.3"
     sha256: "a1b355e7f55b9fc6d81cdeb5a30e44fdb4e0c492aad4fb7f023d212cf6ec3a33"
+
+# Single static binaries pinned from GitHub releases (verified by sha256 before
+# install to /usr/local/bin). Kept off apt to track upstream; off mise so the
+# systemd backup timer finds them on the default PATH. Bump version+sha together.
+github_bins:
+  restic:                            # restic/restic, backup engine
+    version: "0.19.0"
+    sha256: "13176fe6d89d4357947a2cd107218ab2873a5f9d8e1ac2d4cd1c8e07e6839c21"
