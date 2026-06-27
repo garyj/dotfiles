@@ -5,17 +5,18 @@ langs:
   python: "3.14"
   mongodb: "8.2"
 
-# Pinned Tier-3 CLI tools. Future: templatize configs that reference these.
-# See memory: feedback_install_discipline.md + project_deps_scanner_skill.md
+# Pinned Tier-3 CLI tools (installed via mise; audited before pinning). The
+# `# renovate:` annotations let Renovate open version-bump PRs; see renovate.json.
+# Versions are stored bare (no leading v); Renovate normalizes on write-back.
 tools:
-  ast_grep: "0.42.3"
-  worktrunk: "0.53.0"      # installed via mise + skill installed in
-  dust: "1.2.4"            # mise+aqua (bootandy/dust)
+  ast_grep: "0.42.3"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
+  worktrunk: "0.53.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
+  dust: "1.2.4"        # renovate: datasource=github-releases depName=bootandy/dust
 
-# Pinned git refs for chezmoi externals (upstream repos we pull archives from).
+# Pinned git refs for chezmoi externals (zsh-users cut no releases, so github-tags).
 externals:
-  zsh_syntax_highlighting: "0.8.0"   # zsh-users/zsh-syntax-highlighting (no v prefix)
-  zsh_autosuggestions: "v0.7.1"      # zsh-users/zsh-autosuggestions
+  zsh_syntax_highlighting: "0.8.0"  # renovate: datasource=github-tags depName=zsh-users/zsh-syntax-highlighting
+  zsh_autosuggestions: "0.7.1"      # renovate: datasource=github-tags depName=zsh-users/zsh-autosuggestions
 
 # GUI apps shipped as .deb on GitHub releases (no apt repo). Pinned by version +
 # sha256; the installer verifies the download before apt installs it.

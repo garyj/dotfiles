@@ -1,0 +1,27 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "assignees": ["garyj"],
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict",
+  "semanticCommits": "disabled",
+  "commitMessagePrefix": "update:",
+  "commitMessageAction": "bump",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newValue}}",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Version pins annotated with `# renovate:` in chezmoi data files. Stored bare; extractVersionTemplate strips any upstream v so write-back is always bare.",
+      "managerFilePatterns": [
+        "/\\.chezmoidata\\.ya?ml$/",
+        "/\\.chezmoidata/.+\\.ya?ml$/"
+      ],
+      "matchStrings": [
+        "[^:#\\n]+:[ \\t]*[\"']?(?<currentValue>[^\"'\\s#]+)[\"']?[ \\t]*#[ \\t]*renovate:[ \\t]*datasource=(?<datasource>\\S+)[ \\t]+depName=(?<depName>\\S+)"
+      ],
+      "versioningTemplate": "semver",
+      "extractVersionTemplate": "^v?(?<version>.+)$"
+    }
+  ]
+}
