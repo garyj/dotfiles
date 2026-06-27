@@ -3,5 +3,11 @@
     "**/*.md": "markdown",
     "**/*.html": "html",
     "**/*.tmpl": "jinja-shell"
+  },
+  "files.exclude": {
+    "**/.worktrees": true
+  },
+  "search.exclude": {
+    "**/.worktrees": true
   }
 }
