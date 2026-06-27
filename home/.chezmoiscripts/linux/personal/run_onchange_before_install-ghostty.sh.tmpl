@@ -1,5 +1,5 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) .personal -}}
-{{ if or (eq .osid "linux-debian") (eq .osid "linux-ubuntu") -}}
+{{ if eq .osid "linux-ubuntu" -}}
 #!/usr/bin/env bash
 
 # Ghostty via debian.griffo.io — community apt repo endorsed by upstream.

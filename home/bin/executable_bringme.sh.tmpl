@@ -3,35 +3,10 @@
 # Bring a window to focus by title, or launch the command if not found.
 # Usage: bringme.sh WINDOW_NAME COMMAND
 #
-# Works on both X11 (wmctrl) and GNOME Wayland (window-tools@garyj extension).
+# X11 only (wmctrl).
 
 WINDOW_NAME=$1
 COMMAND=$2
-
-is_wayland() { [[ "$XDG_SESSION_TYPE" == "wayland" ]]; }
-
-# --- Wayland (GNOME Shell via window-tools@garyj extension) -------------------
-# Requires the window-tools@garyj GNOME Shell extension to be enabled.
-# The extension exposes a D-Bus interface for finding and activating windows.
-
-bring_wayland() {
-  local search="$1"
-  local result
-  result=$(gdbus call --session \
-    --dest org.garyj.WindowTools \
-    --object-path /org/garyj/WindowTools \
-    --method org.garyj.WindowTools.ActivateByTitle \
-    "$search" 2>&1)
-
-  if [[ "$result" == *"not_found"* ]]; then
-    return 1
-  elif [[ "$result" == *"found:"* ]]; then
-    return 0
-  else
-    echo "bringme: gdbus error: $result" >&2
-    return 1
-  fi
-}
 
 # --- X11 (wmctrl) ------------------------------------------------------------
 
@@ -53,9 +28,5 @@ bring_x11() {
 
 # --- Main ---------------------------------------------------------------------
 
-if is_wayland; then
-  bring_wayland "$WINDOW_NAME" || bash -c "$COMMAND" &
-else
-  bring_x11 "$WINDOW_NAME" || bash -c "$COMMAND" &
-fi
+bring_x11 "$WINDOW_NAME" || bash -c "$COMMAND" &
 {{ end }}

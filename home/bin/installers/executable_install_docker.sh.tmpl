@@ -29,9 +29,6 @@ curl -fsSL https://download.docker.com/linux/debian/gpg | \
 {{ end -}}
 
 {{ $distro := "ubuntu" -}}
-{{ if eq .osid "linux-debian" -}}
-{{ $distro = "debian" -}}
-{{ end -}}
 
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
