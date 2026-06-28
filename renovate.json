@@ -3,7 +3,7 @@
   "extends": ["config:recommended"],
   "assignees": ["garyj"],
   "labels": ["deps-summary"],
-  "minimumReleaseAge": "7 days",
+  "minimumReleaseAge": "3 days",
   "internalChecksFilter": "strict",
   "semanticCommits": "disabled",
   "commitMessagePrefix": "update:",
