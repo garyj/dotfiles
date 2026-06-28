@@ -1,0 +1,13 @@
+name: dotfiles
+version: 1.0.0
+description: garyj's dotfiles
+author: Gary Jarrel
+targets:
+- agent-skills
+- claude
+dependencies:
+  apm:
+  - j178/prek
+  mcp: []
+includes: auto
+scripts: {}

@@ -1,2 +1,7 @@
 .env
 .worktrees
+apm_modules
+
+
+# APM dependencies
+apm_modules/

@@ -1,0 +1,17 @@
+lockfile_version: '1'
+generated_at: '2026-06-28T07:09:27.004944+00:00'
+apm_version: 0.21.0
+dependencies:
+- repo_url: j178/prek
+  host: github.com
+  resolved_commit: 74fb726c43673bc75b45fa061d3a00f93f1f3c49
+  package_type: skill_bundle
+  deployed_files:
+  - .agents/skills/prek
+  - .agents/skills/prek/SKILL.md
+  - .claude/skills/prek
+  - .claude/skills/prek/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/prek/SKILL.md: sha256:b5657cdf91830666d047d50a2934e600e7d1b45bb5cdb8abb0cb3d74b3557ba3
+    .claude/skills/prek/SKILL.md: sha256:b5657cdf91830666d047d50a2934e600e7d1b45bb5cdb8abb0cb3d74b3557ba3
+  content_hash: sha256:a176f9c8ce951a5f1fd5a1e77af8338b9591565c49ff892a47d405def1386fd4
