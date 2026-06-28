@@ -71,17 +71,29 @@ already-installed machine.
 - `run_onchange_before_*` → scripts that run before apply when content changes
 - `run_onchange_after_*` → scripts that run after apply when content changes
 
-### Version Configuration
+### Dependency management
 
-Language/tool versions are centralized in `home/.chezmoidata.yaml`.
+CLI tools are managed by **mise** (`home/private_dot_config/mise/config.toml.tmpl`); system packages, daemons, and GUI apps stay on **apt**. Pinned tool/external versions are centralized in `home/.chezmoidata.yaml`, where `# renovate:` annotations let Renovate open version-bump PRs.
+
+**Adding a dependency:**
+
+- CLI dev tool whose apt version lags badly, or that apt lacks → add to mise `[tools]`:
+  - low-risk fast-mover → float at `'latest'` (the global `minimum_release_age = "3d"` bakes every release before install)
+  - want an audited, PR-reviewed cadence → pin it: add `name: "x.y.z"  # renovate: datasource=github-releases depName=owner/repo` to `.chezmoidata.yaml`, then reference it as `['{{ .tools.name }}']`. Required when the version is reused in more than one file (e.g. worktrunk = mise binary + skill archive).
+  - backends are locked to checksummed sources via `disable_backends`; a `github:`/`ubi:` tool must use an explicit backend prefix.
+- Stable tool apt handles fine (jq, ripgrep), GUI app, daemon, or system lib → apt list in `run_onchange_before_10_install-packages.sh.tmpl`, or a vendor installer under `.chezmoiscripts/linux/personal/`.
+
+**Removing a dependency:** delete its mise line (and its `.chezmoidata.yaml` pin, if any). Removing a package from the apt list does **not** uninstall it; run `sudo apt remove` to actually drop it.
+
+mise tools auto-install on `chezmoi apply` via `run_onchange_after_05_mise-install.sh`.
 
 ### External Dependencies
 
 External archives and tools are managed via `home/.chezmoiexternal.toml.tmpl`:
 
-- Oh-My-Zsh framework
+- Oh-My-Zsh framework + zsh plugins
 - Fonts (Monaspace)
-- CLI tools (glow)
+- Shared agent skills (agent-browser, worktrunk, ast-grep, sentry-cli)
 
 ### Template Conditionals
 
