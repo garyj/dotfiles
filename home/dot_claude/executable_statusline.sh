@@ -63,13 +63,25 @@ input=$(cat)
 # Handles everything before the first "│" separator. If wt fails or isn't on
 # PATH, $base is empty — the widget sections still render below.
 #
-# We strip wt's trailing " (1M context)" / " (200K context)" suffix from the
-# model label: it's static info (the model's max window), and we'd rather use
-# that horizontal space for the live token count appended below. The regex
-# tolerates ANSI color codes around the parenthesised group.
+# Two strips on the base, both via sed:
+#
+#  1. wt's trailing " (1M context)" / " (200K context)" model-label suffix.
+#     It's static info (the model's max window); we'd rather spend that width
+#     on the live token count appended below.
+#
+#  2. wt's rate-limit pace segment (worktrunk 0.60+), e.g. "1.8×(09:34–14:34)",
+#     or a "93%(…)" usage form above 90%. It's a Bayesian forecast that only
+#     appears when you're projected to hit a limit. We render our own always-on
+#     5h/7d block below and prefer that constant readout, so we drop wt's to
+#     avoid showing rate limits twice. The match keys on a number followed by
+#     ×/% immediately before "(…)", which can't hit the context gauge ("🌕 37%",
+#     no parens).
+#
+# Both regexes tolerate the ANSI color codes wt wraps around these segments.
 base=$(printf '%s' "$input" \
     | wt list statusline --format=claude-code 2>/dev/null \
-    | sed -E 's/ \([^)]*context\)//')
+    | sed -E -e 's/ \([^)]*context\)//' \
+             -e 's/ +(\x1b\[[0-9;]*m)?[0-9.]+(×|%)\([^)]*\)(\x1b\[[0-9;]*m)?//')
 
 # ─── Extract all augmented fields in one jq call ────────────────────────────
 # One value per line, consumed by `readarray` so empty elements are preserved
