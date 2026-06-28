@@ -10,7 +10,7 @@ langs:
 # Versions are stored bare (no leading v); Renovate normalizes on write-back.
 tools:
   ast_grep: "0.42.3"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
-  worktrunk: "0.53.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
+  worktrunk: "0.60.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.4"        # renovate: datasource=github-releases depName=bootandy/dust
 
 # Pinned git refs for chezmoi externals (zsh-users cut no releases, so github-tags).
