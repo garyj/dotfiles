@@ -12,7 +12,7 @@ tools:
   ast_grep: "0.43.0"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
   worktrunk: "0.60.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.4"        # renovate: datasource=github-releases depName=bootandy/dust
-  apm: "0.19.0"        # renovate: datasource=github-releases depName=microsoft/apm
+  apm: "0.21.0"        # renovate: datasource=github-releases depName=microsoft/apm
 
 # Pinned git refs for chezmoi externals (zsh-users cut no releases, so github-tags).
 externals:
