@@ -40,7 +40,7 @@ glow = ['latest'] # render markdown on the CLI (charmbracelet)
 starship = ['latest']  # prompt (starship/starship)
 
 # AI / agent tooling
-"github:microsoft/apm" = { version = 'latest' }  # Agent Package Manager (Microsoft)
+"github:microsoft/apm" = { version = '{{ .tools.apm }}' }  # Agent Package Manager (Microsoft)
 
 [tasks.bootstrap]
 description = "Bootstrap our CLI"
