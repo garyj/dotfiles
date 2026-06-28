@@ -27,32 +27,29 @@ trusted_config_paths = ["~/.local/share/chezmoi"]
 
 # Registry of available tools: https://mise.jdx.dev/registry.html
 [tools]
+# Languages & runtimes
 bun = ['latest']
-entireio-cli = ['latest']  # tier-2: entireio org includes GitHub CEO (ashtom); fast-moving, floating is defensible
 go = ['latest']
-just = ['latest']
 node = ['24', '22', 'latest']
 ruby = ['latest']
 rust = ['latest']
-usage = ['latest']  # Required for mise shell completions
 
-# Tier-3 CLI tools pinned in .chezmoidata.yaml (audited; bump via Renovate PRs, see renovate.json)
+# CLI tools, floated at 'latest' (low-risk fast-movers; the apt version lags far
+# behind upstream or apt doesn't carry them; minimum_release_age bakes each).
+entireio-cli = ['latest']  # tier-2: entireio org includes GitHub CEO (ashtom); fast-moving, floating is defensible
+just = ['latest']
+usage = ['latest']     # required for mise shell completions
+eza = ['latest']       # modern ls replacement (eza-community)
+fd = ['latest']        # find replacement; apt also ships it under the name `fdfind` (sharkdp)
+fzf = ['latest']       # fuzzy finder (junegunn)
+gh = ['latest']        # GitHub CLI (cli/cli)
+glow = ['latest']      # render markdown on the CLI (charmbracelet)
+starship = ['latest']  # prompt (starship/starship)
+
+# CLI tools, pinned in .chezmoidata.yaml (audited; bump via Renovate PRs, see renovate.json)
 dust = ['{{ .tools.dust }}']
 worktrunk = ['{{ .tools.worktrunk }}']
 ast-grep = ['{{ .tools.ast_grep }}']
-
-# Fast-moving CLI tools where the apt version lags far behind upstream, or that
-# apt doesn't carry.
-eza = ['latest']  # modern ls replacement (eza-community)
-fd = ['latest']   # find replacement; apt also ships it under the name `fdfind` (sharkdp)
-fzf = ['latest']  # fuzzy finder (junegunn)
-gh = ['latest']   # GitHub CLI (cli/cli)
-glow = ['latest'] # render markdown on the CLI (charmbracelet)
-
-# Shell tools
-starship = ['latest']  # prompt (starship/starship)
-
-# AI / agent tooling
 "github:microsoft/apm" = { version = '{{ .tools.apm }}' }  # Agent Package Manager (Microsoft)
 
 [tasks.bootstrap]
