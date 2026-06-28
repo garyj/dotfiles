@@ -9,7 +9,7 @@ langs:
 # `# renovate:` annotations let Renovate open version-bump PRs; see renovate.json.
 # Versions are stored bare (no leading v); Renovate normalizes on write-back.
 tools:
-  ast_grep: "0.43.0"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
+  ast_grep: "0.44.0"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
   worktrunk: "0.60.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.4"        # renovate: datasource=github-releases depName=bootandy/dust
   apm: "0.21.0"        # renovate: datasource=github-releases depName=microsoft/apm
