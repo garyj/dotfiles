@@ -6,7 +6,7 @@ disable_tools = ['python']
 disable_backends = ["asdf", "ubi", "vfox", "dotnet"]
 experimental = true
 not_found_auto_install = false
-idiomatic_version_file_enable_tools = ["[]"]
+idiomatic_version_file_enable_tools = []
 
 # Supply-chain baking time: never install a release younger than this, even for
 # tools floated at 'latest'. This is the "delay" layer of pin/delay/vet/audit.
@@ -24,6 +24,14 @@ gpg_verify = true
 # Trust this repo's own mise.toml (the dev toolchain for working on dotfiles)
 # so cd-ing into the source dir doesn't prompt for trust on every machine.
 trusted_config_paths = ["~/.local/share/chezmoi"]
+
+# Install pipx-backed tools via uv (uvx) instead of pip; faster and matches our uv-first setup.
+[settings.pipx]
+uvx = true
+
+# Use mise's prebuilt ruby (verified download) instead of compiling from source.
+[settings.ruby]
+compile = false
 
 # Registry of available tools: https://mise.jdx.dev/registry.html
 [tools]
