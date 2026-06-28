@@ -60,16 +60,7 @@ def main() -> int:
         "- Be concise and concrete; assume he knows these tools. No em-dashes."
     )
 
-    # Auth: a Claude Code subscription OAuth token (ANTHROPIC_AUTH_TOKEN, which
-    # needs the oauth beta header) or a standard Console API key (ANTHROPIC_API_KEY).
-    auth_token = os.environ.get("ANTHROPIC_AUTH_TOKEN") or None
-    if auth_token:
-        client = anthropic.Anthropic(
-            auth_token=auth_token,
-            default_headers={"anthropic-beta": "oauth-2025-04-20"},
-        )
-    else:
-        client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from the environment
+    client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from the environment
     try:
         response = client.messages.create(
             model=model,
@@ -77,14 +68,17 @@ def main() -> int:
             system=system,
             messages=[{"role": "user", "content": f"PR: {title}\n\nRelease notes:\n\n{body[:60000]}"}],
         )
-    except anthropic.RateLimitError:
-        # Subscription quota is shared with interactive use; don't fail the PR
-        # check over a transient throttle. Re-label the PR to retry.
-        print("Rate limited; skipping summary. Re-add the deps-summary label to retry.")
-        return 0
     except anthropic.APIStatusError as exc:
-        if (exc.status_code or 0) >= 500:
-            print(f"Transient API error {exc.status_code}; skipping summary.")
+        # Log enough to diagnose; soft-skip transient throttles/5xx, surface the rest.
+        retry_after = None
+        try:
+            retry_after = exc.response.headers.get("retry-after")
+        except Exception:
+            pass
+        print(f"API error: status={exc.status_code} request_id={getattr(exc, 'request_id', None)} retry-after={retry_after}")
+        print(f"detail: {str(exc)[:500]}")
+        if isinstance(exc, anthropic.RateLimitError) or (exc.status_code or 0) >= 500:
+            print("Transient; skipping summary. Re-add the deps-summary label to retry.")
             return 0
         raise
     summary = "".join(b.text for b in response.content if b.type == "text").strip()
