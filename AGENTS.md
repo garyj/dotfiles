@@ -136,6 +136,12 @@ Chezmoi manages files that deploy to:
 - Respect existing file formatting; avoid reformatting unless you change content.
 - Use `private_` files for secrets; avoid committing real credentials.
 
+## Agent config security
+
+A `prek` pre-commit hook scans every staged text file for hidden Unicode
+(prompt-injection vectors) via `apm audit`. Run `prek install` once per clone to
+enable it; see `.pre-commit-config.yaml` for details.
+
 ## Testing Guidelines
 
 There is no automated test suite. Validate changes with:
