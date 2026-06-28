@@ -26,13 +26,6 @@
     refreshPeriod = "168h"
     include = ["**/*.otf", "**/*.ttf"]
 
-[".local/bin/glow"]
-    type = "archive-file"
-    url = {{ gitHubLatestReleaseAssetURL "charmbracelet/glow" "glow_*_Linux_x86_64.tar.gz" | quote }}
-    executable = true
-    stripComponents = 1
-    path = "glow"
-
 [".agents/skills/agent-browser"]
     type = "archive"
     url = "https://github.com/vercel-labs/agent-browser/archive/main.tar.gz"

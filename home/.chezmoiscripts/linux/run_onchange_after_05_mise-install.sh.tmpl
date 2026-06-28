@@ -1,0 +1,17 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Install every tool declared in the mise config.
+#
+# run_onchange re-runs this script when its content changes; hashing the files
+# that define the tool set re-triggers the install whenever the tool list or a
+# pinned version changes.
+# config: {{ include "private_dot_config/mise/config.toml.tmpl" | sha256sum }}
+# pins:   {{ include ".chezmoidata.yaml" | sha256sum }}
+
+# A tool build failure (e.g. a compiled runtime) warns but does not abort the
+# apply, so the scripts that run after this one still execute.
+mise install || echo "mise install: one or more tools failed to install" >&2
+mise reshim
+{{ end -}}

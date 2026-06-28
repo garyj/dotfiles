@@ -1,8 +1,16 @@
 [settings]
 disable_tools = ['python']
+# Forbid backends that run arbitrary install scripts (asdf, vfox) or fetch
+# binaries with no checksum recipe (ubi); resolution is forced through aqua/core.
+# dotnet is unused. A tool needing these must opt in with an explicit prefix.
+disable_backends = ["asdf", "ubi", "vfox", "dotnet"]
 experimental = true
 not_found_auto_install = false
 idiomatic_version_file_enable_tools = ["[]"]
+
+# Supply-chain baking time: never install a release younger than this, even for
+# tools floated at 'latest'. This is the "delay" layer of pin/delay/vet/audit.
+minimum_release_age = "3d"
 
 # Registry of available tools: https://mise.jdx.dev/registry.html
 [tools]
@@ -19,6 +27,20 @@ usage = ['latest']  # Required for mise shell completions
 dust = ['{{ .tools.dust }}']
 worktrunk = ['{{ .tools.worktrunk }}']
 ast-grep = ['{{ .tools.ast_grep }}']
+
+# Fast-moving CLI tools where the apt version lags far behind upstream, or that
+# apt doesn't carry.
+eza = ['latest']  # modern ls replacement (eza-community)
+fd = ['latest']   # find replacement; apt also ships it under the name `fdfind` (sharkdp)
+fzf = ['latest']  # fuzzy finder (junegunn)
+gh = ['latest']   # GitHub CLI (cli/cli)
+glow = ['latest'] # render markdown on the CLI (charmbracelet)
+
+# Shell tools
+starship = ['latest']  # prompt (starship/starship)
+
+# AI / agent tooling
+"github:microsoft/apm" = { version = 'latest' }  # Agent Package Manager (Microsoft)
 
 [tasks.bootstrap]
 description = "Bootstrap our CLI"

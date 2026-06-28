@@ -1,7 +1,0 @@
-{{ if eq .osid "linux-ubuntu" "linux-linuxmint" -}}
-
-#!/usr/bin/env bash
-set -euo pipefail
-curl -sS https://starship.rs/install.sh | sh -s -- -b $HOME/.local/bin -y
-
-{{end -}}

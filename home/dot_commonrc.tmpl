@@ -43,6 +43,19 @@ else
     exit 1
 fi
 
+# Activate mise before the shell-integration hooks below, so tools it manages
+# (e.g. starship) are on PATH when their init runs.
+if command -v mise > /dev/null 2>&1; then
+  eval "$(mise activate $current_shell)";
+fi
+
+# mise activate prepends the active node's bin to PATH, which can shadow
+# ~/.npm-global/bin (set via NPM_CONFIG_PREFIX in .profile). Re-prepend here
+# so freshly-installed npm globals always beat stale copies under mise node dirs.
+if [ -d "$HOME/.npm-global/bin" ]; then
+  export PATH="$HOME/.npm-global/bin:$PATH"
+fi
+
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init $current_shell)"
 fi
@@ -57,17 +70,6 @@ fi
 
 if command -v atuin >/dev/null 2>&1; then
   eval "$(atuin init $current_shell)"
-fi
-
-if command -v mise > /dev/null 2>&1; then
-  eval "$(mise activate $current_shell)";
-fi
-
-# mise activate prepends the active node's bin to PATH, which can shadow
-# ~/.npm-global/bin (set via NPM_CONFIG_PREFIX in .profile). Re-prepend here
-# so freshly-installed npm globals always beat stale copies under mise node dirs.
-if [ -d "$HOME/.npm-global/bin" ]; then
-  export PATH="$HOME/.npm-global/bin:$PATH"
 fi
 
 if command -v wt > /dev/null 2>&1; then
