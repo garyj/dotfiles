@@ -2,6 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "assignees": ["garyj"],
+  "labels": ["deps-summary"],
   "minimumReleaseAge": "7 days",
   "internalChecksFilter": "strict",
   "semanticCommits": "disabled",
