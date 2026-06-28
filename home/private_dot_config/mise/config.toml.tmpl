@@ -12,6 +12,19 @@ idiomatic_version_file_enable_tools = ["[]"]
 # tools floated at 'latest'. This is the "delay" layer of pin/delay/vet/audit.
 minimum_release_age = "3d"
 
+# Record resolved versions + checksums in a lockfile (~/.config/mise/mise.lock)
+# so tools floated at 'latest' don't silently drift between installs, and every
+# re-install is checksum-verified against what was first resolved.
+lockfile = true
+
+# Verify GPG signatures when a backend publishes them. aqua already does
+# checksum + attestation verification; this covers tools that ship a GPG sig.
+gpg_verify = true
+
+# Trust this repo's own mise.toml (the dev toolchain for working on dotfiles)
+# so cd-ing into the source dir doesn't prompt for trust on every machine.
+trusted_config_paths = ["~/.local/share/chezmoi"]
+
 # Registry of available tools: https://mise.jdx.dev/registry.html
 [tools]
 bun = ['latest']
