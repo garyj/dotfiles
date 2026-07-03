@@ -30,6 +30,16 @@ if gsettings list-schemas | grep -qx org.x.apps.portal; then
   gsettings set org.x.apps.portal color-scheme 'prefer-dark'
 fi
 
+# Disable IBus's built-in emoji hotkey entirely. Its emojier never renders a
+# picker window outside GNOME Shell, so <Super>period/<Super>semicolon just
+# swallowed keystrokes into a dead annotation preedit (and injected a stray
+# glyph). We keep <Super>period as the emoji key (matches the stock default,
+# so muscle memory carries across machines) but drive it with Smile, bound
+# below, instead of the broken IBus emojier.
+if gsettings list-schemas | grep -qx org.freedesktop.ibus.panel.emoji; then
+  gsettings set org.freedesktop.ibus.panel.emoji hotkey "@as []"
+fi
+
 # Window focus and raising
 gsettings set org.gnome.desktop.wm.preferences num-workspaces 9
 gsettings set org.gnome.desktop.wm.preferences auto-raise true
@@ -235,7 +245,7 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ command 'bringme.sh 1Password 1password'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom6/ name 'Bring 1Password'
 
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ binding "['<Super>slash']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ binding "['<Super>slash', '<Super>bracketright']"
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ command 'bringme.sh "ChromiumAI" "chromium --class=ChromiumAI --user-data-dir=$HOME/.config/chromium-ai --password-store=basic"'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom7/ name 'Bring Chromium'
 
@@ -359,6 +369,14 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom37/ command 'bash -c "wmctrl -r :ACTIVE: -t 8 &&  wmctrl -s 8"'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom37/ name 'Send to Workspace 9'
 
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom38/ binding "['<Super>bracketleft']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom38/ command 'bringme.sh claude-desktop claude-desktop'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom38/ name 'Claude Desktop'
+
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom39/ binding "['<Super>period']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom39/ command 'flatpak run it.mijorus.smile'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom39/ name 'Smile Emoji Picker'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -402,6 +420,8 @@ if is_cinnamon; then
   'custom35',\
   'custom36',\
   'custom37',\
+  'custom38',\
+  'custom39',\
   '__dummy__'\
   ]"
 
