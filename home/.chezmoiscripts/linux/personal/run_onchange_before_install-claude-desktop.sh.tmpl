@@ -1,0 +1,23 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) .personal -}}
+{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint") -}}
+#!/usr/bin/env bash
+
+# Claude desktop app via vendor apt repo.
+# Reference: https://code.claude.com/docs/en/desktop-linux
+
+set -euo pipefail
+
+{{ template "add-apt-repo" . }}
+
+add_apt_repo claude-desktop \
+  https://downloads.claude.ai/claude-desktop/key.asc \
+  "deb [arch=amd64,arm64 signed-by=/usr/share/keyrings/claude-desktop.gpg] https://downloads.claude.ai/claude-desktop/apt/stable stable main"
+
+sudo apt-get update
+sudo apt-get install -y claude-desktop
+
+# Cowork runs sandbox VMs via /dev/kvm (root:kvm 660), which needs kvm group
+# membership. Takes effect on next login.
+sudo usermod --append --groups kvm '{{ .chezmoi.username }}'
+{{ end -}}
+{{ end -}}
