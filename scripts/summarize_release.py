@@ -32,7 +32,7 @@ def main() -> int:
     pr = os.environ["PR_NUMBER"]
     title = os.environ.get("PR_TITLE", "")
     body = os.environ.get("PR_BODY", "")
-    model = os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-6")
+    model = os.environ.get("CLAUDE_MODEL", "claude-sonnet-5")
 
     if not body.strip():
         print("PR body is empty; nothing to summarize.")
