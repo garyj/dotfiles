@@ -37,6 +37,10 @@ import "_common.justfile"
     mkdir -p "{{ dir }}"
     restic-backup mount "{{ dir }}"
 
+# release a mount left behind by a closed terminal or forgotten `mount`
+@unmount dir="/tmp/restic":
+    fusermount -u "{{ dir }}"
+
 # backups are provisioned by chezmoi (binary, repo, timer) - nothing to install here
 @install:
     echo "restic backup is managed by chezmoi; nothing to install via just"
