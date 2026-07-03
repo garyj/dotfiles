@@ -1,0 +1,4 @@
+bin/installers/install_aws.sh
+bin/installers/install_docker.sh
+bin/installers/install_signal
+bin/installers

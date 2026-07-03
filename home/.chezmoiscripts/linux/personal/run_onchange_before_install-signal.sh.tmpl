@@ -1,0 +1,20 @@
+{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) .personal -}}
+{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint") -}}
+#!/usr/bin/env bash
+
+# Signal Desktop via vendor apt repo.
+# Repo config mirrors https://updates.signal.org/static/desktop/apt/signal-desktop.sources
+# (suite is a fixed "xenial"; Signal does not publish per-release suites).
+
+set -euo pipefail
+
+{{ template "add-apt-repo" . }}
+
+add_apt_repo signal \
+  https://updates.signal.org/desktop/apt/keys.asc \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/signal.gpg] https://updates.signal.org/desktop/apt xenial main"
+
+sudo apt-get update
+sudo apt-get install -y signal-desktop
+{{ end -}}
+{{ end -}}

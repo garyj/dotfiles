@@ -40,7 +40,7 @@ home/                           # Chezmoi source directory (.chezmoiroot points 
 ├── .chezmoiscripts/linux/      # Installation scripts (run_onchange_* pattern)
 │   └── personal/               # Scripts only for personal machines
 ├── .chezmoitemplates/          # Reusable template snippets — {{ template "name" . }}
-├── bin/                        # Custom shell scripts and installers
+├── bin/                        # Custom shell scripts
 ├── private_dot_config/         # XDG config files (~/.config/*)
 ├── dot_*                       # Dotfiles that go in $HOME
 └── *.tmpl                      # Templated files with conditional sections
