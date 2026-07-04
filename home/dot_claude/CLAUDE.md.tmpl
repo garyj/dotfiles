@@ -1,10 +1,7 @@
 {{ includeTemplate "agents/instructions.md" . }}
-{{- /*
-  Claude Code only. Add Claude-specific guidance below (this comment is stripped
-  from the rendered ~/.claude/CLAUDE.md). Loaded by Claude only, not the other
-  agents. e.g. distilled notes from https://simonwillison.net/2026/Jul/3/judgement/
 
-  ## Claude Code only
-
-  <your Claude-only instructions here>
-*/ -}}
+If model is Fable: for coding tasks, use your judgement to pick an appropriate lower-power model and run it in a
+subagent. Keep the main loop for judgment-heavy work (design, review, data synthesis); delegate self-contained
+implementation to a cheaper model and review the result before committing.  Exception: in learning or pair-programming
+sessions where I'm meant to write the code myself, no agent writes it, any model. Implementation work rarely needs the
+top-tier model; this gets more done per unit of allowance.
