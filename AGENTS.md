@@ -83,6 +83,8 @@ CLI tools are managed by **mise** (`home/private_dot_config/mise/config.toml.tmp
   - backends are locked to checksummed sources via `disable_backends`; a `github:`/`ubi:` tool must use an explicit backend prefix.
 - Stable tool apt handles fine (jq, ripgrep), GUI app, daemon, or system lib → apt list in `run_onchange_before_10_install-packages.sh.tmpl`, or a vendor installer under `.chezmoiscripts/linux/personal/`.
 
+**Coding agents & the 1-day cadence:** the AI CLIs (claude, codex, copilot, opencode, gemini, pi) install via mise like any pinned tool but live in their own `coding_agents:` block in `.chezmoidata.yaml`, and get a **1-day** Renovate release-age instead of the 3-day default. That override is a `packageRule` in `renovate.json`, **not** a mise setting: mise's `minimum_release_age` is a no-op on exact-pinned versions (it only bakes floating `'latest'` requests), so the effective freshness gate for a pinned tool is Renovate's `minimumReleaseAge`. The 1-day tier is earned, not automatic: reputable-org tools whose bumps pass under your eyes via the release-notes summarizer before you merge. Grant it to future additions of that calibre; leave slower or less-trusted tools on the 3-day global. codex also needs a `packageRule` with `extractVersion: ^rust-v(?<version>.+)$` because its release tags are `rust-vX.Y.Z`.
+
 **Removing a dependency:** delete its mise line (and its `.chezmoidata.yaml` pin, if any). Removing a package from the apt list does **not** uninstall it; run `sudo apt remove` to actually drop it.
 
 mise tools auto-install on `chezmoi apply` via `run_onchange_after_05_mise-install.sh`.
