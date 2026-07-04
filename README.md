@@ -33,3 +33,5 @@ Docs: [dockerd reference](https://docs.docker.com/reference/cli/dockerd/) ·
 
 - <https://github.com/jefftriplett/dotfiles>
 - <https://github.com/twpayne/dotfiles>
+- <https://github.com/MasahiroSakoda/>
+- <https://github.com/harperreed/dotfiles>
