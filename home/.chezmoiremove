@@ -2,3 +2,7 @@ bin/installers/install_aws.sh
 bin/installers/install_docker.sh
 bin/installers/install_signal
 bin/installers
+.justfiles/gemini.justfile
+.justfiles/agent-browser.justfile
+.justfiles/codex.justfile
+.justfiles/copilot.justfile

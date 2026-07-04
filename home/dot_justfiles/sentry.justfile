@@ -1,27 +1,11 @@
 # ----------------------
 # Sentry CLI recipes!
 # ----------------------
+#
+# Binary is managed by mise (npm:sentry, pinned in .chezmoidata.yaml alongside
+# the sentry-cli skill external); only auth/workflow recipes live here.
 
 import "_common.justfile"
-
-# check for outdated Sentry npm package
-@outdated:
-    npm outdated sentry || true
-
-# install Sentry CLI globally via npm
-@install:
-    npm install -g sentry
-    command sentry --version
-
-# update Sentry CLI to the latest version
-@upgrade:
-    -command sentry --version
-    npm install -g sentry
-    command sentry --version
-
-# display Sentry CLI version
-@version:
-    command sentry --version
 
 # see Sentry CLI usage
 @help:

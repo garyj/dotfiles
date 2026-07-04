@@ -5,12 +5,8 @@ set unstable := true
 
 export JUST_UNSTABLE := "true"
 
-mod agent-browser '.justfiles/agent-browser.justfile'
 mod backup '.justfiles/backup.justfile'
 mod claude '.justfiles/claude.justfile'
-mod codex '.justfiles/codex.justfile'
-mod copilot '.justfiles/copilot.justfile'
-mod gemini '.justfiles/gemini.justfile'
 mod mise '.justfiles/mise.justfile'
 mod sentry '.justfiles/sentry.justfile'
 
@@ -36,6 +32,21 @@ HOST := `hostname -s`
 [group("setup")]
 @skills:
     $HOME/.agents/agent-skills-link.sh
+
+# Install Playwright browsers + system deps for agent-browser (once per machine; prompts for sudo)
+[group("agents")]
+@agent-browser-deps:
+    agent-browser install --with-deps
+
+# Show Claude Code token usage (ccusage)
+[group("agents")]
+@claude-usage:
+    bunx ccusage@latest
+
+# Show Codex token usage (ccusage)
+[group("agents")]
+@codex-usage:
+    bunx @ccusage/codex@latest
 
 # Upgrade all tools (uv and mise, and all justfiles)
 [group("maintenance")]

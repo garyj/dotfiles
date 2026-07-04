@@ -28,14 +28,14 @@
 
 [".agents/skills/agent-browser"]
     type = "archive"
-    url = "https://github.com/vercel-labs/agent-browser/archive/main.tar.gz"
+    url = "https://github.com/vercel-labs/agent-browser/archive/refs/tags/v{{ .tools.agent_browser }}.tar.gz"
     stripComponents = 3
     refreshPeriod = "24h"
     include = ["*/skills/agent-browser/**"]
 
 [".agents/skills/sentry-cli"]
     type = "archive"
-    url = "https://github.com/getsentry/cli/archive/main.tar.gz"
+    url = "https://github.com/getsentry/cli/archive/refs/tags/{{ .tools.sentry }}.tar.gz"
     stripComponents = 5
     refreshPeriod = "24h"
     include = ["*/plugins/sentry-cli/skills/sentry-cli/**"]

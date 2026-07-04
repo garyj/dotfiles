@@ -24,5 +24,24 @@
       "versioningTemplate": "semver",
       "extractVersionTemplate": "^v?(?<version>.+)$"
     }
+  ],
+  "packageRules": [
+    {
+      "description": "Codex publishes GitHub releases as `rust-vX.Y.Z`; strip the prefix so the pin stays bare and matches what mise/aqua installs.",
+      "matchDepNames": ["openai/codex"],
+      "extractVersion": "^rust-v(?<version>.+)$"
+    },
+    {
+      "description": "Coding agents update on a 1-day cadence instead of the 3-day global bake. They flow through the release-notes summarizer, so each bump gets a human read before merge; the mise minimum_release_age never applies to them since they are exact-pinned.",
+      "matchDepNames": [
+        "anthropics/claude-code",
+        "openai/codex",
+        "github/copilot-cli",
+        "anomalyco/opencode",
+        "@google/gemini-cli",
+        "@earendil-works/pi-coding-agent"
+      ],
+      "minimumReleaseAge": "1 day"
+    }
   ]
 }

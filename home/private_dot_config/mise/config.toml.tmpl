@@ -54,6 +54,23 @@ gh = ['latest']        # GitHub CLI (cli/cli)
 glow = ['latest']      # render markdown on the CLI (charmbracelet)
 starship = ['latest']  # prompt (starship/starship)
 
+# AI coding agents, pinned in .chezmoidata.yaml (bump via Renovate PRs + TLDR).
+# Moved off ad-hoc `npm install -g` / the claude.ai curl installer; the justfiles
+# keep only auth/plugin/config recipes. aqua backends verify checksum +
+# attestation; gemini and pi are npm-only. claude is pinned here so it no longer
+# self-updates (DISABLE_AUTOUPDATER in ~/.claude/settings.json).
+"aqua:anthropics/claude-code" = ['{{ .coding_agents.claude }}']
+"aqua:openai/codex" = ['{{ .coding_agents.codex }}']
+"aqua:github/copilot-cli" = ['{{ .coding_agents.copilot }}']
+"aqua:anomalyco/opencode" = ['{{ .coding_agents.opencode }}']
+"npm:@google/gemini-cli" = ['{{ .coding_agents.gemini }}']
+"npm:@earendil-works/pi-coding-agent" = ['{{ .coding_agents.pi }}']
+
+# Agent tooling (not agents themselves), pinned so each binary installs from the
+# same release as its skill external (.chezmoiexternal.toml.tmpl, worktrunk pattern).
+"npm:agent-browser" = ['{{ .tools.agent_browser }}']
+"npm:sentry" = ['{{ .tools.sentry }}']  # npm `sentry` (getsentry/cli); NOT aqua sentry-cli, which is a different tool
+
 # CLI tools, pinned in .chezmoidata.yaml (audited; bump via Renovate PRs, see renovate.json)
 dust = ['{{ .tools.dust }}']
 worktrunk = ['{{ .tools.worktrunk }}']
