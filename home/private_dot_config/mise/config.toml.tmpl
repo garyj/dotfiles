@@ -77,6 +77,10 @@ worktrunk = ['{{ .tools.worktrunk }}']
 ast-grep = ['{{ .tools.ast_grep }}']
 prek = ['{{ .tools.prek }}']  # pre-commit reimplemented in Rust (j178); drop-in pre-commit replacement
 "github:microsoft/apm" = { version = '{{ .tools.apm }}' }  # Agent Package Manager (Microsoft)
+# RTK (Rust Token Killer): local CLI-output compressor. On MANUAL trial only for
+# now; the auto-rewrite Claude Code hook is deliberately NOT wired yet. Run `rtk
+# <cmd>` by hand (e.g. `rtk git status`, `rtk gain`) to feel out the compression.
+"aqua:rtk-ai/rtk" = ['{{ .tools.rtk }}']
 
 [tasks.bootstrap]
 description = "Bootstrap our CLI"
