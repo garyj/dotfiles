@@ -28,6 +28,13 @@ backup:
     - ~/.local/bin
     - ~/.ssh
     - ~/.gnupg
+    - ~/.claude
+    - ~/.claude.json
+    - ~/.codex
+    - ~/.agents
+    - ~/.gemini
+    - ~/.pi
+    - ~/.copilot
     - ~/.zshrc
     - ~/.bashrc
     - ~/.profile
@@ -81,6 +88,18 @@ backup:
     - ~/.local/share/mise/installs
     - ~/snap
     - ~/.var/app
+    # coding-agent caches & ephemera
+    - ~/.claude/cache
+    - ~/.claude/debug
+    - ~/.claude/paste-cache
+    - ~/.claude/session-env
+    - ~/.claude/shell-snapshots
+    - ~/.claude/statsig
+    - ~/.claude/file-history
+    - ~/.claude/plugins/cache
+    - ~/.claude/plugins/marketplaces
+    - ~/.codex/cache
+    - ~/.codex/tmp
     # junk
     - "**/*.tmp"
     - "**/*.swp"
