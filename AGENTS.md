@@ -97,6 +97,42 @@ External archives and tools are managed via `home/.chezmoiexternal.toml.tmpl`:
 - Fonts (Monaspace)
 - Shared agent skills (agent-browser, worktrunk, ast-grep, sentry-cli)
 
+### Agent config fan-out
+
+All coding agents draw their global instructions from one source,
+`home/.chezmoitemplates/agents/instructions.md`. Each agent has a thin per-agent
+template that pulls it in with `{{ includeTemplate "agents/instructions.md" . }}`
+and renders to that agent's own filename:
+
+- claude -> `~/.claude/CLAUDE.md` (`home/dot_claude/CLAUDE.md.tmpl`)
+- codex -> `~/.codex/AGENTS.md`
+- gemini -> `~/.gemini/GEMINI.md`
+- opencode -> `~/.config/opencode/AGENTS.md` (source under `private_dot_config/`)
+- pi -> `~/.pi/agent/AGENTS.md`
+
+`~/.agents/AGENTS.md` is the same body kept as the canonical copy. Edit the shared
+body, run `chezmoi apply`, and every agent updates. To give ONE agent extra
+instructions, append a section below the include in its wrapper (see the
+Claude-only block in `dot_claude/CLAUDE.md.tmpl`); the others stay unchanged.
+copilot and cursor read instructions per-repo only (no home-level global file),
+so they are not in this fan-out.
+
+Skills live once in `~/.agents/skills` (vendored under `dot_agents/skills/` plus
+`.chezmoiexternal.toml`). Every agent reads that one store, two ways:
+
+- **claude, codex** read their own `~/.<agent>/skills` dir, so a `symlink_skills.tmpl`
+  makes it a symlink to `~/.agents/skills`.
+- **gemini, copilot, pi** discover `~/.agents/skills` natively, so their skills dirs
+  are deliberately left un-symlinked. This is correct; do not "fix" it by adding a
+  symlink (gemini would then scan the store twice and warn on every skill). opencode
+  has no skills feature.
+
+codex keeps a hidden `.system/` of built-in skills in its skills dir. Since that dir
+is now a symlink, codex re-creates `.system` inside `~/.agents/skills` on next launch;
+it is dot-prefixed, so other agents' skill discovery skips it (no cross-agent leak).
+
+The fan-out is fully chezmoi-native; there is no shell linker script.
+
 ### Template Conditionals
 
 Common patterns in `.tmpl` files:

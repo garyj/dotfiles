@@ -21,17 +21,11 @@ HOST := `hostname -s`
 @bootstrap:
     just mise::bootstrap
 
-# Install everything on a new machine (mise + all CLIs + skill symlinks)
+# Install everything on a new machine (mise + all CLIs; agent skills + configs come from `chezmoi apply`)
 [group("setup")]
 @install:
     just mise::bootstrap
     for f in .justfiles/[!_]*.justfile; do echo "\033[1;36m>>> Installing from $f\033[0m"; just -f "$f" install || true; done
-    just skills
-
-# Symlink shared agent skills into each agent's skills directory
-[group("setup")]
-@skills:
-    $HOME/.agents/agent-skills-link.sh
 
 # Install Playwright browsers + system deps for agent-browser (once per machine; prompts for sudo)
 [group("agents")]

@@ -6,3 +6,4 @@ bin/installers
 .justfiles/agent-browser.justfile
 .justfiles/codex.justfile
 .justfiles/copilot.justfile
+.agents/agent-skills-link.sh

@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-# Sync ~/.agents/AGENTS.md and the shared skills into each agent's config dir
-# (~/.claude, ~/.codex). Runs on every apply; the linker is idempotent and only
-# creates links that are missing, so it costs nothing when nothing changed.
-
-"$HOME/.agents/agent-skills-link.sh"
