@@ -71,6 +71,7 @@
 
 {{ if (and (.personal) (not .headless)) -}}
     {{  $packages = concat $packages (list
+      "copyq"
       "dconf-editor"
       "flameshot"
       "gimp"

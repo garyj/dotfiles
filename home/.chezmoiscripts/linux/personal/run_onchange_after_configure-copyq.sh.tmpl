@@ -1,0 +1,52 @@
+{{ if and (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+
+echo -- Running run_onchange_after_configure-copyq.sh.tmpl --
+
+set -eufo pipefail
+
+# Inject CopyQ security ignore rules through its scripting API. CopyQ owns
+# and rewrites ~/.config/copyq/copyq-commands.ini at runtime, so chezmoi
+# cannot manage that file directly. Rules are matched by name and only
+# added when missing, so GUI edits and re-runs coexist safely.
+#
+# CopyQ CLI quirks this script works around:
+# - Arguments have backslash escapes unescaped before the script engine
+#   sees them, so the ini payload goes in via stdin, not an argument.
+# - importCommands() only parses; setCommands() installs.
+# - In commands.ini the content regex key is Match= and the window regex
+#   key is Window= (the scripting API calls the same fields re/wndre).
+
+if ! command -v copyq >/dev/null 2>&1; then
+  echo "copyq not installed; skipping"
+  exit 0
+fi
+
+if [ -z "${DISPLAY:-}" ]; then
+  echo "no DISPLAY (SSH session?); skipping copyq configuration"
+  exit 0
+fi
+
+# --start-server brings the server up when this runs before CopyQ's first
+# launch (e.g. fresh machine bootstrap).
+copyq --start-server eval 'var parsed = importCommands(str(input())); var cs = commands(); var have = {}; for (var i = 0; i < cs.length; i++) have[cs[i].name] = true; var added = 0; for (var j = 0; j < parsed.length; j++) { if (!have[parsed[j].name]) { cs.push(parsed[j]); added++; } } if (added > 0) setCommands(cs); "copyq ignore rules added: " + added' <<'EOF'
+[Commands]
+1\Automatic=true
+1\Command=copyq: ignore()
+1\Input=x-kde-passwordManagerHint
+1\Name=Ignore password manager data
+2\Automatic=true
+2\Command=copyq: ignore()
+2\Match=(AKIA|ASIA)[A-Z0-9]{16}|aws_secret_access_key
+2\Name=Ignore AWS access keys
+3\Automatic=true
+3\Command=copyq: ignore()
+3\Name=Ignore copies made in 1Password window
+3\Window=1Password
+size=3
+EOF
+
+# A clipboard manager only helps if it is always running.
+copyq config autostart true >/dev/null
+
+{{ end -}}
