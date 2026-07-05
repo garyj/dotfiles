@@ -24,7 +24,9 @@ curl -fsSL -o "$deb" "$url"
 sudo apt-get update
 sudo apt-get install -y "$deb"
 
-# X11 backend Handy uses to type transcriptions into the focused window.
-sudo apt-get install -y xdotool
+# Runtime libs the .deb fails to declare: libopenblas0 backs the local
+# Whisper/Parakeet inference (libopenblas.so.0); xdotool is the X11 backend
+# Handy uses to type transcriptions into the focused window.
+sudo apt-get install -y libopenblas0 xdotool
 {{ end -}}
 {{ end -}}
