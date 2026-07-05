@@ -7,3 +7,5 @@ bin/installers
 .justfiles/codex.justfile
 .justfiles/copilot.justfile
 .agents/agent-skills-link.sh
+.common_alias
+.functions

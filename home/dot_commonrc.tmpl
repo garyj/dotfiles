@@ -19,18 +19,16 @@ export EDITOR=emacs
 export EDITOR=codium
 {{- end }}
 
-if [ -f $HOME/.common_alias ]; then
-  source $HOME/.common_alias
+# Topical alias/function files managed by chezmoi
+if [ -d "$HOME/.config/shell" ]; then
+  for f in "$HOME"/.config/shell/*.sh; do
+    [ -r "$f" ] && source "$f"
+  done
 fi
 
-# check if .private_alias exists and then source those
+# check if .private_alias exists and then source those (machine-local, unmanaged)
 if [ -f $HOME/.private_alias ]; then
   source $HOME/.private_alias
-fi
-
-# check if .private_alias exists and then source those
-if [ -f $HOME/.functions ]; then
-  source $HOME/.functions
 fi
 
 # Determine the current shell

@@ -156,9 +156,9 @@ Common patterns in `.tmpl` files:
 Shell config is split across several files:
 
 - `dot_zshrc.tmpl` / `dot_bashrc.tmpl` - Shell-specific config
-- `dot_commonrc.tmpl` - Shared configuration for both shells
-- `dot_common_alias.tmpl` - All aliases (git, docker, python, etc.)
-- `dot_functions` - Shell functions
+- `dot_commonrc.tmpl` - Shared configuration for both shells; loop-sources `~/.config/shell/*.sh`
+- `private_dot_config/shell/` - Topical alias/function files: `aliases.sh` (one-liners), `agents.sh` (AI CLI launchers), `docker-services.sh` (postgres/mongo containers). New aliases go in the matching topic file, or a new file for a new topic.
+- `~/.private_alias` - machine-local, unmanaged; sourced last so it can override
 
 ## File Locations After Apply
 

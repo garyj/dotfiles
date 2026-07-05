@@ -1,0 +1,128 @@
+# General aliases and small helpers, sourced by ~/.commonrc for bash and zsh.
+
+alias g=git
+alias ghb='gh browse . >/dev/null 2>&1 &'
+ghbe() {
+  gh browse . >/dev/null 2>&1 &
+  disown
+  exit
+}
+
+if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+  alias ccp="pwd | wl-copy"
+  ccf() {
+    if [ -z "$1" ]; then echo "Usage: ccf <filename>"; return 1; fi
+    realpath -- "$1" | wl-copy
+  }
+else
+  alias ccp="pwd | xclip -selection clipboard"
+  ccf() {
+    if [ -z "$1" ]; then echo "Usage: ccf <filename>"; return 1; fi
+    realpath -- "$1" | xclip -selection clipboard
+  }
+fi
+
+# Count open X11 connections vs the server cap (default 256).
+# Handy when GUI apps refuse to launch with "Maximum number of clients reached".
+xconns() {
+  local disp="${DISPLAY#:}"
+  disp="${disp%%.*}"
+  local count cap
+  count=$(ss -x | grep -c "@/tmp/.X11-unix/X${disp:-0}")
+  cap=$(ps -o cmd= -C Xorg | grep -oP 'maxclients \K[0-9]+' || echo 256)
+  echo "X11 connections: ${count} / ${cap}"
+}
+
+{{- if lookPath "bat" }}
+alias cat=bat
+{{- else if lookPath "batcat" }}
+alias bat=batcat
+alias cat=batcat
+{{- end }}
+
+{{ $ls_command := "ls" -}}
+{{- if lookPath "eza" }}
+{{ $ls_command = "eza" -}}
+alias ls="{{ $ls_command }}"
+# sort by date modified
+alias lsdate="{{ $ls_command }} -lh --sort newest"
+{{- end }}
+
+alias -- -='cd -'
+alias le="less"
+
+## everything without the dot files
+alias ll="{{ $ls_command }} -la -I '.*'"
+## everything with dot files
+alias lla="{{ $ls_command }} -la"
+# show me everything human readable
+alias lsa="{{ $ls_command }} -lah"
+# sorted by size
+alias lss="{{ $ls_command }} -lahSr"
+# list only directories
+alias lsd="{{ $ls_command }} -lahd */"
+# list all dot files
+alias lsdot="{{ $ls_command }} -lahd .*"
+
+# eza specific aliases
+{{- if lookPath "eza" }}
+alias lx="eza --group-directories-first --classify --git -l"
+{{- end }}
+
+
+# Various Quick Shortcuts
+alias m=make
+alias j=just
+alias jh="just --justfile ~/justfile"
+alias jd="just --justfile ~/justfile"
+alias mi=mise
+alias eee="exec $SHELL"
+alias e="exit"
+alias xit='exit'
+alias t=tmux
+
+{{- if lookPath "nemo" }}
+alias n="nohup nemo ./ >/dev/null 2>&1 &"
+{{- else if lookPath "nautilus" }}
+alias n="nohup nautilus ./ >/dev/null 2>&1 &"
+{{- end }}
+
+alias gt="nohup ghostty --working-directory=./ >/dev/null 2>&1 &"
+
+alias sshp="ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no"
+
+alias glow="glow -lp"
+
+alias c="code-insiders ."
+alias ce="code-insiders . && exit"
+alias cn="code-insiders"
+alias cu="codium"
+
+# Precommit alias to run all file and autoupdate
+alias pca="pre-commit run --all-files"
+alias pcup="pre-commit autoupdate"
+
+# Docker Stuff
+alias d=docker
+# alias dsysprune='docker system prune -a --force' # careful this will delete a lot
+
+alias dpsa='docker ps -a'
+
+alias dstopall='docker stop $(docker ps -q)'
+alias dcleanall='docker stop $(docker ps -q) && docker container prune -f'
+alias drmall='docker rm $(docker ps -a -q)'
+alias dconprune='docker container prune --force'
+
+alias dcf="docker compose logs -f"
+alias dc="docker compose"
+
+# Python (default version comes from langs.python in .chezmoidata.yaml)
+alias nbclean="jupyter nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*.ipynb"
+alias py='uv run --python={{ .langs.python }} python3'
+alias uvsa="uv sync --all-extras --all-groups"
+
+# Wireguard networks
+alias wu='sudo wg-quick up wg0'
+alias wd='sudo wg-quick down wg0'
+
+alias wts='wt switch'

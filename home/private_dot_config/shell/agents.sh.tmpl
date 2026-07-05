@@ -1,0 +1,112 @@
+# AI coding agent launchers, sourced by ~/.commonrc for bash and zsh.
+
+# Prevent these from starting in home dir just in case
+clyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run claude in home directory"
+    return 1
+  fi
+  command claude --dangerously-skip-permissions "$@"
+}
+
+# Claude with max thinking tokens (31999) for very hard tasks
+clyomax() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run claude in home directory"
+    return 1
+  fi
+  MAX_THINKING_TOKENS=31999 command claude --dangerously-skip-permissions "$@"
+}
+
+claude-fireworks() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run claude in home directory"
+    return 1
+  fi
+
+  # Override the main model with -m/--model; everything else passes to claude.
+  local model="accounts/fireworks/routers/glm-latest[1m]"
+  local args=()
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+    -m | --model)
+      model="$2"
+      shift 2
+      ;;
+    --model=*)
+      model="${1#--model=}"
+      shift
+      ;;
+    *)
+      args+=("$1")
+      shift
+      ;;
+    esac
+  done
+
+  # Fireworks key lives in FIREWORKS_API_KEY (the name `fireconnect` exports);
+  # fall back to the locked secrets file.
+  local secrets_file="${XDG_CONFIG_HOME:-$HOME/.config}/.secrets/fireworks.env"
+  if [ -z "${FIREWORKS_API_KEY:-}" ] && [ -r "$secrets_file" ]; then
+    . "$secrets_file"
+  fi
+  if [ -z "${FIREWORKS_API_KEY:-}" ]; then
+    echo "FIREWORKS_API_KEY not set; add it to $secrets_file"
+    return 1
+  fi
+
+  # Tier -> Fireworks model map per docs.fireworks.ai/ecosystem/fireconnect/claude-code.
+  # [1m] enables 1M context on the main model; it must NOT appear on subagent
+  # (Claude Code forwards the subagent value verbatim to the provider).
+  ANTHROPIC_BASE_URL=https://api.fireworks.ai/inference \
+    ANTHROPIC_API_KEY="$FIREWORKS_API_KEY" \
+    ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY" \
+    ANTHROPIC_DEFAULT_OPUS_MODEL="accounts/fireworks/routers/glm-latest[1m]" \
+    ANTHROPIC_DEFAULT_SONNET_MODEL="accounts/fireworks/models/glm-5p1" \
+    ANTHROPIC_DEFAULT_HAIKU_MODEL="accounts/fireworks/models/deepseek-v4-flash" \
+    CLAUDE_CODE_SUBAGENT_MODEL="accounts/fireworks/models/deepseek-v4-flash" \
+    CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
+    command claude --model "$model" "${args[@]}"
+}
+
+gmyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run gemini in home directory"
+    return 1
+  fi
+  if [ -z "$GEMINI_API_KEY" ]; then
+    echo "GEMINI_API_KEY is not in env (continuing)"
+  fi
+  command gemini --yolo "$@"
+}
+
+cxyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run codex in home directory"
+    return 1
+  fi
+  if [ -z "$OPENAI_API_KEY" ]; then
+    echo "OPENAI_API_KEY is not in env (continuing)"
+  fi
+  command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
+}
+
+# Copilot CLI with yolo mode
+cpyo() {
+  if [ "$PWD" = "$HOME" ]; then
+    echo "Refusing to run copilot in home directory"
+    return 1
+  fi
+  if [ -z "$GITHUB_TOKEN" ]; then
+    echo "GITHUB_TOKEN is not in env (continuing)"
+  fi
+  command copilot --yolo "$@"
+}
+
+{{- if lookPath "agentsview" }}
+{{- $avPort := 9090 }}
+# AgentsView: local session viewer on {{ $avPort }} (no auto-open; browse to http://127.0.0.1:{{ $avPort }} yourself)
+alias avstart="nohup agentsview serve --no-browser --port {{ $avPort }} >/dev/null 2>&1 &"
+alias avstop="pkill -f 'bin/agentsview serve'"
+alias avstat="pgrep -af 'bin/agentsview serve'"
+{{- end }}
