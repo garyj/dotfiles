@@ -83,8 +83,10 @@ alias t=tmux
 
 {{- if lookPath "nemo" }}
 alias n="nohup nemo ./ >/dev/null 2>&1 &"
+alias ne="nohup nemo ./ >/dev/null 2>&1 & exit"
 {{- else if lookPath "nautilus" }}
 alias n="nohup nautilus ./ >/dev/null 2>&1 &"
+alias ne="nohup nautilus ./ >/dev/null 2>&1 & exit"
 {{- end }}
 
 alias gt="nohup ghostty --working-directory=./ >/dev/null 2>&1 &"
