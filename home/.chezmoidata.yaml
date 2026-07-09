@@ -25,7 +25,7 @@ tools:
 # aqua backends verify checksum + attestation; gemini and pi are npm-only.
 # codex tags are `rust-v0.x.y`; a packageRule in renovate.json strips the prefix.
 coding_agents:
-  claude: "2.1.201"     # renovate: datasource=github-releases depName=anthropics/claude-code
+  claude: "2.1.204"     # renovate: datasource=github-releases depName=anthropics/claude-code
   codex: "0.143.0"      # renovate: datasource=github-releases depName=openai/codex
   copilot: "1.0.68"     # renovate: datasource=github-releases depName=github/copilot-cli
   opencode: "1.17.15"   # renovate: datasource=github-releases depName=anomalyco/opencode
