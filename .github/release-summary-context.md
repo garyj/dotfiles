@@ -18,7 +18,7 @@ containerized deploys, CI, and the Anthropic Claude API. Tooling leans modern
   new features relevant to a modern Python web / data / DevOps stack on Linux.
 - Also call out genuinely interesting or novel things worth learning, even if not
   strictly actionable: a clever new capability, a useful technique, or anything a
-  senior engineer would find cool. Keep it to one or two, after the actionable
+  senior engineer would find cool. Keep it to around five, after the actionable
   items, so the TL;DR stays tight.
 - Skip marketing, contributor shout-outs, version-bump noise, and notes specific
   to non-Linux platforms unless they affect cross-platform behavior.
