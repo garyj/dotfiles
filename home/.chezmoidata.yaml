@@ -10,7 +10,7 @@ langs:
 # Versions are stored bare (no leading v); Renovate normalizes on write-back.
 tools:
   ast_grep: "0.44.1"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
-  worktrunk: "0.64.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
+  worktrunk: "0.65.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.4"        # renovate: datasource=github-releases depName=bootandy/dust
   apm: "0.24.0"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.4.6"        # renovate: datasource=github-releases depName=j178/prek
