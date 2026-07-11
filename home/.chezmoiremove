@@ -9,3 +9,7 @@ bin/installers
 .agents/agent-skills-link.sh
 .common_alias
 .functions
+.agents/skills/ast-grep
+.agents/skills/handoff
+.agents/skills/pickup
+.agents/skills/reagents

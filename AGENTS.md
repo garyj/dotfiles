@@ -48,19 +48,9 @@ home/                           # Chezmoi source directory (.chezmoiroot points 
 
 ### Vendor apt repo installers
 
-New third-party apt repos go in `home/.chezmoiscripts/linux/personal/` as
-`run_onchange_before_install-<name>.sh.tmpl`. Use the `add-apt-repo` helper
-(`home/.chezmoitemplates/add-apt-repo`) via `{{ template "add-apt-repo" . }}`
-— it handles keyring + sources atomically at the correct 0644 mode. Model
-after `install-spotify.sh.tmpl` or `install-dbeaver.sh.tmpl`. Scripts with
-extra requirements (debsig-verify, fingerprint checks, codename substitution)
-keep their bespoke flow — see `install-onepassword.tmpl`,
-`install-browser-firefox-dev.tmpl`, `install-ghostty.sh.tmpl` as exemplars.
-
-Do not add `command -v <binary>` guards in these scripts: `run_onchange_`
-already gates on template hash, and a secondary guard silently blocks
-legitimate updates (new key URL, changed sources line) from reaching an
-already-installed machine.
+Third-party apt repos live in `home/.chezmoiscripts/linux/personal/`. Never add
+`command -v <binary>` guards to them; `run_onchange_` already gates on template
+hash. Invoke the `add-apt-repo` skill before writing or editing one.
 
 ### Naming Conventions
 
@@ -73,21 +63,7 @@ already-installed machine.
 
 ### Dependency management
 
-CLI tools are managed by **mise** (`home/private_dot_config/mise/config.toml.tmpl`); system packages, daemons, and GUI apps stay on **apt**. Pinned tool/external versions are centralized in `home/.chezmoidata.yaml`, where `# renovate:` annotations let Renovate open version-bump PRs.
-
-**Adding a dependency:**
-
-- CLI dev tool whose apt version lags badly, or that apt lacks → add to mise `[tools]`:
-  - low-risk fast-mover → float at `'latest'` (the global `minimum_release_age = "3d"` bakes every release before install)
-  - want an audited, PR-reviewed cadence → pin it: add `name: "x.y.z"  # renovate: datasource=github-releases depName=owner/repo` to `.chezmoidata.yaml`, then reference it as `['{{ .tools.name }}']`. Required when the version is reused in more than one file (e.g. worktrunk = mise binary + skill archive).
-  - backends are locked to checksummed sources via `disable_backends`; a `github:`/`ubi:` tool must use an explicit backend prefix.
-- Stable tool apt handles fine (jq, ripgrep), GUI app, daemon, or system lib → apt list in `run_onchange_before_10_install-packages.sh.tmpl`, or a vendor installer under `.chezmoiscripts/linux/personal/`.
-
-**Coding agents & the 1-day cadence:** the AI CLIs (claude, codex, copilot, opencode, gemini, pi) install via mise like any pinned tool but live in their own `coding_agents:` block in `.chezmoidata.yaml`, and get a **1-day** Renovate release-age instead of the 3-day default. That override is a `packageRule` in `renovate.json`, **not** a mise setting: mise's `minimum_release_age` is a no-op on exact-pinned versions (it only bakes floating `'latest'` requests), so the effective freshness gate for a pinned tool is Renovate's `minimumReleaseAge`. The 1-day tier is earned, not automatic: reputable-org tools whose bumps pass under your eyes via the release-notes summarizer before you merge. Grant it to future additions of that calibre; leave slower or less-trusted tools on the 3-day global. codex also needs a `packageRule` with `extractVersion: ^rust-v(?<version>.+)$` because its release tags are `rust-vX.Y.Z`.
-
-**Removing a dependency:** delete its mise line (and its `.chezmoidata.yaml` pin, if any). Removing a package from the apt list does **not** uninstall it; run `sudo apt remove` to actually drop it.
-
-mise tools auto-install on `chezmoi apply` via `run_onchange_after_05_mise-install.sh`.
+CLI tools are managed by **mise** (`home/private_dot_config/mise/config.toml.tmpl`); system packages, daemons, and GUI apps stay on **apt**. Pinned versions are centralized in `home/.chezmoidata.yaml`, where `# renovate:` annotations let Renovate open version-bump PRs. Invoke the `manage-dependencies` skill before adding, pinning, or removing one.
 
 ### External Dependencies
 
