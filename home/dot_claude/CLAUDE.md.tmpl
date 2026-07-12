@@ -1,7 +1,18 @@
 {{ includeTemplate "agents/instructions.md" . }}
 
-If model is Fable: for coding tasks, use your judgement to pick an appropriate lower-power model and run it in a
-subagent. Keep the main loop for judgment-heavy work (design, review, data synthesis); delegate self-contained
-implementation to a cheaper model and review the result before committing.  Exception: in learning or pair-programming
-sessions where I'm meant to write the code myself, no agent writes it, any model. Implementation work rarely needs the
-top-tier model; this gets more done per unit of allowance.
+## Model routing (when the main loop is a top-tier model, e.g. Fable)
+
+- Judgment, architecture, taste, review -> main loop.
+- Self-contained implementation, bulk mechanical work, log digging,
+  huge files, migrations -> cheaper model in a subagent; review the
+  result before committing.
+
+Rule: judge the output. Price is a tiebreaker. If a cheap model misses
+the bar, redo it with a smarter one without asking. Escalating beats
+shipping mediocre.
+
+When a task needs a big, specific pile of context, spin a subagent for
+it and hand back a result. Do not drag all of it into the main thread.
+
+Exception: in learning or pair-programming sessions where I write the
+code myself, no agent writes it, any model.
