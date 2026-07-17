@@ -1,0 +1,18 @@
+{{ if and (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+
+echo -- Running run_onchange_after_configure-ghostty-daemon.sh.tmpl --
+
+set -eufo pipefail
+
+# Start Ghostty at login and keep it resident, so ghostty +new-window opens
+# windows via D-Bus activation (~20ms) instead of a full GTK startup (~300ms).
+# The unit ships with the ghostty package.
+
+if ! command -v ghostty >/dev/null 2>&1; then
+  echo "ghostty not installed; skipping"
+  exit 0
+fi
+
+systemctl --user enable app-com.mitchellh.ghostty.service
+{{ end }}

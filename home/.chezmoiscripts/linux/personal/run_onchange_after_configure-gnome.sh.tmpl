@@ -318,7 +318,7 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ name 'xkill'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ binding "['<Super>Return']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'ghostty'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'ghostty +new-window'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ name 'Ghostty'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ binding "['<Super>m']"
@@ -429,6 +429,12 @@ if is_cinnamon; then
   'custom40',\
   '__dummy__'\
   ]"
+
+  # Default terminal, launched by Nemo's open-in-terminal (F6) and Ctrl+Alt+T.
+  # +new-window opens via D-Bus in the resident ghostty instance (fast path)
+  # and passes the caller's working directory along.
+  gsettings set org.cinnamon.desktop.default-applications.terminal exec 'ghostty +new-window'
+  gsettings set org.cinnamon.desktop.default-applications.terminal exec-arg '-e'
 
   # Nemo file manager
   gsettings set org.nemo.compact-view default-zoom-level 'standard'
