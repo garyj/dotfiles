@@ -8,7 +8,7 @@ wget -qO - https://packages.cloud.google.com/apt/doc/apt-key.gpg \
 
 # Add the ATP Repo
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
-  | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+  | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
 
 sudo apt update && sudo apt install -y google-cloud-cli
 {{ end -}}
