@@ -1,0 +1,6 @@
+/* Paint the window in the terminal's background color so the moment
+   between window map and the renderer's first frame stays black instead
+   of flashing the GTK theme's gray. */
+window {
+  background-color: #000000;
+}

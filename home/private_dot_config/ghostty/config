@@ -1,7 +1,5 @@
 #title = "Ghostty 👻"
 
-background-opacity = 0.90
-background-blur-radius = 30
 window-decoration = true
 window-width = 140
 window-height = 28
@@ -17,6 +15,8 @@ theme = Builtin Pastel Dark
 
 cursor-style-blink = true
 window-theme = auto
+# Keeps the pre-render window fill black instead of yukky flash of gray ewwww :)
+gtk-custom-css = ghostty.css
 # working-directory = inherit
 working-directory = home
 window-inherit-working-directory = false
@@ -26,7 +26,9 @@ clipboard-trim-trailing-spaces = true
 font-thicken = true
 
 confirm-close-surface = false
-quit-after-last-window-closed = true
+# Stay resident after the last window closes so D-Bus activation
+# (ghostty +new-window, Nemo F6) opens windows without GTK startup cost.
+quit-after-last-window-closed = false
 shell-integration-features = ssh-env,ssh-terminfo,cursor,sudo,title
 
 # Inverting seems to work better with Solarized
