@@ -1,0 +1,25 @@
+{{ if and (not .headless) (not .ephemeral) -}}
+#!/usr/bin/env bash
+
+echo -- Running run_onchange_after_configure-nemo-accels.sh.tmpl --
+
+set -eufo pipefail
+
+# Bind F6 to Nemo's built-in "Open in Terminal" action. Nemo has no UI for
+# accelerators; its GTK accel map file is the only way in. GTK treats accels
+# loaded from that file as defaults and drops them when Nemo saves the map on
+# exit, so the file is left read-only to block that save. The binding takes
+# effect the next time Nemo starts.
+
+ACCEL_FILE="$HOME/.gnome2/accels/nemo"
+ACCEL_PATH='<Actions>/DirViewActions/OpenInTerminal'
+
+mkdir -p "$(dirname "$ACCEL_FILE")"
+touch "$ACCEL_FILE"
+chmod u+w "$ACCEL_FILE"
+
+sed -i "\|${ACCEL_PATH}|d" "$ACCEL_FILE"
+printf '(gtk_accel_path "%s" "F6")\n' "$ACCEL_PATH" >> "$ACCEL_FILE"
+
+chmod a-w "$ACCEL_FILE"
+{{ end }}
