@@ -1,0 +1,13 @@
+{{- if not (has .chezmoi.hostname .backup.enabled_hosts) }}
+{{- /* Not a backup host (see backup.enabled_hosts in .chezmoidata/backup.yaml).
+       Don't deploy the restic wrapper, its 1Password-backed password, or the
+       systemd units - there is no repo for them to point at. The restic binary
+       itself stays installed, so this machine can still restore from another
+       machine's repo. .justfiles/backup.justfile also stays: `justfile` loads it
+       with `mod`, and just refuses to run at all if a mod file is missing. */}}
+bin/restic-backup
+.config/restic
+.config/restic/**
+.config/systemd/user/restic-backup.service
+.config/systemd/user/restic-backup.timer
+{{- end }}

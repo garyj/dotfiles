@@ -5,6 +5,15 @@
 # Phase 1: local repo only, on this machine's /extra disk. A remote offsite
 # copy comes in Phase 2.
 backup:
+  # Machines that back up, matched against the hostname exactly. A backup needs
+  # a second physical disk to be worth anything, so only hosts that have one
+  # belong here. Anywhere else restic is skipped entirely.
+  #
+  # Note this is an exact match, not the `contains "noodle"` substring test that
+  # sets `personal` - noodleLenivi is personal but has a single disk.
+  enabled_hosts:
+    - noodle
+
   # Where the local restic repo lives on this machine. /extra is a separate
   # physical disk from the (encrypted) root, so it survives the main drive dying.
   local_repo: /extra/garyj/restic

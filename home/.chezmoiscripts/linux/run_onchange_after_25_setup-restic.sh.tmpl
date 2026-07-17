@@ -7,6 +7,21 @@
 
 set -euo pipefail
 
+{{ if not (has .chezmoi.hostname .backup.enabled_hosts) -}}
+# Not a backup host (see backup.enabled_hosts). Nothing to provision here - but
+# make sure that's deliberate rather than a stale host list: a machine with the
+# backup disk attached is a backup machine, whatever it happens to be called.
+{{ if .backup.require_mounted -}}
+if mountpoint -q "{{ .backup.require_mounted }}"; then
+  echo "[restic] ERROR: {{ .backup.require_mounted }} is mounted here, but {{ .chezmoi.hostname }} is not in backup.enabled_hosts." >&2
+  echo "[restic] Either add it in home/.chezmoidata/backup.yaml, or unmount the disk." >&2
+  exit 1
+fi
+{{ end -}}
+echo "[restic] {{ .chezmoi.hostname }} is not a backup host; skipping."
+exit 0
+{{ end -}}
+
 repo="{{ .backup.local_repo }}"
 export RESTIC_REPOSITORY="$repo"
 export RESTIC_PASSWORD_FILE="$HOME/.config/restic/password"
