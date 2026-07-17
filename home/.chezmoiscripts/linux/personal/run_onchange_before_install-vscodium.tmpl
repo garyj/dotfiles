@@ -1,11 +1,6 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
-if command -v codium >/dev/null 2>&1; then
-  echo "VSCodium is already installed"
-  exit 0
-fi
-
 # Add the GPG key of the VSCodium repository
 wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
     | gpg --dearmor \

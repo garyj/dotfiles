@@ -1,10 +1,6 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
-if command -v microsoft-edge >/dev/null 2>&1; then
-  exit 0
-fi
-
 # Reference: https://hacks.mozilla.org/2023/11/firefox-developer-edition-and-beta-try-out-mozillas-deb-package/
 curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | \
   gpg --dearmor | sudo tee /usr/share/keyrings/microsoft-edge.gpg > /dev/null

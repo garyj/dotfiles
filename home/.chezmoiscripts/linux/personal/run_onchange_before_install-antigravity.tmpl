@@ -1,11 +1,6 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
-if command -v antigravity >/dev/null 2>&1; then
-  echo "Google Antigravity is already installed"
-  exit 0
-fi
-
 # Reference: https://antigravity.google/download/linux
 
 curl -fsSL https://us-central1-apt.pkg.dev/doc/repo-signing-key.gpg | \

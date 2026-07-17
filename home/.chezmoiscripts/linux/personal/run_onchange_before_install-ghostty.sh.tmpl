@@ -4,14 +4,9 @@
 
 # Ghostty via debian.griffo.io — community apt repo endorsed by upstream.
 # Reference: https://ghostty.org/docs/install/binary
-# One-shot: runs once on fresh install; `apt upgrade` handles updates after.
+# Re-runs when this script changes; `apt upgrade` handles updates after.
 
 set -euo pipefail
-
-if command -v ghostty >/dev/null 2>&1; then
-  echo "Ghostty already installed"
-  exit 0
-fi
 
 . /etc/os-release
 SUITE="${VERSION_CODENAME:?VERSION_CODENAME missing from /etc/os-release}"
@@ -36,11 +31,6 @@ sudo apt-get install -y ghostty
 # Run in a tmpdir so any .deb artefacts don't land in the chezmoi script dir.
 
 set -euo pipefail
-
-if command -v ghostty >/dev/null 2>&1; then
-  echo "Ghostty already installed"
-  exit 0
-fi
 
 tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT

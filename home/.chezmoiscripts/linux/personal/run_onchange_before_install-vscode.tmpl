@@ -1,11 +1,6 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
-if command -v code >/dev/null 2>&1; then
-  echo "Visual Studio Code is already installed"
-  exit 0
-fi
-
 # Reference: https://code.visualstudio.com/docs/setup/linux#_debian-and-ubuntu-based-distributions
 
 curl -sS https://packages.microsoft.com/keys/microsoft.asc | \
