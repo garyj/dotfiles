@@ -1,12 +1,16 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
-if command -v mise >/dev/null 2>&1; then
-  echo "Mise is already installed"
-  exit 0
-fi
+# Install or upgrade mise.
+# run_onchange gates on this script's rendered hash, so the pin below is what
+# drives upgrades - Renovate bumps .tools.mise in .chezmoidata.yaml, the hash
+# changes, and apt upgrades an already-installed mise.
+#
+# mise version pin (cadence trigger): {{ .tools.mise }}
+#
+# Note: that even though we bump the version pin, the apt repo only carries the latest build,
+# so that is what gets installed.
 
-# Install mise
 sudo apt update -y && sudo apt install -y curl
 sudo install -dm 755 /etc/apt/keyrings
 curl -fSs https://mise.jdx.dev/gpg-key.pub | sudo tee /etc/apt/keyrings/mise-archive-keyring.pub 1> /dev/null
