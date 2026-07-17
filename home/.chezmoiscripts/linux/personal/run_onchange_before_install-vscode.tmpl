@@ -1,14 +1,29 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
-# Reference: https://code.visualstudio.com/docs/setup/linux#_debian-and-ubuntu-based-distributions
+# Official deb822 method: https://code.visualstudio.com/docs/setup/linux
+#
+# Write the same vscode.sources + microsoft.gpg the code .deb self-manages, so
+# our definition and the package's auto-configured one are one and the same
+# file and never disagree on Signed-By - the apt-breaking conflict in
+# microsoft/vscode#189274. Idempotent, safe to re-run.
 
 curl -sS https://packages.microsoft.com/keys/microsoft.asc | \
-	gpg --dearmor | sudo tee /usr/share/keyrings/packages.microsoft.gpg > /dev/null
+	gpg --dearmor | sudo tee /usr/share/keyrings/microsoft.gpg > /dev/null
 
-echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | \
-  sudo tee /etc/apt/sources.list.d/vscode.list > /dev/null
+# Remove the legacy single-line list the old installer wrote (keyring
+# packages.microsoft.gpg). Two files for one repo with different Signed-By is
+# exactly what breaks apt; we and the code .deb both use vscode.sources now.
+sudo rm -f /etc/apt/sources.list.d/vscode.list
 
-# Update your package list and install the Firefox .deb package
+sudo tee /etc/apt/sources.list.d/vscode.sources > /dev/null <<'EOF'
+Types: deb
+URIs: https://packages.microsoft.com/repos/code
+Suites: stable
+Components: main
+Architectures: amd64
+Signed-By: /usr/share/keyrings/microsoft.gpg
+EOF
+
 sudo apt-get update && sudo apt-get install -y code code-insiders
 {{ end -}}
