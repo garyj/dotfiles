@@ -1,0 +1,10 @@
+[Nemo Action]
+Active=true
+Name=Copy Path
+Comment=Copy the full path of the selection to the clipboard
+Exec=<copy-path.sh %F>
+Icon-Name=edit-copy
+Selection=any
+Extensions=any;
+Quote=double
+Dependencies=xclip;
