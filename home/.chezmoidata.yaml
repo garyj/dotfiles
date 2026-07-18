@@ -42,7 +42,7 @@ externals:
 # Renovate proposes updates (see renovate.json).
 deb_apps:
   handy:  # cjpais/Handy, offline speech-to-text
-    version: "0.9.2"  # renovate: datasource=github-releases depName=cjpais/Handy
+    version: "0.9.3"  # renovate: datasource=github-releases depName=cjpais/Handy
 
 # Single static binaries pinned from GitHub releases, installed to /usr/local/bin.
 # Kept off apt to track upstream; off mise so the systemd backup timer finds them
