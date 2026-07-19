@@ -13,3 +13,4 @@
 .local # maybe too generic?
 
 .env
+.worktrees
