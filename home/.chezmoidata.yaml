@@ -18,7 +18,7 @@ tools:
   rtk: "0.43.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
   # These two are pinned so the binary (mise) and its agent skill
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
-  agent_browser: "0.32.2"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
+  agent_browser: "0.32.3"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
   sentry: "0.38.0"         # renovate: datasource=github-releases depName=getsentry/cli
 
 # AI coding agents, all installed via mise and pinned so Renovate opens bump PRs
