@@ -5,7 +5,7 @@
 # What/where to back up is configured in home/.chezmoidata/backup.yaml.
 #
 # Scheduled use (systemd timer, hourly):
-#   restic-backup                # back up, then forget old snapshots
+#   restic-backup                # back up, forget old snapshots, ping healthchecks
 #
 # Manual use - any restic command is passed straight through, already pointed
 # at the repo with the password loaded:
@@ -44,22 +44,24 @@ run_forget() {
 }
 
 # restic skips a missing source with exit 0, so a typo in backup.yaml silently
-# shrinks the backup. Warn (don't fail - one bad path shouldn't cost the run);
-# the health check escalates it into a real alert.
+# shrinks the backup. Warn (don't fail - one bad path shouldn't cost the run)
+# and record the count, so the end-of-run ping can escalate it to an alert.
+missing_sources=0
 check_sources() {
-  local path missing=0 total=0
+  local path total=0
+  missing_sources=0
   while IFS= read -r path; do
     [ -n "$path" ] || continue
     total=$((total + 1))
     if [ ! -e "$path" ]; then
       echo "restic-backup: WARNING - configured source does not exist: $path" >&2
-      missing=$((missing + 1))
+      missing_sources=$((missing_sources + 1))
     fi
   done < "$config_dir/sources.txt"
 
-  if [ "$missing" -gt 0 ]; then
-    echo "restic-backup: WARNING - $missing of $total configured sources are missing; backing up the rest." >&2
-    echo "restic-backup: fix or remove them in the dotfiles repo (home/.chezmoidata/backup.yaml), then: chezmoi apply" >&2
+  if [ "$missing_sources" -gt 0 ]; then
+    echo "restic-backup: WARNING - $missing_sources of $total sources missing; backing up the rest." >&2
+    echo "restic-backup: fix them in home/.chezmoidata/backup.yaml, then: chezmoi apply" >&2
   fi
 }
 
@@ -117,4 +119,44 @@ if ! flock -n 9; then
   exit 0
 fi
 
-do_backup "$@"
+rc=0
+do_backup "$@" || rc=$?
+
+# Report to healthchecks.io. A clean run pings success; a failed run, retention
+# not thinning, a lock left by a dead run, or a missing source pings .../fail
+# with the reason. No ping at all trips the dead-man's-switch, which is how a
+# dead timer or an off machine gets caught. The URL is a 1Password secret; until
+# it's set up the backup still runs, we just skip the ping.
+problems=()
+[ "$rc" -ne 0 ] && problems+=("backup exited $rc")
+[ "$missing_sources" -gt 0 ] && problems+=("$missing_sources source(s) missing")
+
+count=$(restic_gentle --no-lock snapshots --json 2>/dev/null \
+  | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))' 2>/dev/null)
+if [ -n "$count" ] && [ "$count" -gt {{ .backup.monitoring.max_snapshots }} ]; then
+  problems+=("snapshot count $count over {{ .backup.monitoring.max_snapshots }} (retention stalled?)")
+fi
+
+if [ -d "{{ .backup.local_repo }}/locks" ]; then
+  stale=$(find "{{ .backup.local_repo }}/locks" -type f -mmin +{{ .backup.monitoring.max_lock_age_minutes }} 2>/dev/null | wc -l)
+  [ "$stale" -gt 0 ] && problems+=("$stale lock(s) older than {{ .backup.monitoring.max_lock_age_minutes }}m")
+fi
+
+hc_url=""
+[ -s "$config_dir/healthchecks-url" ] && hc_url=$(tr -d '[:space:]' < "$config_dir/healthchecks-url")
+if [ -n "$hc_url" ]; then
+  if [ "${#problems[@]}" -eq 0 ]; then
+    printf 'ok\n' | curl -fsS -m 15 --retry 3 --data-binary @- "$hc_url" >/dev/null 2>&1 \
+      || echo "restic-backup: warning - healthchecks ping failed" >&2
+  else
+    printf '%s\n' "${problems[@]}" | curl -fsS -m 15 --retry 3 --data-binary @- "$hc_url/fail" >/dev/null 2>&1 \
+      || echo "restic-backup: warning - healthchecks fail-ping failed" >&2
+  fi
+fi
+
+# Exit non-zero if anything's wrong, so `systemctl status` agrees with the ping.
+# Keep the backup's own code if it failed; else 1 for a broken invariant.
+if [ "${#problems[@]}" -ne 0 ] && [ "$rc" -eq 0 ]; then
+  rc=1
+fi
+exit "$rc"

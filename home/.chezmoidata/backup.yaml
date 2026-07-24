@@ -121,3 +121,12 @@ backup:
     keep_weekly: 4
     keep_monthly: 6
     keep_yearly: 0
+
+  # Health monitoring. At the end of each run the backup pings healthchecks.io:
+  # success, or .../fail with the reason if an invariant below is broken. No ping
+  # at all trips the dead-man's-switch (a dead timer or an off machine). The URL
+  # is a secret, kept in 1Password (this file is public) and rendered to
+  # ~/.config/restic/healthchecks-url.
+  monitoring:
+    max_snapshots: 60           # more than this = retention not thinning
+    max_lock_age_minutes: 60    # a lock older than this = a run died holding it
