@@ -52,7 +52,29 @@ if ! mountpoint -q "{{ .backup.require_mounted }}"; then
 fi
 {{ end -}}
 
-# 4. Initialise the repo on first run. `cat config` is a precise existence probe:
+# 4. Check every configured source is on disk (restic silently skips missing
+#    ones at exit 0). Spelling the list out here also makes run_onchange re-fire
+#    on any `sources` edit, so a bad path surfaces now, not at restore time.
+sources=(
+{{ range .backup.sources -}}
+"{{ if hasPrefix "~/" . }}{{ printf "%s/%s" $.chezmoi.homeDir (trimPrefix "~/" .) }}{{ else }}{{ . }}{{ end }}"
+{{ end -}}
+)
+missing=0
+for path in "${sources[@]}"; do
+  if [ ! -e "$path" ]; then
+    echo "[restic] WARNING: configured source does not exist: $path" >&2
+    missing=$((missing + 1))
+  fi
+done
+if [ "$missing" -gt 0 ]; then
+  echo "[restic] $missing of ${#sources[@]} sources missing - restic will silently skip them." >&2
+  echo "[restic] Fix or remove them in home/.chezmoidata/backup.yaml, then: chezmoi apply" >&2
+else
+  echo "[restic] all ${#sources[@]} configured sources present"
+fi
+
+# 5. Initialise the repo on first run. `cat config` is a precise existence probe:
 #    a transient error won't masquerade as "uninitialised" and trigger a re-init.
 mkdir -p "$(dirname "$repo")"
 if restic cat config >/dev/null 2>&1; then
@@ -62,7 +84,7 @@ else
   restic init
 fi
 
-# 5. Enable the hourly timer, and linger so it fires with no graphical login.
+# 6. Enable the hourly timer, and linger so it fires with no graphical login.
 systemctl --user daemon-reload
 systemctl --user enable --now restic-backup.timer
 sudo loginctl enable-linger "$USER"

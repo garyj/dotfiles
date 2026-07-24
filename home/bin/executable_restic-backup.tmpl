@@ -28,8 +28,44 @@ config_dir="{{ .chezmoi.homeDir }}/.config/restic"
 # Run restic gently so an hourly backup never fights interactive work.
 restic_gentle() { nice -n 19 ionice -c 3 restic "$@"; }
 
+# Thin out old snapshots (no --prune here; that's heavier, run occasionally).
+# --group-by host: restic's default also groups by paths, so editing sources in
+# backup.yaml stranded the old path-set's snapshots forever. Host-only means
+# "keep 24 hourly snapshots of this machine", which is the intent.
+run_forget() {
+  restic_gentle forget \
+    --group-by host \
+    --tag automated \
+    --keep-hourly {{ .backup.retention.keep_hourly }} \
+    --keep-daily {{ .backup.retention.keep_daily }} \
+    --keep-weekly {{ .backup.retention.keep_weekly }} \
+    --keep-monthly {{ .backup.retention.keep_monthly }} \
+    --keep-yearly {{ .backup.retention.keep_yearly }}
+}
+
+# restic skips a missing source with exit 0, so a typo in backup.yaml silently
+# shrinks the backup. Warn (don't fail - one bad path shouldn't cost the run);
+# the health check escalates it into a real alert.
+check_sources() {
+  local path missing=0 total=0
+  while IFS= read -r path; do
+    [ -n "$path" ] || continue
+    total=$((total + 1))
+    if [ ! -e "$path" ]; then
+      echo "restic-backup: WARNING - configured source does not exist: $path" >&2
+      missing=$((missing + 1))
+    fi
+  done < "$config_dir/sources.txt"
+
+  if [ "$missing" -gt 0 ]; then
+    echo "restic-backup: WARNING - $missing of $total configured sources are missing; backing up the rest." >&2
+    echo "restic-backup: fix or remove them in the dotfiles repo (home/.chezmoidata/backup.yaml), then: chezmoi apply" >&2
+  fi
+}
+
 do_backup() {
   local rc=0
+  check_sources
   restic_gentle backup \
     --files-from "$config_dir/sources.txt" \
     --exclude-file "$config_dir/excludes.txt" \
@@ -45,17 +81,15 @@ do_backup() {
     return "$rc"
   fi
 
-  # Thin out old snapshots. Cheap metadata op - no --prune here; pruning
-  # (repacking pack files) is heavier and run occasionally, not every hour.
-  # A forget failure is housekeeping, not a failed backup - warn, don't fail.
-  restic_gentle forget \
-    --tag automated \
-    --keep-hourly {{ .backup.retention.keep_hourly }} \
-    --keep-daily {{ .backup.retention.keep_daily }} \
-    --keep-weekly {{ .backup.retention.keep_weekly }} \
-    --keep-monthly {{ .backup.retention.keep_monthly }} \
-    --keep-yearly {{ .backup.retention.keep_yearly }} \
-    || echo "restic-backup: warning - retention (forget) failed; the snapshot was still captured." >&2
+  # forget is housekeeping - warn, don't fail. A lock from a killed run blocks
+  # every future forget until cleared, so retry once after unlock (which only
+  # removes locks whose process is dead, never a live run's).
+  if ! run_forget; then
+    echo "restic-backup: retention failed; clearing stale locks and retrying." >&2
+    restic_gentle unlock || true
+    run_forget \
+      || echo "restic-backup: warning - retention (forget) failed; the snapshot was still captured." >&2
+  fi
 }
 
 # Dispatch: no args (or `backup`) runs the configured backup below; any other
