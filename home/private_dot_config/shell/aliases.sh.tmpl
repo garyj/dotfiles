@@ -27,6 +27,24 @@ ghbe() {
   exit
 }
 
+# Open the PR for the branch you're on, draft or open (works from any worktree).
+# PR existence is server-side, so this always does a network lookup. If there's
+# no PR for the branch, say so and open nothing.
+_gh_pr_here() {
+  local branch
+  branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  if gh pr view --web >/dev/null 2>&1; then
+    return 0
+  fi
+  echo "ghbpr: no PR for '${branch:-this branch}'" >&2
+  return 1
+}
+alias ghbpr=_gh_pr_here
+ghbpre() {
+  # Exit only if a PR actually opened; on "no PR" stay so the message is visible.
+  _gh_pr_here && exit
+}
+
 if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
   alias ccp="pwd | wl-copy"
   ccf() {
