@@ -1,9 +1,28 @@
 # General aliases and small helpers, sourced by ~/.commonrc for bash and zsh.
 
 alias g=git
-alias ghb='gh browse . >/dev/null 2>&1 &'
+# Open the current repo path on GitHub for the branch you're actually on
+# (works from any worktree). If that branch isn't on the remote yet, fall back
+# to the default branch so you land on a real page instead of a 404.
+_gh_browse_here() {
+  local branch remote
+  branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  if [ -z "$branch" ] || [ "$branch" = "HEAD" ]; then
+    gh browse . >/dev/null 2>&1 &   # detached / not a repo: use repo default
+    return
+  fi
+  remote=$(git config "branch.$branch.remote" 2>/dev/null)
+  [ -n "$remote" ] || remote=origin
+  if git rev-parse --verify --quiet "refs/remotes/$remote/$branch" >/dev/null; then
+    gh browse . -b "$branch" >/dev/null 2>&1 &
+  else
+    echo "ghb: '$branch' isn't on $remote yet, opening the default branch instead" >&2
+    gh browse . >/dev/null 2>&1 &
+  fi
+}
+alias ghb=_gh_browse_here
 ghbe() {
-  gh browse . >/dev/null 2>&1 &
+  _gh_browse_here
   disown
   exit
 }
