@@ -1,0 +1,6 @@
+# Wasabi S3 backend credentials for the restic offsite copy. Rendered from
+# 1Password by chezmoi and sourced by ~/bin/restic-backup before any remote
+# operation. Mode 600 (private_ prefix). restic reads the S3 backend via these
+# standard AWS environment variables.
+export AWS_ACCESS_KEY_ID="{{ onepasswordRead "op://Personal/Restic Backup/wasabi_access_key" | trim }}"
+export AWS_SECRET_ACCESS_KEY="{{ onepasswordRead "op://Personal/Restic Backup/wasabi_secret_key" | trim }}"

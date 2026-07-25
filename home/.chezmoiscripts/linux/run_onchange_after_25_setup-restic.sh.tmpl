@@ -84,6 +84,31 @@ else
   restic init
 fi
 
+# 5b. Initialise the offsite remote repo on first run, if configured and its
+#     credentials are present. --copy-chunker-params matches the local repo's
+#     chunker so `restic copy` dedups instead of re-uploading everything. The
+#     remote uses the same passphrase (RESTIC_PASSWORD_FILE) as local.
+{{ if .backup.remote.bucket -}}
+remote_repo="s3:{{ .backup.remote.endpoint }}/{{ .backup.remote.bucket }}/{{ .chezmoi.hostname }}"
+if [ -s "$HOME/.config/restic/remote-env" ]; then
+  set -a
+  # shellcheck disable=SC1091
+  . "$HOME/.config/restic/remote-env"
+  set +a
+  if restic -r "$remote_repo" cat config >/dev/null 2>&1; then
+    echo "[restic] remote repo already initialised at $remote_repo"
+  else
+    echo "[restic] initialising remote repo at $remote_repo"
+    restic -r "$remote_repo" init \
+      --copy-chunker-params \
+      --from-repo "$repo" \
+      --from-password-file "$RESTIC_PASSWORD_FILE"
+  fi
+else
+  echo "[restic] remote configured but remote-env absent; add Wasabi creds to 1Password, then re-apply."
+fi
+{{ end -}}
+
 # 6. Enable the hourly timer, and linger so it fires with no graphical login.
 systemctl --user daemon-reload
 systemctl --user enable --now restic-backup.timer

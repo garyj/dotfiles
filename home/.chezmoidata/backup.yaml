@@ -2,8 +2,8 @@
 # Edit this file, then run `chezmoi apply`. You never need to touch the wrapper
 # script (~/bin/restic-backup) or the systemd units.
 #
-# Phase 1: local repo only, on this machine's /extra disk. A remote offsite
-# copy comes in Phase 2.
+# Local hourly repo on this machine's /extra disk, plus an offsite copy to
+# Wasabi (the `remote` block) pushed at the end of each run.
 backup:
   # Machines that back up, matched against the hostname exactly. A backup needs
   # a second physical disk to be worth anything, so only hosts that have one
@@ -114,13 +114,28 @@ backup:
     - "**/*.swp"
     - "**/.DS_Store"
 
-  # How many snapshots `restic forget` keeps after each backup.
+  # How many snapshots `restic forget` keeps after each backup. Applied to both
+  # the local repo and (mirrored) the offsite remote.
   retention:
     keep_hourly: 24
     keep_daily: 7
     keep_weekly: 4
     keep_monthly: 6
     keep_yearly: 0
+
+  # Offsite copy. After each local backup the wrapper runs `restic copy` to this
+  # remote in the same run (same lock), so the offsite is at most ~1h behind
+  # local. Each machine is its own repo under <bucket>/<hostname>, so one bucket
+  # holds every host. Backend credentials come from 1Password, rendered to
+  # ~/.config/restic/remote-env. Leave `bucket` empty to disable the remote leg
+  # (the copy is skipped and the local backup still runs).
+  remote:
+    # Wasabi S3 endpoint for the bucket's region (Sydney = ap-southeast-2).
+    endpoint: s3.ap-southeast-2.wasabisys.com
+    bucket: xbackups
+    # Throttle the upload in KiB/s so a copy never saturates the uplink; mostly
+    # matters for the one-time initial seed. Empty or 0 means unlimited.
+    limit_upload: 0
 
   # Health monitoring. At the end of each run the backup pings healthchecks.io:
   # success, or .../fail with the reason if an invariant below is broken. No ping

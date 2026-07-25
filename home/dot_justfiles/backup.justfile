@@ -24,9 +24,10 @@ import "_common.justfile"
 @logs lines="50":
     journalctl --user -u restic-backup.service -n {{ lines }} --no-pager
 
-# reclaim disk space from unreferenced data (heavier; run occasionally)
+# reclaim disk space from unreferenced data, locally then offsite (heavier; run occasionally)
 @prune:
     restic-backup prune
+    restic-backup remote prune
 
 # verify repository integrity
 @check:
@@ -40,6 +41,24 @@ import "_common.justfile"
 # release a mount left behind by a closed terminal or forgotten `mount`
 @unmount dir="/tmp/restic":
     fusermount -u "{{ dir }}"
+
+# --- offsite (Wasabi) ---
+
+# push new snapshots offsite now (also used for the one-time initial seed)
+@copy:
+    restic-backup copy
+
+# list snapshots in the offsite remote repo
+@remote-snapshots:
+    restic-backup remote snapshots
+
+# restore from the offsite remote, e.g. j backup::remote-restore "latest --target /tmp/r --include ~/x"
+@remote-restore *args:
+    restic-backup remote restore {{ args }}
+
+# verify the offsite remote repo's integrity
+@remote-check:
+    restic-backup remote check
 
 # backups are provisioned by chezmoi (binary, repo, timer) - nothing to install here
 @install:

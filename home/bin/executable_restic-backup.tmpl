@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
 #
-# restic-backup - thin wrapper around restic for the local backup repo.
+# restic-backup - thin wrapper around restic for the backup repos.
 # Managed by chezmoi; edit the template, not ~/bin/restic-backup.
 # What/where to back up is configured in home/.chezmoidata/backup.yaml.
 #
 # Scheduled use (systemd timer, hourly):
-#   restic-backup                # back up, forget old snapshots, ping healthchecks
+#   restic-backup                # back up locally, forget old snapshots, copy the
+#                                # new snapshots offsite, then ping healthchecks
 #
 # Manual use - any restic command is passed straight through, already pointed
-# at the repo with the password loaded:
+# at the local repo with the password loaded:
 #   restic-backup snapshots
 #   restic-backup mount /tmp/restore
 #   restic-backup restore latest --target /tmp/restore --include ~/some/file
 #   restic-backup check          # verify repo integrity
 #   restic-backup prune          # reclaim space (heavier; run occasionally)
+#
+# Offsite remote (Wasabi):
+#   restic-backup copy           # push new snapshots offsite (one-time seed / manual)
+#   restic-backup remote snapshots   # any restic command against the remote repo,
+#   restic-backup remote prune       # with its S3 credentials loaded automatically
 
 set -euo pipefail
 
@@ -25,15 +31,40 @@ export RESTIC_REPOSITORY="{{ .backup.local_repo }}"
 export RESTIC_PASSWORD_FILE="{{ .chezmoi.homeDir }}/.config/restic/password"
 config_dir="{{ .chezmoi.homeDir }}/.config/restic"
 
+# The offsite remote repo (Wasabi S3): one restic repo per host, under
+# <bucket>/<hostname>, so a single bucket holds every machine. Empty when no
+# remote bucket is configured, which disables the copy step entirely.
+{{ if .backup.remote.bucket -}}
+remote_repo="s3:{{ .backup.remote.endpoint }}/{{ .backup.remote.bucket }}/{{ .chezmoi.hostname }}"
+{{ else -}}
+remote_repo=""
+{{ end -}}
+
 # Run restic gently so an hourly backup never fights interactive work.
 restic_gentle() { nice -n 19 ionice -c 3 restic "$@"; }
 
-# Thin out old snapshots (no --prune here; that's heavier, run occasionally).
+# Refuse to touch the repo if its disk isn't mounted - we'd otherwise read or
+# write the root filesystem, the very disk /extra exists to outlive. The offsite
+# copy reads the local repo too, so it needs this guard as well.
+require_repo_mounted() {
+{{ if .backup.require_mounted -}}
+  if ! mountpoint -q "{{ .backup.require_mounted }}"; then
+    echo "restic-backup: {{ .backup.require_mounted }} not mounted; refusing to run." >&2
+    exit 1
+  fi
+{{ else -}}
+  : # no mount requirement on this host (e.g. a single-disk laptop)
+{{ end -}}
+}
+
+# Thin out old snapshots per the retention policy (no --prune here; that's
+# heavier, run occasionally via `j backup::prune`). Leading args are passed to
+# restic as global flags, so `run_forget -r "$remote_repo"` thins the remote too.
 # --group-by host: restic's default also groups by paths, so editing sources in
 # backup.yaml stranded the old path-set's snapshots forever. Host-only means
 # "keep 24 hourly snapshots of this machine", which is the intent.
 run_forget() {
-  restic_gentle forget \
+  restic_gentle "$@" forget \
     --group-by host \
     --tag automated \
     --keep-hourly {{ .backup.retention.keep_hourly }} \
@@ -94,22 +125,78 @@ do_backup() {
   fi
 }
 
-# Dispatch: no args (or `backup`) runs the configured backup below; any other
-# restic command is passed straight through, already pointed at the repo.
+# Push new snapshots to the offsite remote (Wasabi), then mirror the local
+# retention there. Best-effort: the local backup is the critical path and is
+# already done by the time we get here, so a remote hiccup must NOT fail the run;
+# it's surfaced via the healthchecks ping instead. Returns non-zero only when a
+# configured, credentialled remote genuinely fails to receive the copy.
+do_copy() {
+  [ -n "$remote_repo" ] || return 0
+  if [ ! -s "$config_dir/remote-env" ]; then
+    echo "restic-backup: remote-env absent; skipping offsite copy (add Wasabi creds to 1Password, then chezmoi apply)." >&2
+    return 0
+  fi
+  set -a
+  # shellcheck disable=SC1091
+  . "$config_dir/remote-env"
+  set +a
+
+  local rc=0
+  restic_gentle {{ if .backup.remote.limit_upload }}--limit-upload {{ .backup.remote.limit_upload }} {{ end }}-r "$remote_repo" copy \
+    --from-repo "$RESTIC_REPOSITORY" \
+    --from-password-file "$RESTIC_PASSWORD_FILE" || rc=$?
+  if [ "$rc" -ne 0 ]; then
+    echo "restic-backup: offsite copy to the remote failed (rc=$rc)." >&2
+    return "$rc"
+  fi
+
+  # Mirror local retention on the remote (forget only; prune stays manual). Same
+  # stale-lock retry as local. A forget failure warns but doesn't fail the copy -
+  # the snapshots are already offsite, which is what matters.
+  if ! run_forget -r "$remote_repo"; then
+    echo "restic-backup: remote retention failed; clearing stale locks and retrying." >&2
+    restic_gentle -r "$remote_repo" unlock || true
+    run_forget -r "$remote_repo" \
+      || echo "restic-backup: warning - remote retention (forget) failed; snapshots were still copied." >&2
+  fi
+}
+
+# Dispatch:
+#   (no args) | backup    -> the configured backup + offsite copy below
+#   copy                  -> just the offsite copy (the one-time seed / manual push)
+#   remote <args...>      -> any restic command against the remote repo, with its
+#                            S3 credentials loaded (e.g. `remote snapshots`)
+#   <anything else>       -> passed straight to restic against the local repo
+if [ "${1:-}" = "copy" ]; then
+  require_repo_mounted
+  exec 9>"$config_dir/.lock"
+  if ! flock -n 9; then
+    echo "restic-backup: a run is already in progress; skipping copy." >&2
+    exit 0
+  fi
+  do_copy
+  exit $?
+fi
+
+if [ "${1:-}" = "remote" ]; then
+  shift
+  [ -n "$remote_repo" ] || { echo "restic-backup: no remote configured (set backup.remote.bucket)." >&2; exit 1; }
+  [ -s "$config_dir/remote-env" ] || { echo "restic-backup: remote-env absent; add Wasabi creds to 1Password, then chezmoi apply." >&2; exit 1; }
+  set -a
+  # shellcheck disable=SC1091
+  . "$config_dir/remote-env"
+  set +a
+  exec restic -r "$remote_repo" "$@"
+fi
+
 if [ "$#" -gt 0 ] && [ "$1" != "backup" ]; then
   exec restic "$@"
 fi
 # Strip an optional leading `backup` so extra args (e.g. --dry-run) reach restic.
 if [ "${1:-}" = "backup" ]; then shift; fi
 
-# Refuse to back up if the repo's disk isn't mounted - otherwise we'd write to
-# the root filesystem, the very disk /extra exists to outlive.
-{{ if .backup.require_mounted -}}
-if ! mountpoint -q "{{ .backup.require_mounted }}"; then
-  echo "restic-backup: {{ .backup.require_mounted }} not mounted; refusing to back up to the root disk." >&2
-  exit 1
-fi
-{{ end -}}
+# Refuse to back up if the repo's disk isn't mounted.
+require_repo_mounted
 
 # The configured backup. Serialise so two runs never overlap; if one is already
 # going, skip quietly (exit 0) so the timer stays green.
@@ -122,13 +209,19 @@ fi
 rc=0
 do_backup "$@" || rc=$?
 
-# Report to healthchecks.io. A clean run pings success; a failed run, retention
-# not thinning, a lock left by a dead run, or a missing source pings .../fail
-# with the reason. No ping at all trips the dead-man's-switch, which is how a
-# dead timer or an off machine gets caught. The URL is a 1Password secret; until
-# it's set up the backup still runs, we just skip the ping.
+# Push the new snapshots offsite in the same run (same lock). Best-effort: a
+# failure here is reported to healthchecks but doesn't fail the local backup.
+copy_failed=0
+do_copy || copy_failed=$?
+
+# Report to healthchecks.io. A clean run pings success; a failed run, a failed
+# offsite copy, retention not thinning, a lock left by a dead run, or a missing
+# source pings .../fail with the reason. No ping at all trips the dead-man's-
+# switch, which is how a dead timer or an off machine gets caught. The URL is a
+# 1Password secret; until it's set up the backup still runs, we just skip the ping.
 problems=()
 [ "$rc" -ne 0 ] && problems+=("backup exited $rc")
+[ "$copy_failed" -ne 0 ] && problems+=("offsite copy to the remote failed")
 [ "$missing_sources" -gt 0 ] && problems+=("$missing_sources source(s) missing")
 
 count=$(restic_gentle --no-lock snapshots --json 2>/dev/null \
