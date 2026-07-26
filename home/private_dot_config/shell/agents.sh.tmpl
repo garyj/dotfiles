@@ -15,9 +15,9 @@ _agent_guard() {
 
 # Set up agent identity to lara@jarrel.io by default when running agents
 _as_agent() {
-  env GIT_CONFIG_COUNT=1 \
-      GIT_CONFIG_KEY_0=user.email \
-      GIT_CONFIG_VALUE_0={{ .agentEmail | quote }} \
+  env GIT_CONFIG_COUNT=2 \
+      GIT_CONFIG_KEY_0=user.email GIT_CONFIG_VALUE_0={{ .agentEmail | quote }} \
+      GIT_CONFIG_KEY_1=user.name  GIT_CONFIG_VALUE_1={{ .agentName | quote }} \
       "$@"
 }
 
