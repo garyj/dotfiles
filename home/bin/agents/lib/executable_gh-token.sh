@@ -1,22 +1,23 @@
 #!/usr/bin/env bash
-# gh-token <org>  ->  prints a short-lived GitHub App installation token for <org>.
-# Reads the "Agent Lara" App creds from 1Password via OP_SERVICE_ACCOUNT_TOKEN
-# (set by the agent launcher). The App private key never lands on disk. Tokens are
-# cached per-org in tmpfs and reused for ~50 min (they live 60), shared by the git
-# credential helper and the gh shim.
+# gh-token.sh <org>  ->  prints a short-lived GitHub App installation token for <org>.
+# Reads the App creds from 1Password via OP_SERVICE_ACCOUNT_TOKEN (set by identity.sh).
+# The App private key never lands on disk. Tokens are cached per-agent per-org in
+# tmpfs and reused for ~50 min (they live 60), shared by the credential helper and
+# the gh shim. Only ever runs inside an agent environment, so AGENT_* are set.
 set -euo pipefail
 
-ORG="${1:?usage: gh-token <org>}"
+ORG="${1:?usage: gh-token.sh <org>}"
+: "${AGENT_NAME:?gh-token.sh: must run inside an agent environment}"
+: "${AGENT_OP_ITEM:?gh-token.sh: must run inside an agent environment}"
 
-cache_dir="${XDG_RUNTIME_DIR:-/tmp}/lara-gh"
+cache_dir="${XDG_RUNTIME_DIR:-/tmp}/$AGENT_NAME-gh"
 cache="$cache_dir/$ORG"
 if [ -f "$cache" ] && [ "$(( $(date +%s) - $(stat -c %Y "$cache") ))" -lt 3000 ]; then
   cat "$cache"; exit 0
 fi
 
-ITEM='op://AGLara/Lara GitHub App'
-APP_ID="$(op read "$ITEM/app_id")"
-KEY="$(op read "$ITEM/private_key")"
+APP_ID="$(op read "$AGENT_OP_ITEM/app_id")"
+KEY="$(op read "$AGENT_OP_ITEM/private_key")"
 
 b64url() { openssl base64 -A | tr '+/' '-_' | tr -d '='; }
 
@@ -32,7 +33,7 @@ api() { curl -sf -H "Authorization: Bearer $jwt" -H "Accept: application/vnd.git
              -H "X-GitHub-Api-Version: 2022-11-28" "$@"; }
 
 id=$(api https://api.github.com/app/installations | jq -r --arg o "$ORG" '.[]|select(.account.login==$o)|.id')
-[ -n "$id" ] || { echo "Agent Lara App not installed on '$ORG'" >&2; exit 1; }
+[ -n "$id" ] || { echo "$AGENT_NAME: App not installed on '$ORG'" >&2; exit 1; }
 
 token=$(api -X POST "https://api.github.com/app/installations/$id/access_tokens" | jq -r '.token')
 mkdir -p "$cache_dir"; chmod 700 "$cache_dir"

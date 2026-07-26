@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# lara <cmd...>  --  run <cmd> under the "Lara" agent identity (agent-lara[bot]).
+#
+#   lara claude --dangerously-skip-permissions
+#   lara codex --dangerously-bypass-approvals-and-sandbox
+#   lara zsh                       # interactive shell as Lara, handy for poking
+#   lara gh pr create              # one-off, no agent involved
+#
+# Everything below is per-agent configuration; the shared machinery in lib/ reads
+# it. Adding another agent means copying this file and changing these five values.
+#
+set -euo pipefail
+
+AGENT_NAME=lara
+AGENT_OP_ITEM="op://AGLara/Lara GitHub App"
+AGENT_STATE_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/gj_agents/lara"
+AGENT_GIT_NAME="agent-lara[bot]"
+AGENT_GIT_EMAIL="309242030+agent-lara[bot]@users.noreply.github.com"
+export AGENT_NAME AGENT_OP_ITEM AGENT_STATE_DIR AGENT_GIT_NAME AGENT_GIT_EMAIL
+
+[ $# -gt 0 ] || { echo "usage: $AGENT_NAME <command> [args...]" >&2; exit 2; }
+
+# shellcheck source=lib/identity.sh
+. "$(dirname "$(readlink -f "$0")")/lib/identity.sh"
+
+exec "$@"

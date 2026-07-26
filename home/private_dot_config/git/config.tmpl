@@ -1,6 +1,8 @@
 [user]
 	name = {{ .name }}
 	email = {{ .email }}
+	# Both halves are materialized from 1Password at apply time; signing is stock
+	# ssh-keygen against the on-disk key, so it needs no desktop prompt.
 	signingkey = {{ .chezmoi.homeDir }}/.ssh/id_ed_25519_signing.pub
 
 [gpg]
@@ -8,7 +10,6 @@
 
 [gpg "ssh"]
 	allowedSignersFile = {{ .chezmoi.homeDir }}/.ssh/allowed_signers
-	program = "/opt/1Password/op-ssh-sign"
 
 [tag]
 	forceSignAnnotated = true
@@ -17,6 +18,11 @@
 [commit]
 	gpgsign = true
 	verbose = true
+
+# Every github.com remote goes over HTTPS, so auth runs through the gh credential
+# helper below; git@ remotes are rewritten on the fly.
+[url "https://github.com/"]
+	insteadOf = git@github.com:
 
 [help]
 	autoCorrect = immediate

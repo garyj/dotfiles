@@ -54,6 +54,11 @@ if [ -d "$HOME/.npm-global/bin" ]; then
   export PATH="$HOME/.npm-global/bin:$PATH"
 fi
 
+# Scoped agent identity wrappers (`lara claude ...`); see ~/bin/agents/SETUP.md.
+if [ -d "$HOME/bin/agents" ]; then
+  export PATH="$HOME/bin/agents:$PATH"
+fi
+
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init $current_shell)"
 fi

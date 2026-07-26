@@ -13,3 +13,12 @@ bin/installers
 .agents/skills/handoff
 .agents/skills/pickup
 .agents/skills/reagents
+
+# Lara's scripts live in ~/bin/agents; ~/.config/gj_agents/lara holds only
+# machine-local state (token, gh/).
+.config/gj_agents/lara/SETUP.md
+.config/gj_agents/lara/gh-token.sh
+.config/gj_agents/lara/git-credential-lara.sh
+.config/gj_agents/lara/verify-lara-op.sh
+.config/gj_agents/lara/bin/gh
+.config/gj_agents/lara/bin

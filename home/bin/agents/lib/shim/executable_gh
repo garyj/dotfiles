@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# gh shim: run the real gh as the agent's GitHub App, scoped to the current repo's
+# org, instead of your personal gh login. identity.sh puts this dir ahead of the
+# real gh on PATH and scrubs your gh tokens, so an agent's `gh pr create`, `gh api`
+# etc. act as the bot, never as you.
+#
+# This directory must contain nothing but this shim: everything in it shadows the
+# real binary of the same name for the whole agent process tree.
+set -euo pipefail
+
+self="$(cd "$(dirname "$(readlink -f "$0")")" && pwd)"   # .../agents/lib/shim
+lib="$(dirname "$self")"                                 # .../agents/lib
+
+# Find the real gh: the next gh on PATH that isn't this shim.
+real=""
+IFS=: read -ra dirs <<< "${PATH:-}"
+for d in "${dirs[@]}"; do
+  [ "$d" = "$self" ] && continue
+  if [ -x "$d/gh" ]; then real="$d/gh"; break; fi
+done
+[ -n "$real" ] || { echo "${AGENT_NAME:-agent} gh shim: real gh not found on PATH" >&2; exit 127; }
+
+# Mint an App token for the current repo's org (unless one is already set).
+# Assign before exporting so a failed mint aborts under `set -e`; `export x="$(...)"`
+# would swallow the exit status and leave GH_TOKEN empty.
+if [ -z "${GH_TOKEN:-}" ]; then
+  org="$(git config --get remote.origin.url 2>/dev/null | sed -nE 's#.*github\.com[:/]([^/]+)/.*#\1#p')"
+  if [ -n "$org" ]; then
+    token="$("$lib/gh-token.sh" "$org")"
+    export GH_TOKEN="$token"
+  fi
+fi
+
+exec "$real" "$@"
