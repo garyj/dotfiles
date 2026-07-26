@@ -1,28 +1,63 @@
 # AI coding agent launchers, sourced by ~/.commonrc for bash and zsh.
+#
+# YOLO launcher default to agent as "Lara", the agent-lara[bot] GitHub App,
+# via _agent_run: a subshell that swaps in a scoped creds
+#
+# Lara activates once the service-account token is present on this box:
+#   - ~/.config/gj_agents/lara/token        (materialized by chezmoi apply)
+# Provisioning runbook: ~/.config/gj_agents/lara/SETUP.md
 
-# Prevent these from starting in home dir just in case
-clyo() {
+# Refuse to run an agent straight from $HOME (blast-radius guard).
+_agent_guard() {
   if [ "$PWD" = "$HOME" ]; then
-    echo "Refusing to run claude in home directory"
+    echo "Refusing to run agents in home directory" >&2
     return 1
   fi
-  command claude --dangerously-skip-permissions "$@"
 }
+
+# Swap the current (sub)shell over to Lara's identity.
+_agent_identity() {
+  local cfg="${XDG_CONFIG_HOME:-$HOME/.config}/gj_agents/lara"
+  local token_file="$cfg/token"
+
+  if [ ! -r "$token_file" ]; then
+    echo "lara: identity not provisioned; running as you (see $cfg/SETUP.md)" >&2
+    return 0
+  fi
+
+  # Cut over to Lara's identity:
+  unset SSH_AUTH_SOCK GITHUB_TOKEN GH_TOKEN               # no 1Password SSH agent, no personal gh token
+  export OP_SERVICE_ACCOUNT_TOKEN="$(cat "$token_file")"  # op -> AGLara only, no desktop prompt
+  export GH_CONFIG_DIR="$cfg/gh"                          # gh config for Lara
+  export PATH="$cfg/bin:$PATH"                            # gh shim -> scoped App token (agent-lara[bot])
+
+  # Lara commits AND acts as agent-lara[bot],
+  # Commits are unsigned on purpose, a git-pushed commit can't verify as the bot;
+  # credential entries clear the gh helper, install Lara's, and rewrite git@ to https.
+  export GIT_CONFIG_COUNT=7
+  export GIT_CONFIG_KEY_0=user.name      GIT_CONFIG_VALUE_0="agent-lara[bot]"
+  export GIT_CONFIG_KEY_1=user.email     GIT_CONFIG_VALUE_1="309242030+agent-lara[bot]@users.noreply.github.com"
+  export GIT_CONFIG_KEY_2=commit.gpgsign GIT_CONFIG_VALUE_2=false
+  export GIT_CONFIG_KEY_3="credential.https://github.com.helper"      GIT_CONFIG_VALUE_3=""
+  export GIT_CONFIG_KEY_4="credential.https://github.com.helper"      GIT_CONFIG_VALUE_4="$cfg/git-credential-lara.sh"
+  export GIT_CONFIG_KEY_5="credential.https://github.com.useHttpPath" GIT_CONFIG_VALUE_5=true
+  export GIT_CONFIG_KEY_6="url.https://github.com/.insteadOf"         GIT_CONFIG_VALUE_6="git@github.com:"
+}
+
+# Guard + Lara identity + run, all inside a subshell so nothing leaks back to the calling
+# interactive shell. Anything exported first (e.g. AWS creds) flows through.
+_agent_run() {
+  _agent_guard || return 1
+  ( _agent_identity; "$@" )
+}
+
+clyo() { _agent_run command claude --dangerously-skip-permissions "$@"; }
 
 # Claude with max thinking tokens (31999) for very hard tasks
-clyomax() {
-  if [ "$PWD" = "$HOME" ]; then
-    echo "Refusing to run claude in home directory"
-    return 1
-  fi
-  MAX_THINKING_TOKENS=31999 command claude --dangerously-skip-permissions "$@"
-}
+clyomax() { _agent_run env MAX_THINKING_TOKENS=31999 claude --dangerously-skip-permissions "$@"; }
 
 claude-fireworks() {
-  if [ "$PWD" = "$HOME" ]; then
-    echo "Refusing to run claude in home directory"
-    return 1
-  fi
+  _agent_guard || return 1
 
   # Override the main model with -m/--model; everything else passes to claude.
   local model="accounts/fireworks/routers/glm-latest[1m]"
@@ -58,7 +93,8 @@ claude-fireworks() {
   # Tier -> Fireworks model map per docs.fireworks.ai/ecosystem/fireconnect/claude-code.
   # [1m] enables 1M context on the main model; it must NOT appear on subagent
   # (Claude Code forwards the subagent value verbatim to the provider).
-  ANTHROPIC_BASE_URL=https://api.fireworks.ai/inference \
+  _agent_run env \
+    ANTHROPIC_BASE_URL=https://api.fireworks.ai/inference \
     ANTHROPIC_API_KEY="$FIREWORKS_API_KEY" \
     ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY" \
     ANTHROPIC_DEFAULT_OPUS_MODEL="accounts/fireworks/routers/glm-latest[1m]" \
@@ -66,42 +102,37 @@ claude-fireworks() {
     ANTHROPIC_DEFAULT_HAIKU_MODEL="accounts/fireworks/models/deepseek-v4-flash" \
     CLAUDE_CODE_SUBAGENT_MODEL="accounts/fireworks/models/deepseek-v4-flash" \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-    command claude --model "$model" "${args[@]}"
+    claude --model "$model" "${args[@]}"
 }
 
 gmyo() {
-  if [ "$PWD" = "$HOME" ]; then
-    echo "Refusing to run gemini in home directory"
-    return 1
-  fi
   if [ -z "$GEMINI_API_KEY" ]; then
     echo "GEMINI_API_KEY is not in env (continuing)"
   fi
-  command gemini --yolo "$@"
+  _agent_run command gemini --yolo "$@"
 }
 
 cxyo() {
-  if [ "$PWD" = "$HOME" ]; then
-    echo "Refusing to run codex in home directory"
-    return 1
-  fi
   if [ -z "$OPENAI_API_KEY" ]; then
     echo "OPENAI_API_KEY is not in env (continuing)"
   fi
-  command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
+  _agent_run command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
 }
 
-# Copilot CLI with yolo mode
+# Copilot CLI with yolo mode.
+# copilot is not routed through _agent_run: it uses the Github Copilot license
 cpyo() {
-  if [ "$PWD" = "$HOME" ]; then
-    echo "Refusing to run copilot in home directory"
-    return 1
-  fi
+  _agent_guard || return 1
   if [ -z "$GITHUB_TOKEN" ]; then
     echo "GITHUB_TOKEN is not in env (continuing)"
   fi
   command copilot --yolo "$@"
 }
+
+# opencode and pi: add launchers here following the same shape once their yolo
+# flags are confirmed, e.g.:
+#   ocyo() { _agent_run command opencode <yolo-flag> "$@"; }
+#   piyo() { _agent_run command pi <yolo-flag> "$@"; }
 
 {{- if lookPath "agentsview" }}
 {{- $avPort := 9090 }}

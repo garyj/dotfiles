@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# gh shim: run the real gh as the Agent Lara App (agent-lara[bot]), scoped to the
+# current repo's org, instead of your personal gh login. _agent_identity puts this
+# dir ahead of the real gh on PATH and scrubs your gh tokens, so an agent's
+# `gh pr create`, `gh api`, etc. act as the bot, never as you.
+set -euo pipefail
+
+self="$(cd "$(dirname "$0")" && pwd)"     # ~/.config/gj_agents/lara/bin
+lara="$(dirname "$self")"                 # ~/.config/gj_agents/lara
+
+# Find the real gh: the next gh on PATH that isn't this shim.
+real=""
+IFS=: read -ra dirs <<< "${PATH:-}"
+for d in "${dirs[@]}"; do
+  [ "$d" = "$self" ] && continue
+  if [ -x "$d/gh" ]; then real="$d/gh"; break; fi
+done
+[ -n "$real" ] || { echo "lara gh shim: real gh not found on PATH" >&2; exit 127; }
+
+# Mint an App token for the current repo's org (unless one is already set).
+if [ -z "${GH_TOKEN:-}" ]; then
+  org="$(git config --get remote.origin.url 2>/dev/null | sed -nE 's#.*github\.com[:/]([^/]+)/.*#\1#p')"
+  [ -n "$org" ] && export GH_TOKEN="$("$lara/gh-token.sh" "$org")"
+fi
+
+exec "$real" "$@"
