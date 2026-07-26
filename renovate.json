@@ -42,6 +42,11 @@
         "@earendil-works/pi-coding-agent"
       ],
       "minimumReleaseAge": "1 day"
+    },
+    {
+      "description": "The custom manager tags every pin as semver; override to pep440 for PyPI deps, which don't follow semver.",
+      "matchDatasources": ["pypi"],
+      "versioning": "pep440"
     }
   ]
 }

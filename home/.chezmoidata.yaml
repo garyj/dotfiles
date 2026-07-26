@@ -20,6 +20,9 @@ tools:
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
   agent_browser: "0.32.3"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
   sentry: "0.38.0"         # renovate: datasource=github-releases depName=getsentry/cli
+  # agentsview installs via mise's pipx backend (PyPI), not GitHub releases; the
+  # pep440 packageRule in renovate.json applies to this pypi datasource.
+  agentsview: "0.38.1"     # renovate: datasource=pypi depName=agentsview
 
 # AI coding agents, all installed via mise and pinned so Renovate opens bump PRs
 # that the release-notes summarizer TLDRs before you merge (see renovate.json).

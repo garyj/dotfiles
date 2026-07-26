@@ -72,6 +72,7 @@ starship = ['latest']  # prompt (starship/starship)
 # same release as its skill external (.chezmoiexternal.toml.tmpl, worktrunk pattern).
 "npm:agent-browser" = ['{{ .tools.agent_browser }}']
 "npm:sentry" = ['{{ .tools.sentry }}']  # npm `sentry` (getsentry/cli); NOT aqua sentry-cli, which is a different tool
+"pipx:agentsview" = ['{{ .tools.agentsview }}']  # local web viewer for agent sessions (PyPI via pipx/uvx); drives the av* aliases in agents.sh
 
 # CLI tools, pinned in .chezmoidata.yaml (audited; bump via Renovate PRs, see renovate.json)
 dust = ['{{ .tools.dust }}']
