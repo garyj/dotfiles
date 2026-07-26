@@ -11,7 +11,7 @@ trap 'rm -rf "$tmpdir"' EXIT
 cd "$tmpdir"
 
 curl --proto '=https' --tlsv1.2 -LsSf \
-  https://github.com/atuinsh/atuin/releases/latest/download/atuin-installer.sh \
+  https://github.com/atuinsh/atuin/releases/download/v{{ .installers.atuin.version }}/atuin-installer.sh \
   | sh -s -- --no-modify-path
 
 {{end -}}

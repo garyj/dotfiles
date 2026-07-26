@@ -44,6 +44,13 @@ deb_apps:
   handy:  # cjpais/Handy, offline speech-to-text
     version: "0.9.4"  # renovate: datasource=github-releases depName=cjpais/Handy
 
+# Installed via the upstream cargo-dist installer (to ~/.atuin/bin), pinned so
+# the installer fetches an exact tagged release instead of `latest`. Bumping this
+# changes the install script's hash, so `chezmoi apply` reinstalls the new version.
+installers:
+  atuin:
+    version: "18.17.1"  # renovate: datasource=github-releases depName=atuinsh/atuin
+
 # Single static binaries pinned from GitHub releases, installed to /usr/local/bin.
 # Kept off apt to track upstream; off mise so the systemd backup timer finds them
 # on the default PATH. Renovate proposes version updates (see renovate.json).
