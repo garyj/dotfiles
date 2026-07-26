@@ -3,6 +3,8 @@
 # YOLO launcher default to agent as "Lara", the agent-lara[bot] GitHub App,
 # via _agent_run: a subshell that swaps in a scoped creds
 #
+# Pass "me" as the first arg to run as yourself instead of Lara (e.g. `clyo me`),
+#
 # Lara activates once the service-account token is present on this box:
 #   - ~/.config/gj_agents/lara/token        (materialized by chezmoi apply)
 # Provisioning runbook: ~/.config/gj_agents/lara/SETUP.md
@@ -44,20 +46,33 @@ _agent_identity() {
   export GIT_CONFIG_KEY_6="url.https://github.com/.insteadOf"         GIT_CONFIG_VALUE_6="git@github.com:"
 }
 
-# Guard + Lara identity + run, all inside a subshell so nothing leaks back to the calling
-# interactive shell. Anything exported first (e.g. AWS creds) flows through.
+# _agent_run <id> <cmd...>: guard, then run <cmd> in a subshell so nothing leaks
+# back to the calling interactive shell. Anything exported first (e.g. AWS creds)
+# flows through. <id> "me" keeps personal identity; anything else swaps in Lara.
 _agent_run() {
   _agent_guard || return 1
-  ( _agent_identity; "$@" )
+  local id="$1"; shift
+  if [ "$id" = me ]; then
+    ( "$@" )
+  else
+    ( _agent_identity; "$@" )
+  fi
 }
 
-clyo() { _agent_run command claude --dangerously-skip-permissions "$@"; }
+clyo() {
+  local id=lara; [ "$1" = me ] && { id=me; shift; }
+  _agent_run "$id" command claude --dangerously-skip-permissions "$@"
+}
 
 # Claude with max thinking tokens (31999) for very hard tasks
-clyomax() { _agent_run env MAX_THINKING_TOKENS=31999 claude --dangerously-skip-permissions "$@"; }
+clyomax() {
+  local id=lara; [ "$1" = me ] && { id=me; shift; }
+  _agent_run "$id" env MAX_THINKING_TOKENS=31999 claude --dangerously-skip-permissions "$@"
+}
 
 claude-fireworks() {
   _agent_guard || return 1
+  local id=lara; [ "$1" = me ] && { id=me; shift; }
 
   # Override the main model with -m/--model; everything else passes to claude.
   local model="accounts/fireworks/routers/glm-latest[1m]"
@@ -93,7 +108,7 @@ claude-fireworks() {
   # Tier -> Fireworks model map per docs.fireworks.ai/ecosystem/fireconnect/claude-code.
   # [1m] enables 1M context on the main model; it must NOT appear on subagent
   # (Claude Code forwards the subagent value verbatim to the provider).
-  _agent_run env \
+  _agent_run "$id" env \
     ANTHROPIC_BASE_URL=https://api.fireworks.ai/inference \
     ANTHROPIC_API_KEY="$FIREWORKS_API_KEY" \
     ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY" \
@@ -106,17 +121,19 @@ claude-fireworks() {
 }
 
 gmyo() {
+  local id=lara; [ "$1" = me ] && { id=me; shift; }
   if [ -z "$GEMINI_API_KEY" ]; then
     echo "GEMINI_API_KEY is not in env (continuing)"
   fi
-  _agent_run command gemini --yolo "$@"
+  _agent_run "$id" command gemini --yolo "$@"
 }
 
 cxyo() {
+  local id=lara; [ "$1" = me ] && { id=me; shift; }
   if [ -z "$OPENAI_API_KEY" ]; then
     echo "OPENAI_API_KEY is not in env (continuing)"
   fi
-  _agent_run command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
+  _agent_run "$id" command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
 }
 
 # Copilot CLI with yolo mode.
@@ -131,8 +148,8 @@ cpyo() {
 
 # opencode and pi: add launchers here following the same shape once their yolo
 # flags are confirmed, e.g.:
-#   ocyo() { _agent_run command opencode <yolo-flag> "$@"; }
-#   piyo() { _agent_run command pi <yolo-flag> "$@"; }
+#   ocyo() { local id=lara; [ "$1" = me ] && { id=me; shift; }; _agent_run "$id" command opencode <yolo-flag> "$@"; }
+#   piyo() { local id=lara; [ "$1" = me ] && { id=me; shift; }; _agent_run "$id" command pi <yolo-flag> "$@"; }
 
 {{- if lookPath "agentsview" }}
 {{- $avPort := 9090 }}
