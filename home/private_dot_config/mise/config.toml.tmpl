@@ -85,6 +85,27 @@ prek = ['{{ .tools.prek }}']  # pre-commit reimplemented in Rust (j178); drop-in
 # <cmd>` by hand (e.g. `rtk git status`, `rtk gain`) to feel out the compression.
 "aqua:rtk-ai/rtk" = ['{{ .tools.rtk }}']
 
+# Python CLI tools from PyPI, via the pipx backend (uvx, per [settings.pipx]).
+# Moved off `uv tool install`, which never upgraded a tool once it was present,
+# so versions silently froze at whatever first landed on each machine. Floating
+# here is safe: minimum_release_age bakes every release and the lockfile records
+# what resolved, so they move only on `mise upgrade`. Tools needing extra
+# packages use uvx_args, the equivalent of `uv tool install --with`.
+# poetry and pre-commit were dropped in this move: poetry was unused for ~11
+# months, and prek (above) replaced pre-commit.
+"pipx:djlint" = ['latest']
+"pipx:ipython" = ['latest']
+"pipx:jupyter-core" = { version = 'latest', uvx_args = '--with jupyter' }
+"pipx:mcp-scan" = ['latest']
+"pipx:mitmproxy" = ['latest']
+"pipx:mkdocs" = { version = 'latest', uvx_args = '--with mkdocs-material' }
+"pipx:nbconvert" = ['latest']
+"pipx:openai-whisper" = ['latest']  # provides `whisper`; pulls torch, so upgrades are a large download
+"pipx:pyright" = ['latest']
+# Pinned, not floated: Simon Willison ships llm often and the release notes are
+# worth reading, so bumps arrive as Renovate PRs instead of landing unseen.
+"pipx:llm" = { version = '{{ .tools.llm }}', uvx_args = '--with llm-anthropic --with llm-perplexity --with llm-jq' }
+
 [tasks.bootstrap]
 description = "Bootstrap our CLI"
 run = "mise upgrade"

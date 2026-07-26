@@ -1,10 +1,20 @@
 #!/usr/bin/env bash
 
-# Install uv into ~/.local/bin and do not modify our bash/zsh rc files.
+# Install uv and the Python interpreters. The Python CLI tools that used to be
+# installed here now live in mise's pipx backend (private_dot_config/mise);
+# this script only provides the runtime they are built against.
+#
+# uv itself stays out of mise on purpose: this is a run_onchange_before_ script,
+# so it runs before mise has installed anything, and mise's pipx backend needs uv
+# to already exist. Pinned in .chezmoidata.yaml and fetched from a tagged release
+# instead of the rolling astral.sh installer, so a new machine gets a known version.
+#
 # Pin UV_INSTALL_DIR so the installer uses a normalized path: with XDG_DATA_HOME
 # set but XDG_BIN_HOME unset, uv would otherwise derive $XDG_DATA_HOME/../bin and
 # its literal string shadow-check would falsely flag uv/uvx as shadowed in PATH.
-curl -LsSf https://astral.sh/uv/install.sh | env INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR="$HOME/.local/bin" sh
+curl --proto '=https' --tlsv1.2 -LsSf \
+  https://github.com/astral-sh/uv/releases/download/{{ .installers.uv.version }}/uv-installer.sh \
+  | env INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR="$HOME/.local/bin" sh
 
 DEFAULT_PYTHON_VERSION={{- .langs.python }} # Set the default Python version
 
@@ -13,17 +23,3 @@ $HOME/.local/bin/uv python install 3.14
 $HOME/.local/bin/uv python install 3.15 # pre-release; resolves to latest 3.15 beta until stable ships
 
 $HOME/.local/bin/uv python install "$DEFAULT_PYTHON_VERSION" --default --preview
-
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" "poetry<2" --with poetry-plugin-export
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" djlint
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" ipython
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" jupyter-core --with jupyter
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" llm --with llm-anthropic --with llm-perplexity --with llm-jq
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" mitmproxy
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" mcp-scan
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" mkdocs --with mkdocs-material
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" nbconvert
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" openai-whisper
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" pre-commit --with pre-commit-uv
-$HOME/.local/bin/uv tool install --python="$DEFAULT_PYTHON_VERSION" pyright
-
