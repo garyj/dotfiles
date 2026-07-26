@@ -1,5 +1,6 @@
 name: Gary Jarrel
 email: gary@jarrel.com.au
+agentEmail: lara@jarrel.io  # must stay a verified email on the GitHub account
 githubUser: garyj
 langs:
   python: "3.14"

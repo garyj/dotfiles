@@ -13,15 +13,23 @@ _agent_guard() {
   fi
 }
 
+# Set up agent identity to lara@jarrel.io by default when running agents
+_as_agent() {
+  env GIT_CONFIG_COUNT=1 \
+      GIT_CONFIG_KEY_0=user.email \
+      GIT_CONFIG_VALUE_0={{ .agentEmail | quote }} \
+      "$@"
+}
+
 clyo() {
   _agent_guard || return 1
-  command claude --dangerously-skip-permissions "$@"
+  _as_agent claude --dangerously-skip-permissions "$@"
 }
 
 # Claude with max thinking tokens (31999) for very hard tasks
 clyomax() {
   _agent_guard || return 1
-  MAX_THINKING_TOKENS=31999 command claude --dangerously-skip-permissions "$@"
+  _as_agent MAX_THINKING_TOKENS=31999 claude --dangerously-skip-permissions "$@"
 }
 
 claude-fireworks() {
@@ -61,7 +69,8 @@ claude-fireworks() {
   # Tier -> Fireworks model map per docs.fireworks.ai/ecosystem/fireconnect/claude-code.
   # [1m] enables 1M context on the main model; it must NOT appear on subagent
   # (Claude Code forwards the subagent value verbatim to the provider).
-  ANTHROPIC_BASE_URL=https://api.fireworks.ai/inference \
+  _as_agent \
+    ANTHROPIC_BASE_URL=https://api.fireworks.ai/inference \
     ANTHROPIC_API_KEY="$FIREWORKS_API_KEY" \
     ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY" \
     ANTHROPIC_DEFAULT_OPUS_MODEL="accounts/fireworks/routers/glm-latest[1m]" \
@@ -69,7 +78,7 @@ claude-fireworks() {
     ANTHROPIC_DEFAULT_HAIKU_MODEL="accounts/fireworks/models/deepseek-v4-flash" \
     CLAUDE_CODE_SUBAGENT_MODEL="accounts/fireworks/models/deepseek-v4-flash" \
     CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 \
-    command claude --model "$model" "${args[@]}"
+    claude --model "$model" "${args[@]}"
 }
 
 gmyo() {
@@ -77,7 +86,7 @@ gmyo() {
   if [ -z "$GEMINI_API_KEY" ]; then
     echo "GEMINI_API_KEY is not in env (continuing)"
   fi
-  command gemini --yolo "$@"
+  _as_agent gemini --yolo "$@"
 }
 
 cxyo() {
@@ -85,7 +94,7 @@ cxyo() {
   if [ -z "$OPENAI_API_KEY" ]; then
     echo "OPENAI_API_KEY is not in env (continuing)"
   fi
-  command codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
+  _as_agent codex --dangerously-bypass-approvals-and-sandbox --enable collaboration_modes "$@"
 }
 
 # Copilot CLI with yolo mode
@@ -94,13 +103,13 @@ cpyo() {
   if [ -z "$GITHUB_TOKEN" ]; then
     echo "GITHUB_TOKEN is not in env (continuing)"
   fi
-  command copilot --yolo "$@"
+  _as_agent copilot --yolo "$@"
 }
 
 # opencode and pi: add launchers here following the same shape once their yolo
 # flags are confirmed, e.g.:
-#   ocyo() { _agent_guard || return 1; command opencode <yolo-flag> "$@"; }
-#   piyo() { _agent_guard || return 1; command pi <yolo-flag> "$@"; }
+#   ocyo() { _agent_guard || return 1; _as_agent opencode <yolo-flag> "$@"; }
+#   piyo() { _agent_guard || return 1; _as_agent pi <yolo-flag> "$@"; }
 
 {{- if lookPath "agentsview" }}
 {{- $avPort := 9090 }}
