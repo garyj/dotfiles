@@ -28,3 +28,7 @@ completions:
     cp "$HOME/.local/share/zsh/site-functions/_sentry" "$HOME/.oh-my-zsh/completions/_sentry"
     chezmoi apply --force "$HOME/.zshrc"
     echo "✓ Installed _sentry to ~/.oh-my-zsh/completions/ (restart shell to pick up)"
+
+# sentry-cli is pinned in .chezmoidata.yaml (npm:sentry) - bump it there
+@upgrade:
+    echo "sentry-cli is pinned in .chezmoidata.yaml (npm:sentry); bump the version there"
