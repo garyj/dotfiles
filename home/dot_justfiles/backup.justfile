@@ -32,10 +32,9 @@ import "_common.justfile"
 @snapshots:
     restic-backup snapshots
 
-# restore ONE file from the local backup to /tmp, then diff it against live.
-# defaults to ~/.zshrc; pass any path to restore or test another file.
 #   j backup::restore-file
 #   j backup::restore-file ~/dev/foo/config.toml
+# restore ONE file from the local backup to /tmp, then diff it against live
 [group('local')]
 restore-file file="~/.zshrc":
     #!/usr/bin/env bash
@@ -84,10 +83,9 @@ restore-file file="~/.zshrc":
 @remote-snapshots:
     restic-backup remote snapshots
 
-# restore ONE file from the OFFSITE (Wasabi) backup to /tmp, then diff vs live.
-# defaults to ~/.zshrc; pass any path. Proves the offsite copy is restorable.
 #   j backup::remote-restore-file
 #   j backup::remote-restore-file ~/dev/foo/config.toml
+# restore ONE file from the OFFSITE (Wasabi) backup to /tmp, then diff vs live
 [group('offsite')]
 remote-restore-file file="~/.zshrc":
     #!/usr/bin/env bash
@@ -108,8 +106,8 @@ remote-restore-file file="~/.zshrc":
       echo "no live file at $abs - copy it back with:  cp '$got' '$abs'"
     fi
 
-# restore from the offsite remote with raw restic args (advanced)
 # e.g. j backup::remote-restore "latest --target /tmp/r --include ~/x"
+# restore from the offsite remote with raw restic args (advanced)
 [group('offsite')]
 @remote-restore *args:
     restic-backup remote restore {{ args }}

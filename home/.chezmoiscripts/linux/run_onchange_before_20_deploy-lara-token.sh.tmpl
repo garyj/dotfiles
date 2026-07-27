@@ -3,8 +3,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Materialize Lara's 1Password service-account token to a 0600 file so the agent
-# launchers in agents.sh can run as Lara without touching personal 1Password.
+# Materializes Lara's 1Password service-account token to a 0600 file that
+# ~/bin/agents/lara points AGENT_STATE_DIR at, and identity.sh reads from there.
 
 TOKEN_DIR="{{ .chezmoi.homeDir }}/.config/gj_agents/lara"
 TOKEN_PATH="$TOKEN_DIR/token"

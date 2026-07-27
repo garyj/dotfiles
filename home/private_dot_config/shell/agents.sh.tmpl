@@ -13,7 +13,7 @@ _agent_guard() {
   fi
 }
 
-# Set up agent identity to lara@jarrel.io by default when running agents
+# Agent commits carry a distinct author so `git log --author=` can separate them.
 _as_agent() {
   env GIT_CONFIG_COUNT=2 \
       GIT_CONFIG_KEY_0=user.email GIT_CONFIG_VALUE_0={{ .agentEmail | quote }} \
