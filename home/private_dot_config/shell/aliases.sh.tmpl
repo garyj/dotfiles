@@ -116,6 +116,10 @@ alias mi=mise
 alias eee="exec $SHELL"
 alias e="exit"
 alias xit='exit'
+# bash rejects '/' in an alias name and errors out at startup.
+if [ -n "$ZSH_VERSION" ]; then
+  alias /e="exit"
+fi
 alias t=tmux
 
 {{- if lookPath "nemo" }}
