@@ -76,6 +76,9 @@ pgadminstop() {
 #}
 
 mongostart() {
+  # The image entrypoint refuses to start on kernel 6.19+ over a tcmalloc/rseq bug; running
+  # mongod directly skips that check, so --bind_ip_all must be passed as the entrypoint would.
+  # https://www.mongodb.com/community/forums/t/mongodb-8-x-and-linux-kernel-6-19/337547
   docker run --rm \
     --name mongo \
     --hostname mongo \
@@ -83,11 +86,13 @@ mongostart() {
     --ulimit nofile=64000:64000 \
     -p 27017:27017 \
     -v $HOME/.docker_servers_data/mongo:/data/db \
-    -d mongodb/mongodb-community-server:{{ .langs.mongodb }}-ubuntu2204
+    --entrypoint mongod \
+    -d mongodb/mongodb-community-server:{{ .langs.mongodb }}-ubuntu2204 \
+    --bind_ip_all
 }
 
 mongostop() {
-  docker stop $(docker ps -q --filter ancestor=mongodb/mongodb-community-server)
+  docker stop $(docker ps -q --filter name=^mongo$)
 }
 
 # Container for MongoDB Shell Access
