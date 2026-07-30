@@ -59,7 +59,7 @@ deb_apps:
 # to exist before mise itself runs. atuin tags are `vX.Y.Z`, uv tags are bare.
 installers:
   atuin:
-    version: "18.17.1"  # renovate: datasource=github-releases depName=atuinsh/atuin
+    version: "18.18.0"  # renovate: datasource=github-releases depName=atuinsh/atuin
   uv:
     version: "0.11.32"  # renovate: datasource=github-releases depName=astral-sh/uv
 
