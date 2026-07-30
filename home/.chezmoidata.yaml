@@ -25,7 +25,7 @@ tools:
   # These two install via mise's pipx backend (PyPI), not GitHub releases; the
   # pep440 packageRule in renovate.json applies to the pypi datasource. llm is
   # pinned rather than floated so its frequent releases arrive as PRs to read.
-  agentsview: "0.38.1"     # renovate: datasource=pypi depName=agentsview
+  agentsview: "0.39.0"     # renovate: datasource=pypi depName=agentsview
   llm: "0.31.1"            # renovate: datasource=pypi depName=llm
 
 # AI coding agents, all installed via mise and pinned so Renovate opens bump PRs
