@@ -61,7 +61,7 @@ installers:
   atuin:
     version: "18.18.1"  # renovate: datasource=github-releases depName=atuinsh/atuin
   uv:
-    version: "0.11.32"  # renovate: datasource=github-releases depName=astral-sh/uv
+    version: "0.12.0"  # renovate: datasource=github-releases depName=astral-sh/uv
 
 # Single static binaries pinned from GitHub releases, installed to /usr/local/bin.
 # Kept off apt to track upstream; off mise so the systemd backup timer finds them
