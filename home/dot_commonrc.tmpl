@@ -100,6 +100,12 @@ if command -v try &> /dev/null; then
   eval "$(try init ~/tries)"
 fi
 
+# prek emits a clap dynamic completer that shells out to the binary per keypress,
+# so it cannot live as a static _prek in fpath like the other completions.
+if command -v prek > /dev/null 2>&1; then
+  eval "$(COMPLETE=$current_shell prek)"
+fi
+
 export CURRENT_SHELL=$current_shell
 
 {{ $argComplete := "register-python-argcomplete3" }}
