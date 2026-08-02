@@ -60,11 +60,17 @@ mpup name="":
 [script("bash")]
 plup *plugin:
     if [ -z "{{ plugin }}" ]; then
-        plugins=$(jq -r '.plugins | keys[]' ~/.claude/plugins/installed_plugins.json 2>/dev/null)
-        for p in $plugins; do
-            echo "Updating plugin: $p"
-            command claude plugin update "$p" || true
-        done
+        # project/local-scoped plugins must be updated from their project dir with --scope
+        jq -r '.plugins | to_entries[] | .key as $name | .value[] | [$name, .scope, .projectPath // ""] | @tsv' ~/.claude/plugins/installed_plugins.json 2>/dev/null |
+            while IFS=$'\t' read -r name scope path; do
+                if [ "$scope" = "user" ]; then
+                    echo "Updating plugin: $name"
+                    command claude plugin update "$name" || true
+                else
+                    echo "Skipping $name ($scope scope), update it with:"
+                    echo "  cd $path && claude plugin update --scope $scope $name"
+                fi
+            done
     else
         command claude plugin update {{ plugin }}
     fi
