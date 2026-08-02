@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Personal wrapper for the openclaw autoreview skill (~/.agents/skills/autoreview).
+# Defaults tuned for solo repos: P1 threshold instead of upstream's P0-only, and an
+# explicit branch base so the pre-secret-gate `gh pr view` path never runs.
+# trufflehog (the skill's fail-closed secret gate) is provided by mise.
+set -euo pipefail
+
+SKILL="$HOME/.agents/skills/autoreview/scripts/autoreview"
+
+have_priority=0
+have_target=0
+for a in "$@"; do
+  case "$a" in
+    --max-priority|--max-priority=*) have_priority=1 ;;
+    --mode|--mode=*|--base|--base=*|--commit|--commit=*) have_target=1 ;;
+  esac
+done
+
+args=("$@")
+if [[ $have_priority -eq 0 ]]; then
+  args+=(--max-priority P1)
+fi
+if [[ $have_target -eq 0 ]]; then
+  default_branch=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/master)
+  args+=(--mode branch --base "$default_branch")
+fi
+
+exec "$SKILL" "${args[@]}"
