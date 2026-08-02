@@ -20,7 +20,6 @@ deb="${tmp}/handy_${version}_amd64.deb"
 echo "Downloading Handy ${version}..."
 curl -fsSL -o "$deb" "$url"
 
-# apt resolves and installs the .deb's declared dependencies from the configured repos.
 sudo apt-get update
 sudo apt-get install -y "$deb"
 

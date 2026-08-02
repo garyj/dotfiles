@@ -31,7 +31,6 @@ confirm-close-surface = false
 quit-after-last-window-closed = false
 shell-integration-features = ssh-env,ssh-terminfo,cursor,sudo,title
 
-# Inverting seems to work better with Solarized
 selection-invert-fg-bg = true
 
 shell-integration = zsh
@@ -62,7 +61,6 @@ keybind = shift+enter=text:\x1b\r
 keybind = ctrl+enter=text:\r
 keybind = f1=equalize_splits
 
-# default is 10000000 (so below in 9 time increase)
 scrollback-limit = 90000000
 
 unfocused-split-opacity = 0.95

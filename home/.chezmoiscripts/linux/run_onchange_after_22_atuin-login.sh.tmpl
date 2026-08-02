@@ -10,7 +10,7 @@ export PATH="$HOME/.atuin/bin:$PATH"
 # canonical credentials stored in 1Password. Idempotent: exits early if a
 # valid session already exists and the local store verifies.
 #
-# Ordering: runs after 21_deploy-atuin-key so the encryption key is already
+# Ordering: runs after deploy-atuin-key so the encryption key is already
 # on disk when `atuin login -k` is called.
 
 # Fast path: if we can see a synced account and the store decrypts, no action.

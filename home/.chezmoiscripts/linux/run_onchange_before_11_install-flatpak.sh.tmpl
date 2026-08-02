@@ -4,8 +4,7 @@
 
 # Install flatpak, add Flathub as a per-user remote, and install a curated
 # list of publisher-verified apps. Each ID is confirmed verified via
-# Flathub's /api/v2/verification/<id>/status endpoint. See
-# tmp/docs/migrate-off-snap.md for the migration rationale.
+# Flathub's /api/v2/verification/<id>/status endpoint.
 #
 # Adding a new app: append its ID to the install args. The run_onchange_
 # hash changes, chezmoi re-runs, flatpak skips already-installed refs.

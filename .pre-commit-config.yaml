@@ -1,7 +1,5 @@
-# Pre-commit gate, run by prek (a Rust reimplementation of pre-commit; see the
-# prek skill). `apm` and `prek` come from the global mise config, so there is
-# no repo-level tool install. Register the git hook once per clone:
-#   prek install     # writes .git/hooks/pre-commit
+# Pre-commit gate, run by prek. `apm` and `prek` come from the global mise
+# config, so there is no repo-level tool install.
 #
 # Scans every staged text file (not just apm-managed packages) for hidden
 # Unicode (tag chars, bidi overrides, variation selectors, zero-width) used to

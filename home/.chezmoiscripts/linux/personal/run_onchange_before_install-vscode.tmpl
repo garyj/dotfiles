@@ -6,14 +6,12 @@
 # Write the same vscode.sources + microsoft.gpg the code .deb self-manages, so
 # our definition and the package's auto-configured one are one and the same
 # file and never disagree on Signed-By - the apt-breaking conflict in
-# microsoft/vscode#189274. Idempotent, safe to re-run.
+# microsoft/vscode#189274.
 
 curl -sS https://packages.microsoft.com/keys/microsoft.asc | \
 	gpg --dearmor | sudo tee /usr/share/keyrings/microsoft.gpg > /dev/null
 
-# Remove the legacy single-line list the old installer wrote (keyring
-# packages.microsoft.gpg). Two files for one repo with different Signed-By is
-# exactly what breaks apt; we and the code .deb both use vscode.sources now.
+# A leftover vscode.list would be a second, disagreeing Signed-By definition.
 sudo rm -f /etc/apt/sources.list.d/vscode.list
 
 sudo tee /etc/apt/sources.list.d/vscode.sources > /dev/null <<'EOF'

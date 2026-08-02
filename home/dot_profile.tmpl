@@ -1,4 +1,3 @@
-# List of directories to check and add to PATH
 # REMEMBER the order is reversed, so the last directory in the list will be added first
 paths=(
   "/usr/sbin"
@@ -13,7 +12,6 @@ paths=(
   "$HOME/.cache/.bun/bin"
 )
 
-# Loop through each path and add to PATH if it exists and isn't already included
 for dir in "${paths[@]}"; do
   if [ -d "$dir" ] && [[ ":$PATH:" != *":$dir:"* ]]; then
     export PATH="$dir:$PATH"

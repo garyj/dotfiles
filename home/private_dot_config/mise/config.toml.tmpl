@@ -58,10 +58,9 @@ trufflehog = ['latest']  # secret scanner; pre-review gate for the autoreview sk
 "github:yt-dlp/yt-dlp" = { version = "latest", bin = "yt-dlp", minimum_release_age = "3d" }  # Downloader
 
 # AI coding agents, pinned in .chezmoidata.yaml (bump via Renovate PRs + TLDR).
-# Moved off ad-hoc `npm install -g` / the claude.ai curl installer; the justfiles
-# keep only auth/plugin/config recipes. aqua backends verify checksum +
-# attestation; gemini and pi are npm-only. claude is pinned here so it no longer
-# self-updates (DISABLE_AUTOUPDATER in ~/.claude/settings.json).
+# aqua backends verify checksum + attestation; gemini and pi are npm-only.
+# The claude pin only holds while DISABLE_AUTOUPDATER stays set in
+# ~/.claude/settings.json.
 "aqua:anthropics/claude-code" = ['{{ .coding_agents.claude }}']
 "aqua:openai/codex" = ['{{ .coding_agents.codex }}']
 "aqua:github/copilot-cli" = ['{{ .coding_agents.copilot }}']
@@ -69,8 +68,7 @@ trufflehog = ['latest']  # secret scanner; pre-review gate for the autoreview sk
 "npm:@google/gemini-cli" = ['{{ .coding_agents.gemini }}']
 "npm:@earendil-works/pi-coding-agent" = ['{{ .coding_agents.pi }}']
 
-# Agent tooling (not agents themselves), pinned so each binary installs from the
-# same release as its skill external (.chezmoiexternal.toml.tmpl, worktrunk pattern).
+# Agent tooling (not agents themselves), pinned in .chezmoidata.yaml.
 "npm:agent-browser" = ['{{ .tools.agent_browser }}']
 "npm:sentry" = ['{{ .tools.sentry }}']  # npm `sentry` (getsentry/cli); NOT aqua sentry-cli, which is a different tool
 "pipx:agentsview" = ['{{ .tools.agentsview }}']  # local web viewer for agent sessions (PyPI via pipx/uvx); drives the av* aliases in agents.sh
@@ -81,19 +79,15 @@ worktrunk = ['{{ .tools.worktrunk }}']
 ast-grep = ['{{ .tools.ast_grep }}']
 prek = ['{{ .tools.prek }}']  # pre-commit reimplemented in Rust (j178); drop-in pre-commit replacement
 "github:microsoft/apm" = { version = '{{ .tools.apm }}' }  # Agent Package Manager (Microsoft)
-# RTK (Rust Token Killer): local CLI-output compressor. On MANUAL trial only for
-# now; the auto-rewrite Claude Code hook is deliberately NOT wired yet. Run `rtk
-# <cmd>` by hand (e.g. `rtk git status`, `rtk gain`) to feel out the compression.
+# RTK (Rust Token Killer): local CLI-output compressor, run by hand (`rtk git
+# status`, `rtk gain`). Manual-trial stage: do not wire the auto-rewrite Claude
+# Code hook until the compression has proven itself.
 "aqua:rtk-ai/rtk" = ['{{ .tools.rtk }}']
 
 # Python CLI tools from PyPI, via the pipx backend (uvx, per [settings.pipx]).
-# Moved off `uv tool install`, which never upgraded a tool once it was present,
-# so versions silently froze at whatever first landed on each machine. Floating
-# here is safe: minimum_release_age bakes every release and the lockfile records
-# what resolved, so they move only on `mise upgrade`. Tools needing extra
-# packages use uvx_args, the equivalent of `uv tool install --with`.
-# poetry and pre-commit were dropped in this move: poetry was unused for ~11
-# months, and prek (above) replaced pre-commit.
+# Floating at 'latest' is safe here: minimum_release_age bakes every release and
+# the lockfile records what resolved, so they move only on `mise upgrade`. Tools
+# needing extra packages use uvx_args, the equivalent of `uv tool install --with`.
 "pipx:djlint" = ['latest']
 "pipx:ipython" = ['latest']
 "pipx:jupyter-core" = { version = 'latest', uvx_args = '--with jupyter' }

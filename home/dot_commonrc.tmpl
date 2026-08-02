@@ -5,7 +5,6 @@
 
 export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
 
-# Export .email into USER_EMAIL to be used in scripts
 export USER_EMAIL={{ .email }}
 export GITHUB_USER={{ .githubUser }}
 
@@ -26,12 +25,11 @@ if [ -d "$HOME/.config/shell" ]; then
   done
 fi
 
-# check if .private_alias exists and then source those (machine-local, unmanaged)
+# machine-local, unmanaged
 if [ -f $HOME/.private_alias ]; then
   source $HOME/.private_alias
 fi
 
-# Determine the current shell
 if [ -n "$ZSH_VERSION" ]; then
     current_shell=zsh
 elif [ -n "$BASH_VERSION" ]; then
@@ -47,9 +45,7 @@ if command -v mise > /dev/null 2>&1; then
   eval "$(mise activate $current_shell)";
 fi
 
-# mise activate prepends the active node's bin to PATH, which can shadow
-# ~/.npm-global/bin (set via NPM_CONFIG_PREFIX in .profile). Re-prepend here
-# so freshly-installed npm globals always beat stale copies under mise node dirs.
+# Re-prepend ~/.npm-global/bin so npm globals beat stale copies under mise node dirs (see .profile).
 if [ -d "$HOME/.npm-global/bin" ]; then
   export PATH="$HOME/.npm-global/bin:$PATH"
 fi
@@ -94,7 +90,7 @@ if [[ -n "$ZSH_VERSION" ]]; then
 elif [[ -n "$BASH_VERSION" ]]; then
   PROMPT_COMMAND="_auto_venv${PROMPT_COMMAND:+;$PROMPT_COMMAND}"
 fi
-_auto_venv  # Run on shell start
+_auto_venv
 
 if command -v try &> /dev/null; then
   eval "$(try init ~/tries)"
@@ -112,16 +108,6 @@ export CURRENT_SHELL=$current_shell
 {{- if lookPath "register-python-argcomplete" }}
 {{ $argComplete = "register-python-argcomplete" }}
 {{- end }}
-
-
-# Poetry by default will use the currently active python version when creating virtualenvs
-# instead of using the version of Python that poetry was installed with
-# without this setting was getting errors on MacOS as described in:
-# https://github.com/python-poetry/poetry/issues/7158
-# https://python-poetry.org/docs/configuration#virtualenvsprefer-active-python-experimental
-export POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true
-export POETRY_VIRTUALENVS_IN_PROJECT=true
-
 
 # Disable the AWS_PAGER to prevent the aws cli from paging output: OMG annoying
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html

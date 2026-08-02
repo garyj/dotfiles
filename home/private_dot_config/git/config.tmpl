@@ -20,7 +20,7 @@
 	verbose = true
 
 # Every github.com remote goes over HTTPS, so auth runs through the gh credential
-# helper below; git@ remotes are rewritten on the fly.
+# helper below.
 [url "https://github.com/"]
 	insteadOf = git@github.com:
 
@@ -29,7 +29,6 @@
 
 [alias]
 
-	# resolves to main or master depending on the repo
 	default-branch = "!git rev-parse --verify refs/heads/main >/dev/null 2>&1 && echo main || echo master"
 
 	ll 	= log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat

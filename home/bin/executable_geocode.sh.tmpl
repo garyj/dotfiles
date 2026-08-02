@@ -1,13 +1,10 @@
 #!/usr/bin/env bash
 
 # This script is used to geocode an address using the Google Maps Geocoding API.
-# It takes an address as an argument, sends a request to the API, and retrieves the geocoded data in JSON format.
-# The script then extracts the formatted address from the JSON response and prints it to the console.
-# Finally, the formatted address is copied to the clipboard.
 # It also requires a valid Google Maps API key, which should be stored in the .creds/misc_api_creds file in the user's
 # home directory.
 #
-# Requirements: curl, jq, xclip (linux), pbcopy (macOS)
+# Requirements: curl, jq, xclip
 
 set -eufo pipefail
 . $HOME/.creds/misc_api_creds

@@ -8,8 +8,6 @@
 WINDOW_NAME=$1
 COMMAND=$2
 
-# --- X11 (wmctrl) ------------------------------------------------------------
-
 bring_x11() {
   local search="$1"
   local matches
@@ -25,8 +23,6 @@ bring_x11() {
     return 0
   fi
 }
-
-# --- Main ---------------------------------------------------------------------
 
 bring_x11 "$WINDOW_NAME" || bash -c "$COMMAND" &
 {{ end }}

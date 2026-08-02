@@ -7,7 +7,7 @@
 """
 pdf_unlock - Remove passwords and unlock PDF files in the current directory.
 
-Usage: pdf_unlock.sh [password]
+Usage: pdf_unlock.py [password]
 """
 
 import sys

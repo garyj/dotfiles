@@ -3,15 +3,13 @@
 # --------------------
 #
 # Binary is managed by mise (aqua:anthropics/claude-code, pinned in
-# .chezmoidata.yaml; self-update off via DISABLE_AUTOUPDATER in settings.json).
-# `just claude-usage` (root justfile) replaced the usage recipe; only
-# plugin/marketplace workflow recipes live here now.
+# .chezmoidata.yaml); auth, plugin and marketplace recipes live here.
 
 set quiet := true
 
 import "_common.justfile"
 
-# install or update a marketplace (renamed from mpa)
+# install or update a marketplace
 [group("plugins")]
 [script("bash")]
 mpi url:
@@ -28,13 +26,11 @@ mpi url:
 [group("plugins")]
 [script("bash")]
 mpr name:
-    # Find and remove all plugins from this marketplace
     plugins=$(jq -r '.plugins | keys[] | select(endswith("@{{ name }}")) | split("@")[0]' ~/.claude/plugins/installed_plugins.json 2>/dev/null)
     for plugin in $plugins; do
         echo "Removing plugin: $plugin"
         command claude plugin uninstall "$plugin" 2>&1 || true
     done
-    # Remove the marketplace
     command claude plugin marketplace remove "{{ name }}"
 
 # update a marketplace (or all if no name given)
@@ -48,7 +44,7 @@ mpup name="":
 @mpl:
     command claude plugin marketplace list
 
-# install a plugin (renamed from pla)
+# install a plugin
 [no-cd]
 [group("plugins")]
 @pli plugin *ARGS:

@@ -29,7 +29,7 @@ export RESTIC_PASSWORD_FILE="$HOME/.config/restic/password"
 # 1. restic itself is installed (pinned, sha-verified) by
 #    personal/run_onchange_before_install-restic, which runs first. Just verify.
 if ! command -v restic >/dev/null 2>&1; then
-  echo "[restic] ERROR: restic not found - it should come from the package list." >&2
+  echo "[restic] ERROR: restic not found - personal/run_onchange_before_install-restic should have installed it." >&2
   echo "[restic] Re-run: chezmoi apply" >&2
   exit 1
 fi

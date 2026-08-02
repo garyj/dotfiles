@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
-# Install uv and the Python interpreters. The Python CLI tools that used to be
-# installed here now live in mise's pipx backend (private_dot_config/mise);
-# this script only provides the runtime they are built against.
+# Install uv and the Python interpreters; Python CLI tools come from mise's pipx backend.
 #
 # uv itself stays out of mise on purpose: this is a run_onchange_before_ script,
 # so it runs before mise has installed anything, and mise's pipx backend needs uv
@@ -16,7 +14,7 @@ curl --proto '=https' --tlsv1.2 -LsSf \
   https://github.com/astral-sh/uv/releases/download/{{ .installers.uv.version }}/uv-installer.sh \
   | env INSTALLER_NO_MODIFY_PATH=1 UV_INSTALL_DIR="$HOME/.local/bin" sh
 
-DEFAULT_PYTHON_VERSION={{- .langs.python }} # Set the default Python version
+DEFAULT_PYTHON_VERSION={{- .langs.python }}
 
 $HOME/.local/bin/uv python install 3.13
 $HOME/.local/bin/uv python install 3.14

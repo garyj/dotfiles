@@ -13,6 +13,5 @@ gpg -n -q --import --import-options import-show /etc/apt/keyrings/packages.mozil
 echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | \
   sudo tee /etc/apt/sources.list.d/mozilla.list > /dev/null
 
-# Update your package list and install the Firefox .deb package
 sudo apt-get update && sudo apt-get install -y firefox-devedition  # "beta" or"devedition"
 {{ end -}}

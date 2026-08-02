@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# Check if the job queue name is provided as an argument
 if [ $# -ne 1 ]; then
   echo "Usage: $0 <job-queue-name>"
   exit 1

@@ -1,6 +1,3 @@
-{{/* Parts taken from: https://github.com/twpayne/dotfiles/blob/master/home/.chezmoi.toml.tmpl */}}
-
-{{- /* Checks if running interactively */ -}}
 {{- $interactive := stdinIsATTY -}}
 
 {{- $ephemeral := false -}}{{/* true if this machine is ephemeral, e.g. a cloud or VM instance */}}
@@ -13,7 +10,7 @@
     {{-   $osID = printf "%s-%s" .chezmoi.os .chezmoi.osRelease.id -}}
 {{- end -}}
 
-{{/* detect GitHub codespaces, VSCode remote containers, Docker containers, Multipass VMs, and Vagrant boxes */}}
+{{/* the usernames mark throwaway VMs and containers */}}
 {{- if or (env "CODESPACES") (env "REMOTE_CONTAINERS_IPC") (eq .chezmoi.username "root" "ubuntu" "vagrant" "vscode") -}}
     {{-   $ephemeral = true -}}
     {{-   $headless = true -}}

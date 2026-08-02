@@ -22,16 +22,11 @@ tools:
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
   agent_browser: "0.33.1"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
   sentry: "0.39.0"         # renovate: datasource=github-releases depName=getsentry/cli
-  # These two install via mise's pipx backend (PyPI), not GitHub releases; the
-  # pep440 packageRule in renovate.json applies to the pypi datasource. llm is
-  # pinned rather than floated so its frequent releases arrive as PRs to read.
+  # These two install via mise's pipx backend (PyPI), not GitHub releases.
   agentsview: "0.39.0"     # renovate: datasource=pypi depName=agentsview
   llm: "0.31.1"            # renovate: datasource=pypi depName=llm
 
-# AI coding agents, all installed via mise and pinned so Renovate opens bump PRs
-# that the release-notes summarizer TLDRs before you merge (see renovate.json).
-# aqua backends verify checksum + attestation; gemini and pi are npm-only.
-# codex tags are `rust-v0.x.y`; a packageRule in renovate.json strips the prefix.
+# AI coding agents, all installed via mise.
 coding_agents:
   claude: "2.1.220"     # renovate: datasource=github-releases depName=anthropics/claude-code
   codex: "0.146.0"      # renovate: datasource=github-releases depName=openai/codex
@@ -45,15 +40,13 @@ externals:
   zsh_syntax_highlighting: "0.8.0"  # renovate: datasource=github-tags depName=zsh-users/zsh-syntax-highlighting
   zsh_autosuggestions: "0.7.1"      # renovate: datasource=github-tags depName=zsh-users/zsh-autosuggestions
 
-# GUI apps shipped as .deb on GitHub releases (no apt repo). Version-only pin;
-# Renovate proposes updates (see renovate.json).
+# GUI apps shipped as .deb on GitHub releases (no apt repo).
 deb_apps:
-  handy:  # cjpais/Handy, offline speech-to-text
+  handy:  # offline speech-to-text
     version: "0.9.4"  # renovate: datasource=github-releases depName=cjpais/Handy
 
-# Installed via their upstream cargo-dist installers, pinned so each fetches an
-# exact tagged release instead of `latest`. Bumping one changes the install
-# script's hash, so `chezmoi apply` reinstalls the new version.
+# Installed via their upstream cargo-dist installers. Bumping one changes the
+# install script's hash, so `chezmoi apply` reinstalls the new version.
 # uv is here rather than in mise because it runs from a run_onchange_before_
 # script: it installs the Python interpreters, and mise's pipx backend needs uv
 # to exist before mise itself runs. atuin tags are `vX.Y.Z`, uv tags are bare.
@@ -64,8 +57,7 @@ installers:
     version: "0.12.0"  # renovate: datasource=github-releases depName=astral-sh/uv
 
 # Single static binaries pinned from GitHub releases, installed to /usr/local/bin.
-# Kept off apt to track upstream; off mise so the systemd backup timer finds them
-# on the default PATH. Renovate proposes version updates (see renovate.json).
+# Off mise so the systemd backup timer finds them on the default PATH.
 github_bins:
-  restic:  # restic/restic, backup engine
+  restic:  # backup engine
     version: "0.19.1"  # renovate: datasource=github-releases depName=restic/restic

@@ -3,7 +3,6 @@
 # To use: source ./aws_exp.sh <profile>
 #
 
-# Check for aws CLI
 if ! command -v aws >/dev/null 2>&1; then
   echo "ERROR: aws CLI is not installed or not in PATH." >&2
   return 1 2>/dev/null || exit 1
@@ -23,7 +22,6 @@ if [[ -n "$cred_proc" ]]; then
   AWS_SESSION_TOKEN="$(echo "$creds_json" | jq -r .SessionToken)"
   echo "Loaded credentials via credential_process for profile '$PROFILE'."
 else
-  # If missing keys, warn (do not fail)
   export AWS_ACCESS_KEY_ID="$(aws configure get aws_access_key_id --profile "$PROFILE" 2>/dev/null || true)"
   export AWS_SECRET_ACCESS_KEY="$(aws configure get aws_secret_access_key --profile "$PROFILE" 2>/dev/null || true)"
   AWS_SESSION_TOKEN="$(aws configure get aws_session_token --profile "$PROFILE" 2>/dev/null || true)"
@@ -37,20 +35,17 @@ else
   export AWS_SESSION_TOKEN
 fi
 
-# Export region (warn if not found)
 AWS_DEFAULT_REGION="$(aws configure get region --profile "$PROFILE" 2>/dev/null || true)"
 if [[ -z "$AWS_DEFAULT_REGION" ]]; then
   echo "WARNING: No region set for '$PROFILE'." >&2
 fi
 export AWS_DEFAULT_REGION
 
-# Optionally get AWS account ID from local config, if set
 AWS_ACCOUNT_ID="$(aws configure get account_id --profile "$PROFILE" 2>/dev/null || true)"
 export AWS_ACCOUNT_ID
 
 export AWS_PROFILE="$PROFILE"
 
-# Show exports (mask secrets)
 echo "AWS_PROFILE=$AWS_PROFILE"
 echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
 echo -n "AWS_SECRET_ACCESS_KEY="

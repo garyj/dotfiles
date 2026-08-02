@@ -1,12 +1,10 @@
 {{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
-# Add the GPG
 wget -qO - https://packages.cloud.google.com/apt/doc/apt-key.gpg \
     | gpg --dearmor \
     | sudo dd of=/usr/share/keyrings/cloud.google.gpg
 
-# Add the ATP Repo
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" \
   | sudo tee /etc/apt/sources.list.d/google-cloud-sdk.list
 

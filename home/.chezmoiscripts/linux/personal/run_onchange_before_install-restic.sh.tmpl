@@ -8,14 +8,12 @@
 # Integrity: restic ships a GPG-signed SHA256SUMS with each release. We pin the
 # maintainer's key fingerprint as the trust anchor and require the signature to be
 # made by exactly that key, then check the binary against the verified checksum.
-# No hand-maintained hash, yet a tampered download is still rejected.
 # Signing key: https://restic.net/gpg-key-alex.asc
 # Reference:   https://github.com/restic/restic
 
 set -euo pipefail
 
 version="{{ .github_bins.restic.version }}"
-# restic release signing key (Alexander Neumann); see restic docs, "Verifying Downloads".
 key_fp="CF8F18F2844575973F79D4E191A6868BD3F7A907"
 base="https://github.com/restic/restic/releases/download/v${version}"
 asset="restic_${version}_linux_amd64.bz2"

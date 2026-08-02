@@ -61,8 +61,7 @@ require_repo_mounted() {
 # heavier, run occasionally via `j backup::prune`). Leading args are passed to
 # restic as global flags, so `run_forget -r "$remote_repo"` thins the remote too.
 # --group-by host: restic's default also groups by paths, so editing sources in
-# backup.yaml stranded the old path-set's snapshots forever. Host-only means
-# "keep 24 hourly snapshots of this machine", which is the intent.
+# backup.yaml strands the old path-set's snapshots forever.
 run_forget() {
   restic_gentle "$@" forget \
     --group-by host \
@@ -161,12 +160,6 @@ do_copy() {
   fi
 }
 
-# Dispatch:
-#   (no args) | backup    -> the configured backup + offsite copy below
-#   copy                  -> just the offsite copy (the one-time seed / manual push)
-#   remote <args...>      -> any restic command against the remote repo, with its
-#                            S3 credentials loaded (e.g. `remote snapshots`)
-#   <anything else>       -> passed straight to restic against the local repo
 if [ "${1:-}" = "copy" ]; then
   require_repo_mounted
   exec 9>"$config_dir/.lock"
@@ -195,7 +188,6 @@ fi
 # Strip an optional leading `backup` so extra args (e.g. --dry-run) reach restic.
 if [ "${1:-}" = "backup" ]; then shift; fi
 
-# Refuse to back up if the repo's disk isn't mounted.
 require_repo_mounted
 
 # The configured backup. Serialise so two runs never overlap; if one is already
@@ -209,8 +201,7 @@ fi
 rc=0
 do_backup "$@" || rc=$?
 
-# Push the new snapshots offsite in the same run (same lock). Best-effort: a
-# failure here is reported to healthchecks but doesn't fail the local backup.
+# Push the new snapshots offsite in the same run (same lock).
 copy_failed=0
 do_copy || copy_failed=$?
 

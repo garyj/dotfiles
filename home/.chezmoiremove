@@ -13,6 +13,8 @@ bin/installers
 .agents/skills/handoff
 .agents/skills/pickup
 .agents/skills/reagents
+.agents/docs/plans/agents-staleness-prevention.md
+.agents/docs/plans
 
 # Lara's scripts live in ~/bin/agents; ~/.config/gj_agents/lara holds only
 # machine-local state (token, gh/).

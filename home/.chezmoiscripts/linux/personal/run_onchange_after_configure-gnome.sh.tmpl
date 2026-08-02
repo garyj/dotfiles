@@ -32,10 +32,8 @@ fi
 
 # Disable IBus's built-in emoji hotkey entirely. Its emojier never renders a
 # picker window outside GNOME Shell, so <Super>period/<Super>semicolon just
-# swallowed keystrokes into a dead annotation preedit (and injected a stray
-# glyph). We keep <Super>period as the emoji key (matches the stock default,
-# so muscle memory carries across machines) but drive it with Smile, bound
-# below, instead of the broken IBus emojier.
+# swallow keystrokes into a dead annotation preedit. <Super>period stays the
+# emoji key, driven by Smile (bound below).
 if gsettings list-schemas | grep -qx org.freedesktop.ibus.panel.emoji; then
   gsettings set org.freedesktop.ibus.panel.emoji hotkey "@as []"
 fi
@@ -158,9 +156,8 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.peripherals.keyboard delay 300
   gsettings set org.cinnamon.desktop.peripherals.keyboard repeat-interval 20
 
-  # Screen saver: idle for 1 hour before activation; lock immediately on activation.
-  # Blank the monitor 5 minutes AFTER the saver (3900 > 3600), not at the same
-  # instant, so the screensaver is actually visible before the display powers down.
+  # Blank the monitor after the saver activates, not at the same instant, so the
+  # screensaver is actually visible before the display powers down.
   gsettings set org.cinnamon.desktop.session idle-delay 3600
   gsettings set org.cinnamon.desktop.screensaver idle-activation-enabled true
   gsettings set org.cinnamon.desktop.screensaver lock-enabled true

@@ -2,7 +2,6 @@
 
 set -e
 
-# Default values
 IMAGE="ubuntu:24.04"
 CONTAINER_NAME="repo-sandbox-$$"
 WORKDIR="/workspace"
@@ -24,7 +23,6 @@ usage() {
     exit 1
 }
 
-# Parse arguments
 if [[ $# -lt 1 ]]; then
     usage
 fi
@@ -48,12 +46,10 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Convert owner/repo format to full URL
 if [[ ! "$REPO" =~ ^https?:// ]]; then
     REPO="https://github.com/$REPO"
 fi
 
-# Extract repo name for the workspace directory
 REPO_NAME=$(basename "$REPO" .git)
 
 echo "Starting sandbox container..."
