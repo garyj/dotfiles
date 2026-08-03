@@ -7,8 +7,8 @@ langs:
   python: "3.14"
   mongodb: "8.2"
 
-# Pinned Tier-3 CLI tools (installed via mise; audited before pinning). The
-# `# renovate:` annotations let Renovate open version-bump PRs; see renovate.json.
+# Pinned CLI tools, installed via mise. The `# renovate:` annotations let
+# Renovate open version-bump PRs; see renovate.json.
 # Versions are stored bare (no leading v); Renovate normalizes on write-back.
 tools:
   mise: "2026.8.4"     # renovate: datasource=github-releases depName=jdx/mise
@@ -47,9 +47,8 @@ deb_apps:
 
 # Installed via their upstream cargo-dist installers. Bumping one changes the
 # install script's hash, so `chezmoi apply` reinstalls the new version.
-# uv is here rather than in mise because it runs from a run_onchange_before_
-# script: it installs the Python interpreters, and mise's pipx backend needs uv
-# to exist before mise itself runs. atuin tags are `vX.Y.Z`, uv tags are bare.
+# uv is here rather than in mise for bootstrap ordering; see
+# run_onchange_before_install-uv-python.sh.tmpl.
 installers:
   atuin:
     version: "18.19.0"  # renovate: datasource=github-releases depName=atuinsh/atuin
