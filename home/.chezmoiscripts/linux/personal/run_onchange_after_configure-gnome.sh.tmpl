@@ -378,6 +378,11 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom40/ command 'copyq --start-server toggle'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom40/ name 'CopyQ clipboard history'
 
+  # Matches the WM_CLASS, not the title: Telegram titles its window after the open chat.
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom41/ binding "['<Super><Shift>t']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom41/ command 'bringme.sh TelegramDesktop "flatpak run org.telegram.desktop"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom41/ name 'Bring Telegram'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -424,6 +429,7 @@ if is_cinnamon; then
   'custom38',\
   'custom39',\
   'custom40',\
+  'custom41',\
   '__dummy__'\
   ]"
 
