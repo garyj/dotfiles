@@ -21,7 +21,7 @@ tools:
   # These two are pinned so the binary (mise) and its agent skill
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
   agent_browser: "0.33.2"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
-  sentry: "0.40.0"         # renovate: datasource=github-releases depName=getsentry/cli
+  sentry: "0.41.0"         # renovate: datasource=github-releases depName=getsentry/cli
   # These two install via mise's pipx backend (PyPI), not GitHub releases.
   agentsview: "0.40.0"     # renovate: datasource=pypi depName=agentsview
   llm: "0.31.1"            # renovate: datasource=pypi depName=llm
