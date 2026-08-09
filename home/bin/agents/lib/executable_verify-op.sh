@@ -5,7 +5,7 @@
 # reads the SA token out of your personal 1Password, and the rest re-runs op as the
 # service account to see what it can actually reach.
 #
-#   verify-op.sh AGLara 'op://Personal/1P Service Account - Lara/password'
+#   verify-op.sh AGLara 'op://Personal/Service Account - 1Password/lara'
 #
 # What it does:
 #   1. Reads the agent's SA token

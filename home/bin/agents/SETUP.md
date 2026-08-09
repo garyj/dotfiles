@@ -50,7 +50,7 @@ Per box:
 
 1. Check the service account scope (run as yourself, in a clean shell):
 
-       ~/bin/agents/lib/verify-op.sh AGLara 'op://Personal/1P Service Account - Lara/password'
+       ~/bin/agents/lib/verify-op.sh AGLara 'op://Personal/Service Account - 1Password/lara'
 
 2. Run `chezmoi apply` to materialize the token.
 

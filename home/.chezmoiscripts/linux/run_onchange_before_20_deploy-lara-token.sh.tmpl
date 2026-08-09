@@ -12,8 +12,8 @@ TOKEN_PATH="$TOKEN_DIR/token"
 mkdir -p "$TOKEN_DIR"
 chmod 700 "$TOKEN_DIR"
 
-# onepasswordRead content hash: {{ onepasswordRead "op://Personal/1P Service Account - Lara/password" | sha256sum }}
-printf '%s' '{{ onepasswordRead "op://Personal/1P Service Account - Lara/password" | trim }}' > "$TOKEN_PATH"
+# onepasswordRead content hash: {{ onepasswordRead "op://Personal/Service Account - 1Password/lara" | sha256sum }}
+printf '%s' '{{ onepasswordRead "op://Personal/Service Account - 1Password/lara" | trim }}' > "$TOKEN_PATH"
 chmod 600 "$TOKEN_PATH"
 
 {{ end -}}
