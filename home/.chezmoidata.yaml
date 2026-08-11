@@ -43,7 +43,7 @@ externals:
 # GUI apps shipped as .deb on GitHub releases (no apt repo).
 deb_apps:
   handy:  # offline speech-to-text
-    version: "0.9.4"  # renovate: datasource=github-releases depName=cjpais/Handy
+    version: "0.9.5"  # renovate: datasource=github-releases depName=cjpais/Handy
 
 # Installed via their upstream cargo-dist installers. Bumping one changes the
 # install script's hash, so `chezmoi apply` reinstalls the new version.
