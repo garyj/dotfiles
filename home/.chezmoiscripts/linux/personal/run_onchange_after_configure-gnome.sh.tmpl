@@ -383,6 +383,11 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom41/ command 'bringme.sh TelegramDesktop "flatpak run org.telegram.desktop"'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom41/ name 'Bring Telegram'
 
+  # Grabbing F10 globally shadows the GTK menubar accel in every app.
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom42/ binding "['F10']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom42/ command 'rofi -show window -matching fuzzy'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom42/ name 'Window search'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -430,6 +435,7 @@ if is_cinnamon; then
   'custom39',\
   'custom40',\
   'custom41',\
+  'custom42',\
   '__dummy__'\
   ]"
 
