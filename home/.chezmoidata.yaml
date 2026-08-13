@@ -16,7 +16,7 @@ tools:
   worktrunk: "0.72.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.4"        # renovate: datasource=github-releases depName=bootandy/dust
   apm: "0.28.0"        # renovate: datasource=github-releases depName=microsoft/apm
-  prek: "0.4.12"        # renovate: datasource=github-releases depName=j178/prek
+  prek: "0.4.13"        # renovate: datasource=github-releases depName=j178/prek
   rtk: "0.45.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
   # These two are pinned so the binary (mise) and its agent skill
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
