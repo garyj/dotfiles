@@ -67,6 +67,12 @@ trufflehog = ['latest']  # secret scanner; pre-review gate for the autoreview sk
 "aqua:anomalyco/opencode" = ['{{ .coding_agents.opencode }}']
 "npm:@google/gemini-cli" = ['{{ .coding_agents.gemini }}']
 "npm:@earendil-works/pi-coding-agent" = ['{{ .coding_agents.pi }}']
+# Registry shorthand resolves to mise's http backend: raw x.ai binary, versions
+# listed from x.ai/cli/stable. The aqua variant warns on every resolve (http-type
+# package, no GitHub tags); neither has upstream checksums, the lockfile covers that.
+# The pin only holds while auto_update stays false in ~/.grok/config.toml
+# (seeded by run_onchange_after_30_configure-grok.sh).
+grok = ['{{ .coding_agents.grok }}']
 
 # Agent tooling (not agents themselves), pinned in .chezmoidata.yaml.
 "npm:agent-browser" = ['{{ .tools.agent_browser }}']

@@ -106,6 +106,12 @@ cpyo() {
   _as_agent copilot --yolo "$@"
 }
 
+# grok with yolo mode (bypassPermissions matches claude's --dangerously-skip-permissions)
+gryo() {
+  _agent_guard || return 1
+  _as_agent grok --permission-mode bypassPermissions "$@"
+}
+
 # opencode and pi: add launchers here following the same shape once their yolo
 # flags are confirmed, e.g.:
 #   ocyo() { _agent_guard || return 1; _as_agent opencode <yolo-flag> "$@"; }
