@@ -32,7 +32,7 @@ coding_agents:
   codex: "0.147.0"      # renovate: datasource=github-releases depName=openai/codex
   copilot: "1.0.79"     # renovate: datasource=github-releases depName=github/copilot-cli
   opencode: "1.18.16"   # renovate: datasource=github-releases depName=anomalyco/opencode
-  gemini: "0.54.4"      # renovate: datasource=npm depName=@google/gemini-cli
+  gemini: "0.55.1"      # renovate: datasource=npm depName=@google/gemini-cli
   pi: "0.84.1"          # renovate: datasource=npm depName=@earendil-works/pi-coding-agent
 
 # Pinned git refs for chezmoi externals (zsh-users cut no releases, so github-tags).
