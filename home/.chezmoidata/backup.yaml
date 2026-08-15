@@ -42,6 +42,7 @@ backup:
     - ~/.codex
     - ~/.agents
     - ~/.gemini
+    - ~/.grok
     - ~/.pi
     - ~/.copilot
     - ~/.zshrc
@@ -109,6 +110,7 @@ backup:
     - ~/.claude/plugins/marketplaces
     - ~/.codex/cache
     - ~/.codex/tmp
+    - ~/.grok/marketplace-cache
     # junk
     - "**/*.tmp"
     - "**/*.swp"
