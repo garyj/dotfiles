@@ -3,6 +3,9 @@
 Chezmoi dotfiles for personal Linux machines. The source directory is `home/`, set by `.chezmoiroot`. Machine detection
 (`personal`, `ephemeral`, `headless`) is defined in `home/.chezmoi.toml.tmpl` and gates most conditionals.
 
+Hard-won machine and tooling findings live in [GOTCHAS.md](GOTCHAS.md). Read it before debugging desktop,
+terminal, or Docker networking behaviour; several causes there are already diagnosed and expensive to re-derive.
+
 ## Vendor apt repo installers
 
 - Third-party apt repos live in `home/.chezmoiscripts/linux/personal/`.
