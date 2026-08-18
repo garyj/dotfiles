@@ -30,7 +30,7 @@ tools:
 coding_agents:
   claude: "2.1.233"     # renovate: datasource=github-releases depName=anthropics/claude-code
   codex: "0.147.0"      # renovate: datasource=github-releases depName=openai/codex
-  copilot: "1.0.79"     # renovate: datasource=github-releases depName=github/copilot-cli
+  copilot: "1.0.80"     # renovate: datasource=github-releases depName=github/copilot-cli
   opencode: "1.18.18"   # renovate: datasource=github-releases depName=anomalyco/opencode
   gemini: "0.55.1"      # renovate: datasource=npm depName=@google/gemini-cli
   pi: "0.84.2"          # renovate: datasource=npm depName=@earendil-works/pi-coding-agent
