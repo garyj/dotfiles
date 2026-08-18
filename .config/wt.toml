@@ -1,0 +1,18 @@
+# Worktrunk project config. Outside home/, so .chezmoiroot excludes it from
+# chezmoi: this is a plain repo file, read by wt from the checkout.
+
+[commit.generation]
+template-append = """
+Verbs this repo uses, beyond whatever the recent commits happen to show:
+`add:` something new, `update:` a change to something existing (the common
+case), `fix:` repair broken behaviour, `cut:` a removal, `bump:` a version pin,
+`revert:` undo a previous commit. Never a Conventional Commits prefix.
+
+Body: prose paragraphs wrapped at 78 columns, no bullet lists. Explain the
+reasoning a reader at HEAD in six months cannot recover from the diff, such as
+why a package came from mise rather than apt, or which trap a workaround
+avoids. Omit the body entirely for mechanical changes.
+
+Name the affected machine types (personal, ephemeral, headless) only when the
+change is gated on one.
+"""

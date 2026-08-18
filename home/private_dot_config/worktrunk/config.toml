@@ -2,8 +2,59 @@
 
 worktree-path = "{{ repo_path }}/.worktrees/{{ branch | sanitize }}"
 
+# --safe-mode keeps the 88 MCP server entries, hooks and plugins out of a
+# throwaway haiku call; it roughly halves the round trip.
 [commit.generation]
-command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt=''"
+command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model=haiku --tools='' --safe-mode --setting-sources='' --system-prompt=''"
+
+# Overrides the stock template, which buries recent_commits below the diff and
+# nudges toward conventional commits; haiku ignored the repo convention 3/3
+# runs. Hoisting the examples above the diff and dropping the nudge fixed it.
+template = """
+<task>Write a commit message for the staged changes below.</task>
+{% if recent_commits %}
+<convention>
+The most recent commits in this repository, newest last. Copy their subject-line
+convention exactly: the same prefix scheme (or absence of one), the same
+capitalisation, the same voice. This repository's habit outranks any general
+convention you know.
+{% for commit in recent_commits %}- {{ commit }}
+{% endfor %}</convention>
+{% endif %}
+<format>
+- Subject line under 70 chars
+- For material changes, add a blank line then a body paragraph explaining the change
+- Output only the commit message, no quotes or code blocks
+</format>
+<style>
+- Imperative mood: "Add feature" not "Added feature"
+</style>
+{% if user_guidance %}
+<user-guidance>
+{{ user_guidance }}
+</user-guidance>
+{% endif %}{% if project_guidance %}
+<project-guidance>
+{{ project_guidance }}
+</project-guidance>
+{% endif %}
+<diffstat>
+{{ git_diff_stat }}
+</diffstat>
+<diff>
+{{ git_diff }}
+</diff>
+<context>
+Branch: {{ branch }}
+</context>
+"""
+
+# Cross-repo style. Per-repo conventions go in that repo's .config/wt.toml.
+template-append = """
+- No trailing period on the subject.
+- No em-dashes anywhere in the message.
+- A body is for why the change was made; skip it when the subject says it all.
+"""
 
 # Don't copy .venv — Python virtualenvs bake absolute paths, copying breaks
 # them. Don't copy .envrc — we symlink it from the primary worktree so edits
