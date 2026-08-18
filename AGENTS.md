@@ -16,19 +16,35 @@ Renovate open version-bump PRs. Invoke the `manage-dependencies` skill before ad
 
 ## Agent config fan-out
 
-All coding agents draw their global instructions from one source, `home/.chezmoitemplates/agents/instructions.md`. Each
-agent has a thin wrapper that pulls it in with `{{ includeTemplate "agents/instructions.md" . }}` and renders to that
-agent's own filename. Edit the shared body, run `chezmoi apply`, and every agent updates. To give ONE agent extra
-instructions, append a section below the include in its wrapper. copilot and cursor read instructions per-repo only, so
-they are not in this fan-out.
+One shared instruction body (`home/.chezmoitemplates/agents/instructions.md`) and one skill store (`~/.agents/skills`)
+feed every coding agent. Each agent's wrapper pulls the body in with `{{ includeTemplate "agents/instructions.md" . }}`
+and renders to that agent's own filename; edit the body, run `chezmoi apply`, and every agent updates. To give ONE
+agent extra instructions, append a section below the include in its wrapper. `~/.agents/AGENTS.md` is the same body,
+the canonical copy.
 
-Skills live once in `~/.agents/skills`. claude and codex read their own `~/.<agent>/skills` dir, so a
-`symlink_skills.tmpl` points it at that store. gemini, copilot and pi discover `~/.agents/skills` natively, so their
-skills dirs are deliberately left un-symlinked. This is correct; do not "fix" it by adding a symlink (gemini would then
-scan the store twice and warn on every skill). opencode has no skills feature.
+| Agent    | Instructions                                       | Skills                                             |
+| -------- | -------------------------------------------------- | -------------------------------------------------- |
+| claude   | wrapper → `~/.claude/CLAUDE.md`                    | `symlink_skills.tmpl` → `~/.claude/skills`         |
+| codex    | wrapper → `~/.codex/AGENTS.md`                     | `symlink_skills.tmpl` → `~/.codex/skills`          |
+| gemini   | wrapper → `~/.gemini/GEMINI.md`                    | scans `~/.agents/skills` natively                  |
+| pi       | wrapper → `~/.pi/agent/AGENTS.md`                  | scans `~/.agents/skills` natively                  |
+| opencode | wrapper → `~/.config/opencode/AGENTS.md`           | no skills feature                                  |
+| grok     | claude's `~/.claude/CLAUDE.md` via its compat scan | claude's `~/.claude/skills` via its compat scan    |
+| copilot  | per-repo only, not in the fan-out                  | scans `~/.agents/skills` natively                  |
+| cursor   | per-repo only, not in the fan-out                  | not managed here                                   |
 
-codex re-creates its hidden `.system/` of built-in skills inside `~/.agents/skills` on next launch. It is dot-prefixed,
-so other agents' skill discovery skips it.
+Traps. Each of these looks like a gap but is deliberate:
+
+- gemini/copilot/pi skills dirs are left un-symlinked on purpose. Do not "fix" this: gemini would scan the store twice
+  and warn on every skill.
+- grok gets NO wrapper and NO symlink on purpose. Its Claude Code compat scan (no off switch) already loads the
+  user-global `~/.claude/CLAUDE.md` and `~/.claude/skills`; adding a `~/.grok/AGENTS.md` or `~/.grok/skills` makes it
+  load the instructions twice / scan the store twice. The user-global rules load is undocumented in grok's README;
+  verified live 2026-08-15 in its session `prompt_context.json`.
+- grok truncates each rules file at 10,000 characters and `~/.claude/CLAUDE.md` sits at 9.9k, so growing the shared
+  body or claude's extras clips grok's copy (grok warns when it does).
+- codex re-creates its hidden `.system/` of built-in skills inside `~/.agents/skills` on next launch. It is
+  dot-prefixed, so other agents' skill discovery skips it.
 
 ## Shell Configuration
 
