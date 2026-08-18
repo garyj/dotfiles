@@ -1,0 +1,74 @@
+=== slow launch: 14.217s at 2026-08-15T10:09:08+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+   6045  216096  8.5 452860  69
+--- daemon wchan ---
+folio_wait_bit_common
+--- meminfo ---
+MemAvailable:   17312752 kB
+Cached:          3842180 kB
+Dirty:             26536 kB
+Writeback:             0 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=98.68 avg60=98.37 avg300=98.62 total=207348713311
+full avg10=90.65 avg60=88.49 avg300=90.86 total=195470761988
+
+==> /proc/pressure/cpu <==
+some avg10=0.01 avg60=0.12 avg300=0.05 total=542777949
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=0.41 avg60=0.30 avg300=0.10 total=47517670
+full avg10=0.22 avg60=0.23 avg300=0.08 total=44894731
+--- procs_blocked ---
+procs_blocked 45
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+2 %, 0x0000000000000001, P0, 42
+--- restic ---
+ExecMainStartTimestamp=Sat 2026-08-15 10:05:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+25.2 1541641 mongod
+24.8 2945371 chrome
+20.8 2945238 chrome
+17.9 2937022 code-insiders
+ 9.7    4132 cinnamon
+ 9.5  197866 code-insiders
+ 8.5    6045 ghostty
+ 6.3 2945422 chrome
+ 6.1 2942345 code-insiders
+ 4.7 2941914 code-insiders
+ 3.5 1771170 gitkraken
+--- D state ---
+D 1380078 folio_wait_bit_common    grok
+D 2902373 -                        kworker/u96:16+pm
+--- ghostty journal ---
+Aug 15 01:40:11.775487 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:12.750582 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:15.344712 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:15.552733 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:15.568960 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:15.603716 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:15.621077 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:21.739436 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 15 01:40:21.813827 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:40:21.995786 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:40:22.489888 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:40:57.898918 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:41:17.220502 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:41:17.286362 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:41:17.954197 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:41:18.192304 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:41:18.444599 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:41:18.546327 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 01:51:14.602871 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 10:09:09.798981 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 275, .rows = 170, .styles = 128, .hyperlink_bytes = 1536, .grapheme_bytes = 8192, .string_bytes = 4096 }
+Aug 15 10:09:10.882489 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 10:09:10.965879 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 10:09:10.966276 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 10:09:10.966865 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 10:09:11.476067 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=2945922

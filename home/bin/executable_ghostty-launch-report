@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Summarise what the Super+Return timing wrapper has collected.
+# Companion to ~/bin/ghostty-new-window; both go when the stall is identified.
+set -uo pipefail
+
+STATE="$HOME/.local/state/ghostty-launch"
+LOG="$STATE/latency.log"
+
+[ -s "$LOG" ] || { echo "no launches recorded yet ($LOG)"; exit 0; }
+
+total=$(wc -l < "$LOG")
+slow=$(awk '$2 > 1.0' "$LOG" | wc -l)
+
+echo "launches recorded : $total"
+echo "slow (>1.0s)      : $slow"
+awk '{s+=$2; if($2>m) m=$2} END{printf "median-ish mean   : %.2fs\nworst             : %.2fs\n", s/NR, m}' "$LOG"
+
+echo
+echo "=== slowest 10 ==="
+sort -k2 -rn "$LOG" | head -10
+
+echo
+echo "=== distribution ==="
+awk '{b = $2<0.5 ? "<0.5s" : $2<1 ? "0.5-1s" : $2<2 ? "1-2s" : $2<3 ? "2-3s" : ">3s"; c[b]++}
+     END{for (k in c) printf "  %-8s %d\n", k, c[k]}' "$LOG" | sort
+
+captures=$(ls "$STATE"/slow-*.snapshot 2>/dev/null | wc -l)
+echo
+echo "=== diagnostic captures: $captures ==="
+for f in "$STATE"/slow-*.snapshot; do
+  [ -e "$f" ] || break
+  echo "  ${f##*/}  $(head -1 "$f")"
+done
+
+echo
+echo "Inspect one with:  less $STATE/slow-<stamp>.snapshot"
+echo "Thread trace:      less $STATE/slow-<stamp>.threads"

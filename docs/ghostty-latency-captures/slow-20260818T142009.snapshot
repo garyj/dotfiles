@@ -1,0 +1,73 @@
+=== slow launch: 1.484s at 2026-08-18T14:20:11+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+4036238  253500 17.5 1050216 57
+--- daemon wchan ---
+poll_schedule_timeout.constprop.0
+--- meminfo ---
+MemAvailable:   27278572 kB
+Cached:         17717692 kB
+Dirty:             16868 kB
+Writeback:             0 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=96.24 avg60=96.33 avg300=96.55 total=473409266002
+full avg10=86.45 avg60=84.33 avg300=85.02 total=441284087580
+
+==> /proc/pressure/cpu <==
+some avg10=0.00 avg60=0.00 avg300=0.00 total=1458310464
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=0.00 avg60=0.00 avg300=0.00 total=246786451
+full avg10=0.00 avg60=0.00 avg300=0.00 total=234976401
+--- procs_blocked ---
+procs_blocked 42
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+28 %, 0x0000000000000001, P0, 55
+--- restic ---
+ExecMainStartTimestamp=Tue 2026-08-18 14:03:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+26.8 3174609 chrome
+17.5 4036238 ghostty
+11.2    4132 cinnamon
+11.2 3258621 mongod
+ 6.5 3578275 claude
+ 5.7 3607258 chrome
+ 5.3 3409682 chrome
+ 5.0 3606674 chrome
+ 4.8 3577124 Discord
+ 4.3 1524369 chrome
+ 4.0 3381247 chrome
+--- D state ---
+D 3537660 -                        kworker/u96:12+pm
+--- ghostty journal ---
+Aug 18 14:13:36.635149 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=clyo
+Aug 18 14:13:51.257911 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 18 14:13:51.282998 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 18 14:13:51.284268 noodle ghostty[4036238]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 18 14:13:51.284321 noodle ghostty[4036238]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 18 14:13:51.284321 noodle ghostty[4036238]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 18 14:13:51.326762 noodle ghostty[4036238]: info(io_exec): started subcommand path=/bin/sh pid=3579317
+Aug 18 14:13:51.622003 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=../hermes-fleet
+Aug 18 14:13:52.124577 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=ce
+Aug 18 14:13:52.397442 noodle ghostty[4036238]: info(io_exec): pty fd closed, read thread exiting
+Aug 18 14:13:52.425890 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 18 14:13:52.445169 noodle ghostty[4036238]: info(surface): surface closed addr=573465ad9cb0
+Aug 18 14:13:59.654061 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 18 14:13:59.655338 noodle ghostty[4036238]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 18 14:13:59.655338 noodle ghostty[4036238]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 18 14:13:59.655403 noodle ghostty[4036238]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 18 14:13:59.699172 noodle ghostty[4036238]: info(io_exec): started subcommand path=/bin/sh pid=3588590
+Aug 18 14:13:59.907841 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 18 14:14:18.760947 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=uv
+Aug 18 14:14:18.838002 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 18 14:15:17.851729 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 18 14:15:18.021178 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 18 14:15:18.149630 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 18 14:15:34.717075 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=agents
+Aug 18 14:15:50.845809 noodle ghostty[4036238]: warning(gtk_ghostty_surface): failed to activate the on-screen keyboard

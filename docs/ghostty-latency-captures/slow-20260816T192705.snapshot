@@ -1,0 +1,73 @@
+=== slow launch: 1.433s at 2026-08-16T19:27:06+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+4036238   99115 19.2 928428  54
+--- daemon wchan ---
+0
+--- meminfo ---
+MemAvailable:    9710380 kB
+Cached:          6184352 kB
+Dirty:             22832 kB
+Writeback:             0 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=96.46 avg60=97.28 avg300=96.83 total=322084424315
+full avg10=83.82 avg60=85.78 avg300=85.62 total=300690214866
+
+==> /proc/pressure/cpu <==
+some avg10=0.00 avg60=0.00 avg300=0.00 total=930635411
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=0.00 avg60=0.00 avg300=0.09 total=214856898
+full avg10=0.00 avg60=0.00 avg300=0.09 total=204752584
+--- procs_blocked ---
+procs_blocked 35
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+19 %, 0x0000000000000001, P0, 52
+--- restic ---
+ExecMainStartTimestamp=Sun 2026-08-16 19:02:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+ 100  917431 ps
+24.7 3258621 mongod
+19.2 4036238 ghostty
+11.5  916254 chrome
+10.8    4132 cinnamon
+ 6.2  914855 codex
+ 6.1  197866 code-insiders
+ 6.0  837336 code-insiders
+ 5.1  788985 claude-desktop
+ 4.6 1755232 handy
+ 4.5 1524369 chrome
+--- D state ---
+D  669941 -                        kworker/u96:6+pm
+--- ghostty journal ---
+Aug 16 19:12:17.079115 noodle ghostty[4036238]: info(io_exec): pty fd closed, read thread exiting
+Aug 16 19:12:17.088742 noodle ghostty[4036238]: info(surface): surface closed addr=573470e14260
+Aug 16 19:13:26.042649 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=z
+Aug 16 19:13:26.159433 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..pcookies.wiki
+Aug 16 19:13:27.674398 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=c
+Aug 16 19:13:27.843345 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..pcookies.wiki
+Aug 16 19:22:46.094481 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=pmongo
+Aug 16 19:26:45.966245 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 16 19:26:46.002225 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 16 19:26:46.003450 noodle ghostty[4036238]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 16 19:26:46.003503 noodle ghostty[4036238]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 16 19:26:46.003503 noodle ghostty[4036238]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 16 19:26:46.046044 noodle ghostty[4036238]: info(io_exec): started subcommand path=/bin/sh pid=915374
+Aug 16 19:26:46.259665 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..dential-build
+Aug 16 19:26:47.295889 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=ghb
+Aug 16 19:26:47.337127 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..dential-build
+Aug 16 19:26:49.841852 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=e
+Aug 16 19:26:49.857638 noodle ghostty[4036238]: info(io_exec): pty fd closed, read thread exiting
+Aug 16 19:26:49.916418 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 16 19:26:49.961681 noodle ghostty[4036238]: info(surface): surface closed addr=573470e14260
+Aug 16 19:27:06.691129 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 16 19:27:06.692311 noodle ghostty[4036238]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 16 19:27:06.692311 noodle ghostty[4036238]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 16 19:27:06.692357 noodle ghostty[4036238]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 16 19:27:06.733255 noodle ghostty[4036238]: info(io_exec): started subcommand path=/bin/sh pid=917438

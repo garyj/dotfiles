@@ -1,0 +1,73 @@
+=== slow launch: 2.242s at 2026-08-18T13:43:50+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+4036238  251319 17.3 1035864 48
+--- daemon wchan ---
+poll_schedule_timeout.constprop.0
+--- meminfo ---
+MemAvailable:   27774500 kB
+Cached:         12830980 kB
+Dirty:             12836 kB
+Writeback:             0 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=81.84 avg60=81.01 avg300=81.93 total=471345917210
+full avg10=45.44 avg60=41.90 avg300=44.15 total=439579922647
+
+==> /proc/pressure/cpu <==
+some avg10=6.27 avg60=7.77 avg300=7.89 total=1421307844
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=0.00 avg60=0.00 avg300=0.00 total=246684005
+full avg10=0.00 avg60=0.00 avg300=0.00 total=234874317
+--- procs_blocked ---
+procs_blocked 36
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+16 %, 0x0000000000000001, P0, 43
+--- restic ---
+ExecMainStartTimestamp=Tue 2026-08-18 13:02:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+ 882 3540683 obs
+42.9 3539830 chrome
+26.4 3174609 chrome
+17.3 4036238 ghostty
+11.3 3258621 mongod
+11.2    4132 cinnamon
+ 5.3 3380848 chrome
+ 5.2 3409682 chrome
+ 4.7 3542307 chrome
+ 4.3 1524369 chrome
+ 3.8 3381247 chrome
+--- D state ---
+D 3525380 -                        kworker/u96:23+pm
+--- ghostty journal ---
+Aug 18 11:23:42.872360 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=.. and mattress
+Aug 18 11:26:13.628913 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 18 11:26:13.630789 noodle ghostty[4036238]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 18 11:26:13.630789 noodle ghostty[4036238]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 18 11:26:13.630789 noodle ghostty[4036238]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 18 11:26:13.677245 noodle ghostty[4036238]: info(io_exec): started subcommand path=/bin/sh pid=3464470
+Aug 18 11:26:13.909728 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..d/outdoor set
+Aug 18 11:26:19.372827 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=image_resize.sh
+Aug 18 11:26:19.592823 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..d/outdoor set
+Aug 18 11:36:21.156716 noodle ghostty[4036238]: info(page_list): adjusting page capacity=.{ .cols = 157, .rows = 295, .styles = 128, .hyperlink_bytes = 192, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 18 11:36:25.201328 noodle ghostty[4036238]: info(page_list): adjusting page capacity=.{ .cols = 157, .rows = 295, .styles = 128, .hyperlink_bytes = 384, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 18 11:42:36.917265 noodle ghostty[4036238]: info(io_exec): pty fd closed, read thread exiting
+Aug 18 11:42:36.927023 noodle ghostty[4036238]: info(surface): surface closed addr=5734782d9500
+Aug 18 11:42:37.865407 noodle ghostty[4036238]: info(io_exec): pty fd closed, read thread exiting
+Aug 18 11:42:37.874962 noodle ghostty[4036238]: info(surface): surface closed addr=5734689e5b80
+Aug 18 11:45:49.626875 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..die/workflows
+Aug 18 11:45:56.626113 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=claude
+Aug 18 11:46:21.509635 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=..die/workflows
+Aug 18 11:46:22.185864 noodle ghostty[4036238]: info(stream): OSC 1 (change icon) received and ignored icon=/e
+Aug 18 11:46:22.210108 noodle ghostty[4036238]: info(io_exec): pty fd closed, read thread exiting
+Aug 18 11:46:22.293881 noodle ghostty[4036238]: info(surface): surface closed addr=573470d352f0
+Aug 18 13:43:50.132866 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 18 13:43:50.135223 noodle ghostty[4036238]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 18 13:43:50.135223 noodle ghostty[4036238]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 18 13:43:50.135223 noodle ghostty[4036238]: warning(gtk_ghostty_application): unimplemented action=.cell_size

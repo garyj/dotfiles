@@ -1,0 +1,91 @@
+#!/usr/bin/env bash
+# Diagnostic wrapper around `ghostty +new-window`, wired to Super+Return.
+#
+# Chasing an intermittent 3-4s stall where the resident ghostty instance takes
+# seconds to dispatch the D-Bus request at 0% CPU, then does the real work in
+# 42ms. It refuses to misbehave on demand, so this measures every real keypress
+# and keeps diagnostics only for the launches that are actually slow.
+#
+# No strace: kernel.yama.ptrace_scope=1 blocks attaching to the daemon, which
+# is not a descendant of this script. Everything below reads /proc instead.
+#
+# Remove once the stall is identified: point custom25 back at
+# `ghostty +new-window` and delete ~/.local/state/ghostty-launch.
+set -uo pipefail
+
+STATE="$HOME/.local/state/ghostty-launch"
+LOG="$STATE/latency.log"
+SLOW_THRESHOLD=1.0
+
+mkdir -p "$STATE"
+echo "$(date -Is) invoked pid=$$ ppid=$PPID" >> "$STATE/invoked.log"
+
+daemon_pid=$(pgrep -f 'ghostty --gtk-single-instance' | head -1)
+capture="$STATE/slow-$(date +%Y%m%dT%H%M%S)"
+
+# Poll the daemon while the request is outstanding. state=D with a climbing
+# majflt means the main loop is faulting its own working set back off swap.
+sample_daemon() {
+  local out="$1" pid="$2" stat rest state utime stime majflt vol nonvol swap line t
+  while :; do
+    read -r stat < "/proc/$pid/stat" 2>/dev/null || break
+    rest=${stat#*") "}
+    set -- $rest
+    state=$1 majflt=${10} utime=${12} stime=${13}
+    vol=""; nonvol=""; swap=""
+    while read -r k v; do
+      case $k in
+        voluntary_ctxt_switches:) vol=$v ;;
+        nonvoluntary_ctxt_switches:) nonvol=$v ;;
+        VmSwap:) swap=$v ;;
+      esac
+    done < "/proc/$pid/status" 2>/dev/null
+    line="t=$EPOCHREALTIME state=$state utime=$utime stime=$stime majflt=$majflt swapkb=$swap vol=$vol nonvol=$nonvol"
+    # Any thread not in plain interruptible sleep, plus what it's parked on.
+    for t in /proc/"$pid"/task/*; do
+      read -r stat < "$t/stat" 2>/dev/null || continue
+      rest=${stat#*") "}
+      [ "${rest%% *}" = "S" ] && continue
+      read -r wch < "$t/wchan" 2>/dev/null || wch="?"
+      line+=" [${t##*/}:${rest%% *}:$wch]"
+    done
+    echo "$line"
+    sleep 0.05
+  done >> "$out"
+}
+
+sampler_pid=""
+if [ -n "$daemon_pid" ]; then
+  sample_daemon "$capture.threads" "$daemon_pid" &
+  sampler_pid=$!
+fi
+
+t0=$EPOCHREALTIME
+ghostty +new-window "$@"
+rc=$?
+t1=$EPOCHREALTIME
+
+[ -n "$sampler_pid" ] && kill "$sampler_pid" 2>/dev/null
+
+elapsed=$(awk -v a="$t0" -v b="$t1" 'BEGIN{printf "%.3f", b-a}')
+echo "$(date -Is) $elapsed" >> "$LOG"
+
+if awk -v e="$elapsed" -v s="$SLOW_THRESHOLD" 'BEGIN{exit !(e>s)}'; then
+  {
+    echo "=== slow launch: ${elapsed}s at $(date -Is) ==="
+    echo "--- daemon ---"; ps -o pid,etimes,pcpu,rss,nlwp -p "$daemon_pid" 2>/dev/null
+    echo "--- daemon wchan ---"; cat /proc/"$daemon_pid"/wchan 2>/dev/null; echo
+    echo "--- meminfo ---"; grep -E 'MemAvailable|^Cached|Dirty|Writeback' /proc/meminfo
+    echo "--- pressure ---"; head -2 /proc/pressure/io /proc/pressure/cpu /proc/pressure/memory
+    echo "--- procs_blocked ---"; grep procs_blocked /proc/stat
+    echo "--- gpu ---"; nvidia-smi --query-gpu=utilization.gpu,clocks_throttle_reasons.active,pstate,temperature.gpu --format=csv 2>/dev/null
+    echo "--- restic ---"; systemctl --user show restic-backup.service -p ActiveState -p ExecMainStartTimestamp 2>/dev/null
+    echo "--- top cpu ---"; ps -eo pcpu,pid,comm --sort=-pcpu | head -12
+    echo "--- D state ---"; ps -eo state,pid,wchan:24,comm | awk '$1=="D"' | head -10
+    echo "--- ghostty journal ---"; journalctl --user -u app-com.mitchellh.ghostty.service -n 25 -o short-precise --no-pager 2>/dev/null
+  } > "$capture.snapshot" 2>&1
+else
+  rm -f "$capture.threads"
+fi
+
+exit $rc

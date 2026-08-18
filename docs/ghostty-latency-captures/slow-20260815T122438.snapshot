@@ -1,0 +1,73 @@
+=== slow launch: 1.555s at 2026-08-15T12:24:40+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+   6045  224227  9.4 766032  78
+--- daemon wchan ---
+poll_schedule_timeout.constprop.0
+--- meminfo ---
+MemAvailable:   18979320 kB
+Cached:          4649284 kB
+Dirty:              9072 kB
+Writeback:             0 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=92.56 avg60=95.79 avg300=96.49 total=215311500270
+full avg10=79.73 avg60=82.88 avg300=85.48 total=202759353753
+
+==> /proc/pressure/cpu <==
+some avg10=0.23 avg60=0.14 avg300=0.03 total=566128595
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=15.94 avg60=3.66 avg300=0.81 total=51028217
+full avg10=15.09 avg60=3.47 avg300=0.77 total=48278427
+--- procs_blocked ---
+procs_blocked 50
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+26 %, 0x0000000000000001, P0, 54
+--- restic ---
+ExecMainStartTimestamp=Sat 2026-08-15 12:02:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+22.5 3346651 chromium
+22.2 3351402 chromium
+ 9.9    4132 cinnamon
+ 9.8 3368382 chrome
+ 9.6 3347190 agentsview
+ 9.6 3361697 claude
+ 9.4    6045 ghostty
+ 9.2  197866 code-insiders
+ 7.5 3258621 mongod
+ 6.4 3184064 gitkraken
+ 5.6 3257574 MongoDB Compass
+--- D state ---
+D 3253396 -                        kworker/u96:1+pm
+--- ghostty journal ---
+Aug 15 12:20:42.409871 noodle ghostty[6045]: info(io_exec): pty fd closed, read thread exiting
+Aug 15 12:20:42.419857 noodle ghostty[6045]: info(surface): surface closed addr=63b376d2bf90
+Aug 15 12:20:57.131855 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 12:20:57.133559 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 12:20:57.133612 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 12:20:57.133612 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 12:20:57.179086 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=3350098
+Aug 15 12:20:57.474939 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:20:59.758567 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=d
+Aug 15 12:20:59.786872 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:06.441547 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=svastart
+Aug 15 12:21:06.494704 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:09.892746 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=avstart
+Aug 15 12:21:09.903456 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:19.466515 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=alias
+Aug 15 12:21:19.477006 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:24.498858 noodle ghostty[6045]: warning(glib): WARNING: Gtk: Broken accounting of active state for widget 0x63b39c504490(GtkPopoverMenu)
+Aug 15 12:21:27.049454 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=agentsview
+Aug 15 12:21:27.089439 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:24:38.658140 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 12:24:38.666285 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 12:24:38.666568 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 12:24:38.666568 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 12:24:38.718763 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=3369212
+Aug 15 12:24:40.175321 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~

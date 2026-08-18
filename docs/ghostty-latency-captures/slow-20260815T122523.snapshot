@@ -1,0 +1,72 @@
+=== slow launch: 1.364s at 2026-08-15T12:25:24+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+   6045  224272  9.4 732948  81
+--- daemon wchan ---
+poll_schedule_timeout.constprop.0
+--- meminfo ---
+MemAvailable:   19253724 kB
+Cached:          4723196 kB
+Dirty:            164144 kB
+Writeback:             0 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=95.10 avg60=95.29 avg300=96.24 total=215353898840
+full avg10=82.21 avg60=82.82 avg300=85.10 total=202796355429
+
+==> /proc/pressure/cpu <==
+some avg10=0.01 avg60=0.10 avg300=0.04 total=566350609
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=1.50 avg60=5.23 avg300=1.82 total=54913699
+full avg10=1.43 avg60=4.97 avg300=1.73 total=51995309
+--- procs_blocked ---
+procs_blocked 53
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+14 %, 0x0000000000000001, P0, 57
+--- restic ---
+ExecMainStartTimestamp=Sat 2026-08-15 12:02:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+24.5 3371483 chrome
+22.8 3346651 chromium
+21.6 3351402 chromium
+ 9.9    4132 cinnamon
+ 9.4    6045 ghostty
+ 9.2 3258621 mongod
+ 9.2  197866 code-insiders
+ 8.5 3347190 agentsview
+ 8.4 3370808 chrome
+ 8.3 3361697 claude
+ 6.3 3184064 gitkraken
+--- D state ---
+--- ghostty journal ---
+Aug 15 12:21:09.903456 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:19.466515 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=alias
+Aug 15 12:21:19.477006 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:24.498858 noodle ghostty[6045]: warning(glib): WARNING: Gtk: Broken accounting of active state for widget 0x63b39c504490(GtkPopoverMenu)
+Aug 15 12:21:27.049454 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=agentsview
+Aug 15 12:21:27.089439 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:24:38.658140 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 12:24:38.666285 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 12:24:38.666568 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 12:24:38.666568 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 12:24:38.718763 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=3369212
+Aug 15 12:24:40.175321 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:24:40.449977 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 12:24:40.454090 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 12:24:40.454090 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 12:24:40.454158 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 12:24:40.497568 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=3369537
+Aug 15 12:24:40.743600 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:24:42.435242 noodle ghostty[6045]: warning(gtk_ghostty_surface): failed to activate the on-screen keyboard
+Aug 15 12:24:44.800842 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=ghostty-launch-report
+Aug 15 12:24:44.996856 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:25:24.746018 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 12:25:24.753796 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 12:25:24.753876 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 12:25:24.753876 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size

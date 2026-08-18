@@ -1,0 +1,73 @@
+=== slow launch: 1.192s at 2026-08-15T15:55:56+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+4036238      46  0.7 148788  16
+--- daemon wchan ---
+poll_schedule_timeout.constprop.0
+--- meminfo ---
+MemAvailable:   18108140 kB
+Cached:          6974732 kB
+Dirty:            650256 kB
+Writeback:          7640 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=40.06 avg60=52.60 avg300=80.90 total=227663323720
+full avg10=37.65 avg60=47.89 avg300=70.20 total=213545714173
+
+==> /proc/pressure/cpu <==
+some avg10=0.00 avg60=0.02 avg300=0.06 total=621219104
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=0.00 avg60=0.03 avg300=0.10 total=95614590
+full avg10=0.00 avg60=0.03 avg300=0.10 total=90446786
+--- procs_blocked ---
+procs_blocked 4
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+9 %, 0x0000000000000001, P0, 53
+--- restic ---
+ExecMainStartTimestamp=Sat 2026-08-15 15:04:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+28.1 3699394 chrome
+18.7 3346651 chromium
+18.6 3258621 mongod
+14.3 3351402 chromium
+10.2    4132 cinnamon
+ 8.7  197866 code-insiders
+ 6.0 3928780 gitkraken
+ 4.2 3397540 chrome
+ 4.2 3470075 chrome
+ 3.7 1827115 chrome
+ 3.6 3536494 chrome
+--- D state ---
+D 4030823 -                        kworker/u96:51+pm
+--- ghostty journal ---
+Aug 15 15:55:10.913612 noodle ghostty[4036238]: info(gtk): libadwaita version build=1.5.0 runtime=1.5.0
+Aug 15 15:55:10.914088 noodle ghostty[4036238]: info: reading configuration file path=/home/garyj/.config/ghostty/config
+Aug 15 15:55:10.914722 noodle ghostty[4036238]: info(cli): compatibility handler for selection-invert-fg-bg handled error, you may be using a deprecated field: error.InvalidField
+Aug 15 15:55:10.915821 noodle ghostty[4036238]: info(cli): compatibility handler for selection-invert-fg-bg handled error, you may be using a deprecated field: error.InvalidField
+Aug 15 15:55:10.915865 noodle ghostty[4036238]: info(config): default shell source=env value=/bin/zsh
+Aug 15 15:55:10.915914 noodle ghostty[4036238]: info(config): default working directory src=passwd value=/home/garyj
+Aug 15 15:55:10.915926 noodle ghostty[4036238]: warning(gtk_ghostty_application): setting GDK_DEBUG=gl-disable-gles,gl-no-fractional,vulkan-disable
+Aug 15 15:55:10.915926 noodle ghostty[4036238]: warning(gtk_ghostty_application): setting GDK_DISABLE=color-mgmt
+Aug 15 15:55:11.374887 noodle ghostty[4036238]: info(gtk_ghostty_application): loading gtk-custom-css path=/home/garyj/.config/ghostty/ghostty.css
+Aug 15 15:55:12.050018 noodle ghostty[4036238]: warning(glib): WARNING: Gtk: Theme parser error: style.css:140:17-19: Unexpected data at end of hsl() argument
+Aug 15 15:55:12.050494 noodle ghostty[4036238]: info(gtk_ghostty_application): loading gtk-custom-css path=/home/garyj/.config/ghostty/ghostty.css
+Aug 15 15:55:12.050562 noodle systemd[2098]: Started app-com.mitchellh.ghostty.service - Ghostty.
+Aug 15 15:55:56.693838 noodle ghostty[4036238]: info(font_shared_grid_set): font regular: Monaspace Neon Var Regular
+Aug 15 15:55:56.694527 noodle ghostty[4036238]: info(font_shared_grid_set): font bold: Monaspace Neon Var Bold
+Aug 15 15:55:56.695274 noodle ghostty[4036238]: info(font_shared_grid_set): font italic: Monaspace Neon Var Italic
+Aug 15 15:55:56.695962 noodle ghostty[4036238]: info(font_shared_grid_set): font bold_italic: Monaspace Neon Var Bold Italic
+Aug 15 15:55:56.931667 noodle ghostty[4036238]: info(opengl): loaded OpenGL 4.6
+Aug 15 15:55:56.932623 noodle ghostty[4036238]: info(font_shared_grid_set): font regular: Monaspace Neon Var Regular
+Aug 15 15:55:56.933445 noodle ghostty[4036238]: info(font_shared_grid_set): font bold: Monaspace Neon Var Bold
+Aug 15 15:55:56.934176 noodle ghostty[4036238]: info(font_shared_grid_set): font italic: Monaspace Neon Var Italic
+Aug 15 15:55:56.934902 noodle ghostty[4036238]: info(font_shared_grid_set): font bold_italic: Monaspace Neon Var Bold Italic
+Aug 15 15:55:56.944384 noodle ghostty[4036238]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 15:55:56.944384 noodle ghostty[4036238]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 15:55:56.944508 noodle ghostty[4036238]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 15:55:56.973351 noodle ghostty[4036238]: info(io_exec): started subcommand path=/bin/sh pid=4039213

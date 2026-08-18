@@ -315,7 +315,8 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom24/ name 'xkill'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ binding "['<Super>Return']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command 'ghostty +new-window'
+  # Wrapper times every launch while an intermittent multi-second stall is open; revert to 'ghostty +new-window' once closed.
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ command "$HOME/bin/ghostty-new-window"
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom25/ name 'Ghostty'
 
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom26/ binding "['<Super>m']"

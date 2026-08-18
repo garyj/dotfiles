@@ -1,0 +1,76 @@
+=== slow launch: 6.182s at 2026-08-15T12:24:38+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+   6045  224226  9.4 773324  75
+--- daemon wchan ---
+poll_schedule_timeout.constprop.0
+--- meminfo ---
+MemAvailable:   18410372 kB
+Cached:          4454284 kB
+Dirty:             24444 kB
+Writeback:         13336 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=93.35 avg60=96.02 avg300=96.54 total=215310008145
+full avg10=82.77 avg60=83.45 avg300=85.62 total=202758254806
+
+==> /proc/pressure/cpu <==
+some avg10=0.06 avg60=0.11 avg300=0.03 total=566101917
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=15.70 avg60=3.20 avg300=0.70 total=50971717
+full avg10=14.89 avg60=3.04 avg300=0.67 total=48228735
+--- procs_blocked ---
+procs_blocked 55
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+57 %, 0x0000000000000001, P0, 54
+--- restic ---
+ExecMainStartTimestamp=Sat 2026-08-15 12:02:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+75.0 3369212 sh
+22.2 3351402 chromium
+22.0 3346651 chromium
+10.7 3368382 chrome
+10.0 3369174 bash
+ 9.9    4132 cinnamon
+ 9.7 3361697 claude
+ 9.7 3347190 agentsview
+ 9.4    6045 ghostty
+ 9.2  197866 code-insiders
+ 9.0 3369202 bash
+--- D state ---
+D    1085 -                        dmcrypt_write/252:0
+D    1504 -                        nvidia-modeset/kthread_q
+D 1827112 folio_wait_bit_common    code-insiders
+D 3276583 -                        kworker/u96:4+pm
+--- ghostty journal ---
+Aug 15 12:20:41.212609 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:20:42.409871 noodle ghostty[6045]: info(io_exec): pty fd closed, read thread exiting
+Aug 15 12:20:42.419857 noodle ghostty[6045]: info(surface): surface closed addr=63b376d2bf90
+Aug 15 12:20:57.131855 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 12:20:57.133559 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 12:20:57.133612 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 12:20:57.133612 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 12:20:57.179086 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=3350098
+Aug 15 12:20:57.474939 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:20:59.758567 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=d
+Aug 15 12:20:59.786872 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:06.441547 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=svastart
+Aug 15 12:21:06.494704 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:09.892746 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=avstart
+Aug 15 12:21:09.903456 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:19.466515 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=alias
+Aug 15 12:21:19.477006 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:21:24.498858 noodle ghostty[6045]: warning(glib): WARNING: Gtk: Broken accounting of active state for widget 0x63b39c504490(GtkPopoverMenu)
+Aug 15 12:21:27.049454 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=agentsview
+Aug 15 12:21:27.089439 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=~
+Aug 15 12:24:38.658140 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 15 12:24:38.666285 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 15 12:24:38.666568 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 15 12:24:38.666568 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 15 12:24:38.718763 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=3369212

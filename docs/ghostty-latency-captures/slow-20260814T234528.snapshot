@@ -1,0 +1,74 @@
+=== slow launch: 2.835s at 2026-08-14T23:45:31+10:00 ===
+--- daemon ---
+    PID ELAPSED %CPU   RSS NLWP
+   6045  178678  7.7 1029532 66
+--- daemon wchan ---
+poll_schedule_timeout.constprop.0
+--- meminfo ---
+MemAvailable:   36746092 kB
+Cached:         15865172 kB
+Dirty:             17916 kB
+Writeback:             0 kB
+WritebackTmp:          0 kB
+--- pressure ---
+==> /proc/pressure/io <==
+some avg10=96.46 avg60=96.72 avg300=96.69 total=170428400542
+full avg10=84.75 avg60=85.67 avg300=86.38 total=160894932508
+
+==> /proc/pressure/cpu <==
+some avg10=0.13 avg60=0.05 avg300=0.04 total=446751304
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+
+==> /proc/pressure/memory <==
+some avg10=0.00 avg60=0.00 avg300=0.00 total=9303017
+full avg10=0.00 avg60=0.00 avg300=0.00 total=9132557
+--- procs_blocked ---
+procs_blocked 40
+--- gpu ---
+utilization.gpu [%], clocks_event_reasons.active, pstate, temperature.gpu
+30 %, 0x0000000000000001, P0, 52
+--- restic ---
+ExecMainStartTimestamp=Fri 2026-08-14 23:05:18 AEST
+ActiveState=inactive
+--- top cpu ---
+%CPU     PID COMMAND
+ 100 1184614 ps
+36.2 1184341 chrome
+11.6  197866 code-insiders
+10.6    4132 cinnamon
+ 9.9  924898 chromium
+ 8.7  957613 claude
+ 7.7    6045 ghostty
+ 6.6  740424 claude
+ 5.1 1140129 chrome
+ 4.9  684728 chrome
+ 4.3 3465965 claude
+--- D state ---
+D    2098 -                        systemd
+D 1132241 -                        kworker/u96:4+pm
+--- ghostty journal ---
+Aug 14 23:22:17.464663 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=chezmoi
+Aug 14 23:22:20.601450 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 14 23:22:20.606011 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 14 23:22:20.609931 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 14 23:22:20.613591 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 14 23:22:20.631096 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 14 23:22:20.632551 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 14 23:22:20.632571 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 14 23:22:20.632605 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 14 23:22:20.678596 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=1114952
+Aug 14 23:22:20.684590 noodle ghostty[6045]: warning(surface): failed to get pin for clicked point
+Aug 14 23:22:20.698694 noodle ghostty[6045]: warning(surface): failed to get pin for clicked point
+Aug 14 23:22:20.855547 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=..share/chezmoi
+Aug 14 23:22:26.785758 noodle ghostty[6045]: warning(gtk_ghostty_surface): failed to activate the on-screen keyboard
+Aug 14 23:22:27.939070 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=ghb
+Aug 14 23:22:27.989003 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=..share/chezmoi
+Aug 14 23:22:34.105415 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=ghb
+Aug 14 23:22:34.172929 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=..share/chezmoi
+Aug 14 23:23:04.082879 noodle ghostty[6045]: info(stream): OSC 1 (change icon) received and ignored icon=..share/chezmoi
+Aug 14 23:29:37.811782 noodle ghostty[6045]: info(page_list): adjusting page capacity=.{ .cols = 159, .rows = 291, .styles = 128, .hyperlink_bytes = 768, .grapheme_bytes = 8192, .string_bytes = 2048 }
+Aug 14 23:45:31.158285 noodle ghostty[6045]: info(opengl): loaded OpenGL 4.6
+Aug 14 23:45:31.159563 noodle ghostty[6045]: info(io_exec): found Ghostty resources dir: /usr/share/ghostty
+Aug 14 23:45:31.159563 noodle ghostty[6045]: info(io_exec): shell integration automatically injected shell=.zsh
+Aug 14 23:45:31.159631 noodle ghostty[6045]: warning(gtk_ghostty_application): unimplemented action=.cell_size
+Aug 14 23:45:31.204179 noodle ghostty[6045]: info(io_exec): started subcommand path=/bin/sh pid=1184621
