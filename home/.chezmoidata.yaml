@@ -31,7 +31,7 @@ coding_agents:
   claude: "2.1.234"     # renovate: datasource=github-releases depName=anthropics/claude-code
   codex: "0.149.0"      # renovate: datasource=github-releases depName=openai/codex
   copilot: "1.0.80"     # renovate: datasource=github-releases depName=github/copilot-cli
-  opencode: "1.18.19"   # renovate: datasource=github-releases depName=anomalyco/opencode
+  opencode: "1.18.21"   # renovate: datasource=github-releases depName=anomalyco/opencode
   gemini: "0.56.0"      # renovate: datasource=npm depName=@google/gemini-cli
   pi: "0.84.2"          # renovate: datasource=npm depName=@earendil-works/pi-coding-agent
   # grok installs from the raw x.ai binary (mise registry http backend), but xAI
