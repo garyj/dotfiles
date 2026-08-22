@@ -7,6 +7,7 @@ export JUST_UNSTABLE := "true"
 
 mod backup '.justfiles/backup.justfile'
 mod claude '.justfiles/claude.justfile'
+mod d '.justfiles/docker.justfile'
 mod mise '.justfiles/mise.justfile'
 mod sentry '.justfiles/sentry.justfile'
 

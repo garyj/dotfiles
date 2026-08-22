@@ -144,16 +144,11 @@ alias cu="codium"
 alias pca="prek run --all-files"
 alias pcup="prek auto-update"
 
-# Docker Stuff
+# Docker Stuff (disk cleanup lives in `jh d::`)
 alias d=docker
-# alias dsysprune='docker system prune -a --force' # careful this will delete a lot
 
 alias dpsa='docker ps -a'
-
-alias dstopall='docker stop $(docker ps -q)'
-alias dcleanall='docker stop $(docker ps -q) && docker container prune -f'
-alias drmall='docker rm $(docker ps -a -q)'
-alias dconprune='docker container prune --force'
+alias dstopall='docker ps -q | xargs -r docker stop'
 
 alias dcf="docker compose logs -f"
 alias dc="docker compose"
