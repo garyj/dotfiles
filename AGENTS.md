@@ -51,19 +51,12 @@ Traps. Each of these looks like a gap but is deliberate:
 
 ## Vendored skills
 
-A skill under `home/dot_agents/skills/` that carries a `dot_provenance` is a byte-identical copy of someone else's,
-pinned by commit. The rest are garyj's own. Never hand-edit a vendored skill or hand-copy an update: run
-`uv run scripts/vendor_skill.py`, which owns the fetch, the chezmoi filename attributes, and the pin.
+A skill under `home/dot_agents/skills/` carrying a `dot_provenance` is a byte-identical copy of someone else's, pinned
+by commit; the rest are garyj's own. `scripts/vendor_skill.py` (`just skills`) owns the fetch, the chezmoi filename
+attributes, and the pin, so never hand-edit a vendored file or hand-copy an update. Skills whose upstream tags releases
+belong in `.chezmoiexternal.toml.tmpl` instead, with a Renovate pin.
 
-- `check` reports which upstreams changed the skill's own bytes.
-- `sync` re-copies the pinned commit, so it both detects drift and heals it. Exits non-zero on drift under `--dry-run`,
-  which is the CI-able invariant.
-- `sync --latest` moves to the upstream default-branch head and flips `vetted` to `PENDING`. Vet it, then write the
-  verdict back into `dot_provenance` by hand.
-
-Skills whose upstream tags releases do not belong here at all; they go in `.chezmoiexternal.toml.tmpl` with a Renovate
-pin, like agent-browser and worktrunk. Vendoring is for upstreams with no releases, or where the content itself should
-land in the diff.
+Invoke the `vendor-skill` skill before adding, updating, or removing one.
 
 ## Shell Configuration
 
