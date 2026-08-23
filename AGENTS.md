@@ -49,6 +49,22 @@ Traps. Each of these looks like a gap but is deliberate:
 - codex re-creates its hidden `.system/` of built-in skills inside `~/.agents/skills` on next launch. It is
   dot-prefixed, so other agents' skill discovery skips it.
 
+## Vendored skills
+
+A skill under `home/dot_agents/skills/` that carries a `dot_provenance` is a byte-identical copy of someone else's,
+pinned by commit. The rest are garyj's own. Never hand-edit a vendored skill or hand-copy an update: run
+`uv run scripts/vendor_skill.py`, which owns the fetch, the chezmoi filename attributes, and the pin.
+
+- `check` reports which upstreams changed the skill's own bytes.
+- `sync` re-copies the pinned commit, so it both detects drift and heals it. Exits non-zero on drift under `--dry-run`,
+  which is the CI-able invariant.
+- `sync --latest` moves to the upstream default-branch head and flips `vetted` to `PENDING`. Vet it, then write the
+  verdict back into `dot_provenance` by hand.
+
+Skills whose upstream tags releases do not belong here at all; they go in `.chezmoiexternal.toml.tmpl` with a Renovate
+pin, like agent-browser and worktrunk. Vendoring is for upstreams with no releases, or where the content itself should
+land in the diff.
+
 ## Shell Configuration
 
 `dot_commonrc.tmpl` loop-sources `~/.config/shell/*.sh`. New aliases go in the matching topic file there, or a new file
@@ -71,6 +87,10 @@ There is no automated test suite. Validate changes with:
 - `chezmoi diff` for a safe preview
 - `chezmoi apply` on a test machine or container
 - Manual execution of affected scripts in `home/.chezmoiscripts/` when relevant
+
+The repo-root `justfile` wraps these (`just diff`, `just pc`, `just skills ...`) and shadows the machine-level
+`~/justfile` inside a checkout. Add repo workflows there, not to `home/justfile`, which is a different file for a
+different job.
 
 ## Commit & Pull Request Guidelines
 
