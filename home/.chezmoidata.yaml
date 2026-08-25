@@ -24,7 +24,7 @@ tools:
   sentry: "0.42.2"         # renovate: datasource=github-releases depName=getsentry/cli
   # These two install via mise's pipx backend (PyPI), not GitHub releases.
   agentsview: "0.41.1"     # renovate: datasource=pypi depName=agentsview
-  llm: "0.32"            # renovate: datasource=pypi depName=llm
+  llm: "0.33"            # renovate: datasource=pypi depName=llm
 
 # AI coding agents, all installed via mise.
 coding_agents:
