@@ -14,7 +14,7 @@ tools:
   mise: "2026.8.9"     # renovate: datasource=github-releases depName=jdx/mise
   ast_grep: "0.45.1"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
   worktrunk: "0.74.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
-  dust: "1.2.4"        # renovate: datasource=github-releases depName=bootandy/dust
+  dust: "1.2.5"        # renovate: datasource=github-releases depName=bootandy/dust
   apm: "0.28.0"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.4.14"        # renovate: datasource=github-releases depName=j178/prek
   rtk: "0.45.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
