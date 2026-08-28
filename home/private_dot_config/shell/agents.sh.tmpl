@@ -112,9 +112,15 @@ gryo() {
   _as_agent grok --permission-mode bypassPermissions "$@"
 }
 
-# opencode and pi: add launchers here following the same shape once their yolo
-# flags are confirmed, e.g.:
-#   ocyo() { _agent_guard || return 1; _as_agent opencode <yolo-flag> "$@"; }
+# opencode auto-approve. Unlike claude's --dangerously-skip-permissions, --auto
+# still honours any permission a config explicitly denies.
+ocyo() {
+  _agent_guard || return 1
+  _as_agent opencode --auto "$@"
+}
+
+# pi: add a launcher here following the same shape once its yolo flag is
+# confirmed, e.g.:
 #   piyo() { _agent_guard || return 1; _as_agent pi <yolo-flag> "$@"; }
 
 {{- if lookPath "agentsview" }}
