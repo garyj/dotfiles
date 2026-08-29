@@ -1,19 +1,1 @@
 {{ includeTemplate "agents/instructions.md" . }}
-
-## Model routing (when the main loop is a top-tier model, e.g. Fable)
-
-- Judgment, architecture, taste, review -> main loop.
-- Self-contained implementation, bulk mechanical work, log digging,
-  huge files, migrations -> cheaper model in a subagent; review the
-  result before committing. Cheap models over-comment; hold their
-  output to the Comments rules above.
-
-Rule: judge the output. Price is a tiebreaker. If a cheap model misses
-the bar, redo it with a smarter one without asking. Escalating beats
-shipping mediocre.
-
-When a task needs a big, specific pile of context, spin a subagent for
-it and hand back a result. Do not drag all of it into the main thread.
-
-Exception: in learning or pair-programming sessions where I write the
-code myself, no agent writes it, any model.
