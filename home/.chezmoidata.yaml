@@ -13,7 +13,7 @@ langs:
 tools:
   mise: "2026.8.12"     # renovate: datasource=github-releases depName=jdx/mise
   ast_grep: "0.45.2"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
-  worktrunk: "0.74.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
+  worktrunk: "0.75.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.5"        # renovate: datasource=github-releases depName=bootandy/dust
   apm: "0.28.0"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.5.0"        # renovate: datasource=github-releases depName=j178/prek
