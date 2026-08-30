@@ -33,6 +33,15 @@
     refreshPeriod = "24h"
     include = ["*/skills/agent-browser/**"]
 
+# Own repo with no releases: main is the only version there is to track.
+[".agents/skills/deps-upgrade-report"]
+    type = "archive"
+    url = "https://github.com/garyj/deps-upgrade-report/archive/refs/heads/main.tar.gz"
+    exact = true
+    stripComponents = 3
+    refreshPeriod = "24h"
+    include = ["*/skills/deps-upgrade-report/**"]
+
 [".agents/skills/sentry-cli"]
     type = "archive"
     url = "https://github.com/getsentry/cli/archive/refs/tags/{{ .tools.sentry }}.tar.gz"

@@ -54,7 +54,8 @@ Traps. Each of these looks like a gap but is deliberate:
 A skill under `home/dot_agents/skills/` carrying a `dot_provenance` is a byte-identical copy of someone else's, pinned
 by commit; the rest are garyj's own. `scripts/vendor_skill.py` (`just skills`) owns the fetch, the chezmoi filename
 attributes, and the pin, so never hand-edit a vendored file or hand-copy an update. Skills whose upstream tags releases
-belong in `.chezmoiexternal.toml.tmpl` instead, with a Renovate pin.
+belong in `.chezmoiexternal.toml.tmpl` instead, with a Renovate pin. Garyj's own skill repos live there too but track
+`main` unpinned, so a push upstream lands on the next `chezmoi apply -R`.
 
 Invoke the `vendor-skill` skill before adding, updating, or removing one.
 
