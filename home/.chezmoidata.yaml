@@ -33,7 +33,7 @@ coding_agents:
   copilot: "1.0.81"     # renovate: datasource=github-releases depName=github/copilot-cli
   opencode: "1.18.23"   # renovate: datasource=github-releases depName=anomalyco/opencode
   gemini: "0.57.0"      # renovate: datasource=npm depName=@google/gemini-cli
-  pi: "0.84.3"          # renovate: datasource=npm depName=@earendil-works/pi-coding-agent
+  pi: "0.84.4"          # renovate: datasource=npm depName=@earendil-works/pi-coding-agent
   # grok installs from the raw x.ai binary (mise registry http backend), but xAI
   # publishes @xai-official/grok to npm in version lockstep, so Renovate tracks that.
   grok: "1.0.5"         # renovate: datasource=npm depName=@xai-official/grok
