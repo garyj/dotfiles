@@ -54,7 +54,7 @@ deb_apps:
 # run_onchange_before_install-uv-python.sh.tmpl.
 installers:
   atuin:
-    version: "18.19.0"  # renovate: datasource=github-releases depName=atuinsh/atuin
+    version: "18.20.1"  # renovate: datasource=github-releases depName=atuinsh/atuin
   uv:
     version: "0.12.6"  # renovate: datasource=github-releases depName=astral-sh/uv
 
