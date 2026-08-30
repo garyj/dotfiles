@@ -36,7 +36,7 @@ coding_agents:
   pi: "0.84.4"          # renovate: datasource=npm depName=@earendil-works/pi-coding-agent
   # grok installs from the raw x.ai binary (mise registry http backend), but xAI
   # publishes @xai-official/grok to npm in version lockstep, so Renovate tracks that.
-  grok: "1.0.5"         # renovate: datasource=npm depName=@xai-official/grok
+  grok: "1.0.12"         # renovate: datasource=npm depName=@xai-official/grok
 
 # Pinned git refs for chezmoi externals (zsh-users cut no releases, so github-tags).
 externals:
