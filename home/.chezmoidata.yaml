@@ -28,7 +28,7 @@ tools:
 
 # AI coding agents, all installed via mise.
 coding_agents:
-  claude: "2.1.251"     # renovate: datasource=github-releases depName=anthropics/claude-code
+  claude: "2.1.252"     # renovate: datasource=github-releases depName=anthropics/claude-code
   codex: "0.151.0"      # renovate: datasource=github-releases depName=openai/codex
   copilot: "1.0.82"     # renovate: datasource=github-releases depName=github/copilot-cli
   opencode: "1.18.25"   # renovate: datasource=github-releases depName=anomalyco/opencode
