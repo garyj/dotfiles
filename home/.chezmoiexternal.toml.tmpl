@@ -41,6 +41,8 @@
     stripComponents = 3
     refreshPeriod = "24h"
     include = ["*/skills/deps-upgrade-report/**"]
+    # Running the tests here writes __pycache__, which exact then prompts to delete.
+    exclude = ["*/skills/deps-upgrade-report/tests/**"]
 
 [".agents/skills/sentry-cli"]
     type = "archive"
