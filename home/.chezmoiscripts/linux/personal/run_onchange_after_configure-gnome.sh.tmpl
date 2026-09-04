@@ -388,6 +388,11 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom42/ command 'rofi -show window -matching fuzzy'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom42/ name 'Window search'
 
+  # Release build from ~/dev/opensource/yoink (just build). Running the binary again toggles the window.
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ binding "['<Super><Shift>v']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ command "$HOME/dev/opensource/yoink/target/release/yoink"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ name 'yoink clipboard history'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -436,6 +441,7 @@ if is_cinnamon; then
   'custom40',\
   'custom41',\
   'custom42',\
+  'custom43',\
   '__dummy__'\
   ]"
 
