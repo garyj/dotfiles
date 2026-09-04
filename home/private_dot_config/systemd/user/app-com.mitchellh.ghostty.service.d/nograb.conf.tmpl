@@ -1,0 +1,7 @@
+{{ if .personal -}}
+[Service]
+# GTK 4.14 grabs the X server ~173 times building a window and twice per title
+# change; each grab stalls the whole server one frame on NVIDIA. nograb.c makes
+# the grab a no-op for this daemon only.
+Environment=LD_PRELOAD=%h/.local/lib/ghostty/nograb.so
+{{ end -}}

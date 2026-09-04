@@ -1,0 +1,22 @@
+{{ if .personal -}}
+#!/usr/bin/env bash
+
+echo -- Running run_onchange_after_build-ghostty-nograb.sh.tmpl --
+
+set -eufo pipefail
+
+# Build the X server-grab shim the ghostty daemon preloads (see nograb.c and
+# the nograb.conf drop-in). Re-runs whenever the source changes.
+# nograb.c hash: {{ include "dot_local/lib/ghostty/nograb.c" | sha256sum }}
+
+if ! command -v gcc >/dev/null 2>&1; then
+  echo "gcc not installed; skipping nograb.so build"
+  exit 0
+fi
+
+LIB="$HOME/.local/lib/ghostty"
+gcc -shared -fPIC -O2 -Wall -o "$LIB/nograb.so" "$LIB/nograb.c"
+systemctl --user daemon-reload
+echo "nograb.so built; takes effect on the next ghostty daemon start:"
+echo "  systemctl --user restart app-com.mitchellh.ghostty.service   (closes open terminals)"
+{{ end }}
