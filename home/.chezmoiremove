@@ -13,6 +13,7 @@ bin/installers
 .agents/skills/handoff
 .agents/skills/pickup
 .agents/skills/reagents
+.agents/skills/wt-switch-create
 .agents/docs/plans/agents-staleness-prevention.md
 .agents/docs/plans
 

@@ -58,13 +58,5 @@
     refreshPeriod = "24h"
     include = ["*/skills/worktrunk/**"]
 
-# First shipped in worktrunk 0.75.0; matches nothing on older pins.
-[".agents/skills/wt-switch-create"]
-    type = "archive"
-    url = "https://github.com/max-sixty/worktrunk/archive/refs/tags/v{{ .tools.worktrunk }}.tar.gz"
-    stripComponents = 3
-    refreshPeriod = "24h"
-    include = ["*/skills/wt-switch-create/**"]
-
 {{ end -}}
 
