@@ -11,7 +11,7 @@ langs:
 # Renovate open version-bump PRs; see renovate.json.
 # Versions are stored bare (no leading v); Renovate normalizes on write-back.
 tools:
-  mise: "2026.9.0"     # renovate: datasource=github-releases depName=jdx/mise
+  mise: "2026.9.1"     # renovate: datasource=github-releases depName=jdx/mise
   ast_grep: "0.45.3"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
   worktrunk: "0.76.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.5"        # renovate: datasource=github-releases depName=bootandy/dust
