@@ -17,7 +17,7 @@ tools:
   dust: "1.2.5"        # renovate: datasource=github-releases depName=bootandy/dust
   apm: "0.29.0"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.5.1"        # renovate: datasource=github-releases depName=j178/prek
-  rtk: "0.46.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
+  rtk: "0.47.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
   # These two are pinned so the binary (mise) and its agent skill
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
   agent_browser: "0.36.0"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
