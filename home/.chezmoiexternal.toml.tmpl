@@ -55,9 +55,9 @@
 [".local/share/agent-skills/sentry-cli"]
     type = "archive"
     url = "https://github.com/getsentry/cli/archive/refs/tags/{{ .tools.sentry }}.tar.gz"
-    stripComponents = 5
+    stripComponents = 7
     refreshPeriod = "24h"
-    include = ["*/plugins/sentry-cli/skills/sentry-cli/**"]
+    include = ["*/packages/cli/plugins/sentry-cli/skills/sentry-cli/**"]
 
 [".local/share/agent-skills/worktrunk"]
     type = "archive"
