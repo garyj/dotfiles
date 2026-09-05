@@ -17,47 +17,16 @@ CLI tools are managed by **mise** (`home/private_dot_config/mise/config.toml.tmp
 apps stay on **apt**. Pinned versions are centralized in `home/.chezmoidata.yaml`, where `# renovate:` annotations let
 Renovate open version-bump PRs. Invoke the `manage-dependencies` skill before adding, pinning, or removing one.
 
-## Agent config fan-out
+## Agent config
 
-One shared instruction body (`home/.chezmoitemplates/agents/instructions.md`) and one skill store (`~/.agents/skills`)
-feed every coding agent. Each agent's wrapper pulls the body in with `{{ includeTemplate "agents/instructions.md" . }}`
-and renders to that agent's own filename; edit the body, run `chezmoi apply`, and every agent updates. To give ONE
-agent extra instructions, append a section below the include in its wrapper. `~/.agents/AGENTS.md` is the same body,
-the canonical copy.
+Instructions and skills for every coding agent live in their own repo, `garyj/dotagents`, cloned to `~/.agents` as a
+`git-repo` external. `run_after_40_agents-install.sh` runs its `scripts/install`, which symlinks `~/.claude/CLAUDE.md`,
+`~/.codex/AGENTS.md`, and the other global instruction files to `~/.agents/instructions.md`, and the skill stores to
+`~/.agents/skills`. Edit agent config there, not here. A saved edit is live without an apply.
 
-| Agent    | Instructions                                       | Skills                                             |
-| -------- | -------------------------------------------------- | -------------------------------------------------- |
-| claude   | wrapper → `~/.claude/CLAUDE.md`                    | `symlink_skills.tmpl` → `~/.claude/skills`         |
-| codex    | wrapper → `~/.codex/AGENTS.md`                     | `symlink_skills.tmpl` → `~/.codex/skills`          |
-| gemini   | wrapper → `~/.gemini/GEMINI.md`                    | scans `~/.agents/skills` natively                  |
-| pi       | wrapper → `~/.pi/agent/AGENTS.md`                  | scans `~/.agents/skills` natively                  |
-| opencode | wrapper → `~/.config/opencode/AGENTS.md`           | no skills feature                                  |
-| grok     | claude's `~/.claude/CLAUDE.md` via its compat scan | claude's `~/.claude/skills` via its compat scan    |
-| copilot  | per-repo only, not in the fan-out                  | scans `~/.agents/skills` natively                  |
-| cursor   | per-repo only, not in the fan-out                  | not managed here                                   |
-
-Traps. Each of these looks like a gap but is deliberate:
-
-- gemini/copilot/pi skills dirs are left un-symlinked on purpose. Do not "fix" this: gemini would scan the store twice
-  and warn on every skill.
-- grok gets NO wrapper and NO symlink on purpose. Its Claude Code compat scan (no off switch) already loads the
-  user-global `~/.claude/CLAUDE.md` and `~/.claude/skills`; adding a `~/.grok/AGENTS.md` or `~/.grok/skills` makes it
-  load the instructions twice / scan the store twice. The user-global rules load is undocumented in grok's README;
-  verified live 2026-08-15 in its session `prompt_context.json`.
-- grok truncates each rules file at 10,000 characters and `~/.claude/CLAUDE.md` sits at 9.9k, so growing the shared
-  body or claude's extras clips grok's copy (grok warns when it does).
-- codex re-creates its hidden `.system/` of built-in skills inside `~/.agents/skills` on next launch. It is
-  dot-prefixed, so other agents' skill discovery skips it.
-
-## Vendored skills
-
-A skill under `home/dot_agents/skills/` carrying a `dot_provenance` is a byte-identical copy of someone else's, pinned
-by commit; the rest are garyj's own. `scripts/vendor_skill.py` (`just skills`) owns the fetch, the chezmoi filename
-attributes, and the pin, so never hand-edit a vendored file or hand-copy an update. Skills whose upstream tags releases
-belong in `.chezmoiexternal.toml.tmpl` instead, with a Renovate pin. Garyj's own skill repos live there too but track
-`main` unpinned, so a push upstream lands on the next `chezmoi apply -R`.
-
-Invoke the `vendor-skill` skill before adding, updating, or removing one.
+Skills that ship with a pinned CLI (agent-browser, sentry-cli, worktrunk) and deps-upgrade-report stay chezmoi
+externals, extracted to `~/.local/share/agent-skills/<name>`, and the install links each into `~/.agents/skills`. Adding
+one is a stanza in `.chezmoiexternal.toml.tmpl` and a pin in `.chezmoidata.yaml`, nothing in the dotagents repo.
 
 ## Shell Configuration
 
@@ -82,7 +51,7 @@ There is no automated test suite. Validate changes with:
 - `chezmoi apply` on a test machine or container
 - Manual execution of affected scripts in `home/.chezmoiscripts/` when relevant
 
-The repo-root `justfile` wraps these (`just diff`, `just pc`, `just skills ...`) and shadows the machine-level
+The repo-root `justfile` wraps these (`just diff`, `just pc`) and shadows the machine-level
 `~/justfile` inside a checkout. Add repo workflows there, not to `home/justfile`, which is a different file for a
 different job.
 

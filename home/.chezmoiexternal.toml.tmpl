@@ -26,7 +26,15 @@
     refreshPeriod = "168h"
     include = ["**/*.otf", "**/*.ttf"]
 
-[".agents/skills/agent-browser"]
+# Cloned, not rendered, so an edit in ~/.agents is live without an apply.
+[".agents"]
+    type = "git-repo"
+    url = "https://github.com/garyj/dotagents.git"
+    refreshPeriod = "24h"
+    pull.args = ["--ff-only"]
+
+# Skills that ship with a pinned CLI. ~/.agents/scripts/install links each into ~/.agents/skills.
+[".local/share/agent-skills/agent-browser"]
     type = "archive"
     url = "https://github.com/vercel-labs/agent-browser/archive/refs/tags/v{{ .tools.agent_browser }}.tar.gz"
     stripComponents = 3
@@ -34,7 +42,7 @@
     include = ["*/skills/agent-browser/**"]
 
 # Own repo with no releases: main is the only version there is to track.
-[".agents/skills/deps-upgrade-report"]
+[".local/share/agent-skills/deps-upgrade-report"]
     type = "archive"
     url = "https://github.com/garyj/deps-upgrade-report/archive/refs/heads/main.tar.gz"
     exact = true
@@ -44,14 +52,14 @@
     # Running the tests here writes __pycache__, which exact then prompts to delete.
     exclude = ["*/skills/deps-upgrade-report/tests/**"]
 
-[".agents/skills/sentry-cli"]
+[".local/share/agent-skills/sentry-cli"]
     type = "archive"
     url = "https://github.com/getsentry/cli/archive/refs/tags/{{ .tools.sentry }}.tar.gz"
     stripComponents = 5
     refreshPeriod = "24h"
     include = ["*/plugins/sentry-cli/skills/sentry-cli/**"]
 
-[".agents/skills/worktrunk"]
+[".local/share/agent-skills/worktrunk"]
     type = "archive"
     url = "https://github.com/max-sixty/worktrunk/archive/refs/tags/v{{ .tools.worktrunk }}.tar.gz"
     stripComponents = 3

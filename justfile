@@ -9,11 +9,6 @@ set unstable
 @default:
     just --list
 
-# vendored skills: check | sync [--dry-run] [--latest] [NAME]; run `just skills --help` for the rest
-[group("skills")]
-skills *ARGS:
-    uv run scripts/vendor_skill.py {{ ARGS }}
-
 # preview what chezmoi would change on this machine
 [group("chezmoi")]
 diff *ARGS:
