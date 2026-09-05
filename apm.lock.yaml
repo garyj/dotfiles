@@ -1,10 +1,12 @@
 lockfile_version: '1'
-generated_at: '2026-06-28T07:09:27.004944+00:00'
-apm_version: 0.21.0
+generated_at: '2026-09-05T06:18:39.762703+00:00'
+apm_version: 0.29.0
 dependencies:
 - repo_url: j178/prek
+  name: prek
   host: github.com
-  resolved_commit: 74fb726c43673bc75b45fa061d3a00f93f1f3c49
+  resolved_commit: 9754f65d2452a7fa00f8e511158d1f7616dc55a3
+  version: 0.0.0
   package_type: skill_bundle
   deployed_files:
   - .agents/skills/prek
@@ -12,6 +14,43 @@ dependencies:
   - .claude/skills/prek
   - .claude/skills/prek/SKILL.md
   deployed_file_hashes:
-    .agents/skills/prek/SKILL.md: sha256:b5657cdf91830666d047d50a2934e600e7d1b45bb5cdb8abb0cb3d74b3557ba3
-    .claude/skills/prek/SKILL.md: sha256:b5657cdf91830666d047d50a2934e600e7d1b45bb5cdb8abb0cb3d74b3557ba3
-  content_hash: sha256:a176f9c8ce951a5f1fd5a1e77af8338b9591565c49ff892a47d405def1386fd4
+    .agents/skills/prek/SKILL.md: sha256:9a92fcc54550264fe654a10617299b59c30a0f0cc33e7aac30fe2cae47641f82
+    .claude/skills/prek/SKILL.md: sha256:9a92fcc54550264fe654a10617299b59c30a0f0cc33e7aac30fe2cae47641f82
+  content_hash: sha256:bb05e77a62aa9bd2df945c02b85104cda59c6df5473c02d322021b7b55e56df9
+deployments:
+- kind: project-relative
+  target: agent-skills
+  value: .agents/skills/prek
+  runtime: null
+  scope: project
+  owners:
+  - j178/prek
+  active_owner: j178/prek
+  content_hash: null
+- kind: project-relative
+  target: agent-skills
+  value: .agents/skills/prek/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - j178/prek
+  active_owner: j178/prek
+  content_hash: sha256:9a92fcc54550264fe654a10617299b59c30a0f0cc33e7aac30fe2cae47641f82
+- kind: project-relative
+  target: claude
+  value: .claude/skills/prek
+  runtime: null
+  scope: project
+  owners:
+  - j178/prek
+  active_owner: j178/prek
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/prek/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - j178/prek
+  active_owner: j178/prek
+  content_hash: sha256:9a92fcc54550264fe654a10617299b59c30a0f0cc33e7aac30fe2cae47641f82

@@ -106,11 +106,14 @@ Scheduling:
 
 - smaller `priority` values run earlier
 - hooks with the same `priority` can run concurrently
+- top-level `priorities` can declare configuration-local aliases for numeric priorities
+- hook `priority` accepts either a non-negative integer or a declared alias
 - `priority` is evaluated within one config file, not across workspace projects
 
 Useful `prek`-specific hook/config fields when editing TOML:
 
 - `env` for per-hook environment variables
+- `priorities` for readable, reusable priority aliases
 - `priority` for hook ordering and concurrency
 - `minimum_prek_version` for gating newer config features
 - `orphan = true` to isolate a nested workspace project from parent configs
@@ -151,7 +154,7 @@ Common install methods:
 - `prek run <hook-id>`: run only one hook
 - `prek list`: list discovered hooks and projects
 - `prek validate-config`: validate `prek.toml` or `.pre-commit-config.yaml`
-- `prek auto-update`: update pinned hook revisions
+- `prek update`: update pinned hook revisions
 - `prek util yaml-to-toml`: convert an existing YAML config to `prek.toml`
 - `prek util identify <path>`: inspect file tags when `types`, `types_or`, or `exclude_types` do not match as expected
 
