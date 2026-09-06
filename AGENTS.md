@@ -37,6 +37,7 @@ for a new topic. `~/.private_alias` is machine-local and unmanaged, sourced last
 
 - Respect existing file formatting; avoid reformatting unless you change content.
 - Use `private_` files for secrets; avoid committing real credentials.
+- Change managed application settings in the chezmoi source config, then apply them. Use the application UI only when the config cannot make the change.
 
 ## Agent config security
 
