@@ -1,5 +1,17 @@
 {{ if and (not .headless) (not .ephemeral) .personal -}}
 {
+  "cli_default_open_behavior": "new_window",
+  "auto_install_extensions": {
+    "github-dark-default": true,
+    "vscode-icons": true
+  },
+  "theme": "GitHub Dark Default",
+  "icon_theme": "VSCode Icons for Zed (Dark)",
+  "ui_font_size": 20,
+  "buffer_font_size": 18,
+  "preview_tabs": {
+    "enabled": false
+  },
   "project_panel": {
     "dock": "left"
   },

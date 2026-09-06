@@ -1,0 +1,24 @@
+{{ if and (not .headless) (not .ephemeral) .personal -}}
+[
+  {
+    "context": "Editor",
+    "bindings": {
+      "ctrl-?": [
+        "workspace::MoveItemToPaneInDirection",
+        { "direction": "right", "focus": true }
+      ],
+      "ctrl-|": [
+        "workspace::MoveItemToPaneInDirection",
+        { "direction": "left", "focus": true }
+      ]
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-shift-alt-b": "agent::ToggleFocus",
+      "ctrl-shift-k w": "git::Worktree"
+    }
+  }
+]
+{{ end -}}
