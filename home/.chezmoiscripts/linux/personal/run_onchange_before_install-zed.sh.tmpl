@@ -1,0 +1,9 @@
+{{ if and (or (eq .chezmoi.arch "amd64") (eq .chezmoi.arch "arm64")) (not .headless) (not .ephemeral) .personal -}}
+{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint") -}}
+#!/usr/bin/env bash
+set -euo pipefail
+
+curl --proto '=https' --tlsv1.2 -LsSf https://zed.dev/install.sh \
+  | ZED_CHANNEL=stable ZED_VERSION="{{ .installers.zed.version }}" sh
+{{ end -}}
+{{ end -}}

@@ -54,7 +54,7 @@ appimages:
   t3code:  # T3 Code desktop app, GUI over the local coding agents
     version: "0.0.38"  # renovate: datasource=github-releases depName=pingdotgg/t3code
 
-# Installed via their upstream cargo-dist installers. Bumping one changes the
+# Installed via their upstream installers. Bumping one changes the
 # install script's hash, so `chezmoi apply` reinstalls the new version.
 # uv is here rather than in mise for bootstrap ordering; see
 # run_onchange_before_install-uv-python.sh.tmpl.
@@ -63,6 +63,8 @@ installers:
     version: "18.21.0"  # renovate: datasource=github-releases depName=atuinsh/atuin
   uv:
     version: "0.12.9"  # renovate: datasource=github-releases depName=astral-sh/uv
+  zed:
+    version: "1.18.1"  # renovate: datasource=github-releases depName=zed-industries/zed
 
 # Single static binaries pinned from GitHub releases, installed to /usr/local/bin.
 # Off mise so the systemd backup timer finds them on the default PATH.
