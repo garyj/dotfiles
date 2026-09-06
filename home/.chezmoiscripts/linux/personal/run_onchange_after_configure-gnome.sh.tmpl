@@ -393,6 +393,11 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ command "$HOME/dev/opensource/yoink/target/release/yoink"
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ name 'yoink clipboard history'
 
+  # Full WM_CLASS: a bare t3code also matches browser tabs titled after the GitHub repo.
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom44/ binding "['<Super>t']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom44/ command 'bringme.sh t3code.t3code "$HOME/.local/bin/t3-code"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom44/ name 'Bring T3 Code'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -442,6 +447,7 @@ if is_cinnamon; then
   'custom41',\
   'custom42',\
   'custom43',\
+  'custom44',\
   '__dummy__'\
   ]"
 

@@ -48,6 +48,12 @@ deb_apps:
   handy:  # offline speech-to-text
     version: "0.9.6"  # renovate: datasource=github-releases depName=cjpais/Handy
 
+# GUI apps shipped only as an AppImage on GitHub releases (no apt repo, no .deb).
+# Installed as file externals in .chezmoiexternal.toml.tmpl.
+appimages:
+  t3code:  # T3 Code desktop app, GUI over the local coding agents
+    version: "0.0.38"  # renovate: datasource=github-releases depName=pingdotgg/t3code
+
 # Installed via their upstream cargo-dist installers. Bumping one changes the
 # install script's hash, so `chezmoi apply` reinstalls the new version.
 # uv is here rather than in mise for bootstrap ordering; see
