@@ -49,11 +49,12 @@ at ~17ms each. GTK 4.14's X11 backend grabs the server for every
 `tooltip-text` set (`gtk_widget_set_tooltip_text` ->
 `gtk_widget_trigger_tooltip_query` -> `gdk_device_get_surface_at_position`),
 which ghostty's window build does ~173 times and every title change does
-twice, and on this NVIDIA setup each grab waits one 60Hz frame while the whole
-X server stalls. Per-grab cost tracks the kernel (3ms on -28, 15.5 on -29, 6.5
-on -30, 17 on -31), and AllowFlipping does not move it. No ghostty option
-avoids the grabs; window-decoration, tab and toolbar settings all leave 173.
-Fixed by preloading `~/.local/lib/ghostty/nograb.so` into the daemon (source in
+twice, and on this NVIDIA setup each grab stalls the whole X server for several
+milliseconds. The per-grab cost tracks the kernel with no trend (3ms on -28,
+15.5 on -29, 6.5 on -30, 17 on -31, a full 60Hz frame), and AllowFlipping does
+not move it. No ghostty option avoids the grabs; window-decoration, tab and
+toolbar settings all leave 173. Fixed by preloading
+`~/.local/lib/ghostty/nograb.so` into the daemon (source in
 `home/dot_local/lib/ghostty/`, built by `run_onchange_after_build-ghostty-nograb`,
 wired by the `nograb.conf` drop-in): `XGrabServer` becomes a no-op, launches
 drop to 0.4-0.6s cold, and the per-title-change server stalls go away. The shim
@@ -61,6 +62,14 @@ strips `LD_PRELOAD` from its own environment so terminals do not inherit it.
 The grab only makes a tooltip pointer query atomic; nothing visible depends on
 it. Verify with `gdb -batch -ex 'break XGrabServer'` on an isolated instance
 (`--gtk-single-instance=false`), which is traceable where the daemon is not.
+The drop-in applies on the next daemon start, and
+`systemctl --user restart app-com.mitchellh.ghostty.service` closes every open
+terminal. Before trusting any timing, confirm the shim is loaded:
+
+```bash
+pid=$(systemctl --user show -p MainPID --value app-com.mitchellh.ghostty.service)
+grep -c nograb /proc/$pid/maps
+```
 
 `kernel.yama.ptrace_scope=1` means **strace cannot attach to the daemon**. It is
 not a descendant of your shell, and the failure is silent: a 0-byte output file
