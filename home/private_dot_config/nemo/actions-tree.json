@@ -1,0 +1,11 @@
+{
+  "toplevel": [
+    {
+      "uuid": "copy-path.nemo_action",
+      "type": "action",
+      "user-label": null,
+      "user-icon": null,
+      "accelerator": "F7"
+    }
+  ]
+}
