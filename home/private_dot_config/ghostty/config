@@ -65,3 +65,6 @@ scrollback-limit = 90000000
 
 unfocused-split-opacity = 0.95
 split-preserve-zoom = true
+
+copy-on-select = clipboard
+right-click-action = context-menu
