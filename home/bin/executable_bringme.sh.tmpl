@@ -1,20 +1,33 @@
 {{ if not .headless -}}
 #!/usr/bin/env bash
-# Bring a window to focus by title, or launch the command if not found.
+# Bring a window to focus by class or title, or launch the command if not found.
 # Usage: bringme.sh WINDOW_NAME COMMAND
 #
-# X11 only (wmctrl).
+# X11 only (wmctrl, xdotool).
 
 WINDOW_NAME=$1
 COMMAND=$2
 
 bring_x11() {
   local search="$1"
-  local matches
-  # -lx adds WM_CLASS to the output so the substring match can hit either
-  # the window title or the class (e.g. "ChromiumAI"). Class is set once at
-  # launch and never changes, making class-based matches bulletproof.
-  matches=($(wmctrl -lx | awk -v pat="$search" 'tolower($0) ~ tolower(pat) {print $1}'))
+  local matches=()
+  local clients id w
+
+  clients=$(wmctrl -l | awk '{print tolower($1)}')
+
+  # A WM_CLASS may contain a space, so it cannot be split out of a `wmctrl -lx`
+  # column.
+  for w in $(xdotool search --onlyvisible --class "$search" 2>/dev/null); do
+    printf -v id '0x%08x' "$w"
+    # xdotool also returns windows the WM does not manage; raising one is a no-op.
+    grep -qxF "$id" <<<"$clients" && matches+=("$id")
+  done
+
+  # The whole line carries the title and the instance.class pair, so a caller
+  # can search on either.
+  if [ "${#matches[@]}" = "0" ]; then
+    matches=($(wmctrl -lx | awk -v pat="$search" 'tolower($0) ~ tolower(pat) {print $1}'))
+  fi
 
   if [ "${#matches[@]}" = "0" ]; then
     return 1
