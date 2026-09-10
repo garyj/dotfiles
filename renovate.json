@@ -37,9 +37,7 @@
         "anthropics/claude-code",
         "openai/codex",
         "github/copilot-cli",
-        "anomalyco/opencode",
-        "@google/gemini-cli",
-        "@earendil-works/pi-coding-agent"
+        "anomalyco/opencode"
       ],
       "minimumReleaseAge": "1 day"
     },

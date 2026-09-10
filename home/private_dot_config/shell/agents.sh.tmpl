@@ -81,14 +81,6 @@ claude-fireworks() {
     claude --model "$model" "${args[@]}"
 }
 
-gmyo() {
-  _agent_guard || return 1
-  if [ -z "$GEMINI_API_KEY" ]; then
-    echo "GEMINI_API_KEY is not in env (continuing)"
-  fi
-  _as_agent gemini --yolo "$@"
-}
-
 cxyo() {
   _agent_guard || return 1
   if [ -z "$OPENAI_API_KEY" ]; then
@@ -118,10 +110,6 @@ ocyo() {
   _agent_guard || return 1
   _as_agent opencode --auto "$@"
 }
-
-# pi: add a launcher here following the same shape once its yolo flag is
-# confirmed, e.g.:
-#   piyo() { _agent_guard || return 1; _as_agent pi <yolo-flag> "$@"; }
 
 {{- if lookPath "agentsview" }}
 {{- $avPort := 9090 }}
