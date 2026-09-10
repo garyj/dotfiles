@@ -23,3 +23,7 @@ README.md
 .chezmoiscripts/linux/personal/**
 
 {{ end }}
+
+{{ if or .headless .ephemeral }}
+.config/autostart
+{{ end }}

@@ -91,6 +91,10 @@ prek = ['{{ .tools.prek }}']  # pre-commit reimplemented in Rust (j178); drop-in
 # Code hook until the compression has proven itself.
 "aqua:rtk-ai/rtk" = ['{{ .tools.rtk }}']
 
+# A GUI app in mise: upstream ships a release tarball, no .deb or AppImage.
+# The shim path is baked into a Cinnamon keybinding and the autostart entry.
+"github:garyj/yoink" = { version = '{{ .tools.yoink }}' }
+
 # Python CLI tools from PyPI, via the pipx backend (uvx, per [settings.pipx]).
 # Floating at 'latest' is safe here: minimum_release_age bakes every release and
 # the lockfile records what resolved, so they move only on `mise upgrade`. Tools

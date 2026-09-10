@@ -18,6 +18,7 @@ tools:
   apm: "0.29.1"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.5.2"        # renovate: datasource=github-releases depName=j178/prek
   rtk: "0.48.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
+  yoink: "0.1.0"       # renovate: datasource=github-releases depName=garyj/yoink
   # These two are pinned so the binary (mise) and its agent skill
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
   agent_browser: "0.36.0"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
