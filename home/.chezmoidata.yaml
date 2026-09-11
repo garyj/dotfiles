@@ -52,7 +52,7 @@ deb_apps:
 # Installed as file externals in .chezmoiexternal.toml.tmpl.
 appimages:
   t3code:  # T3 Code desktop app, GUI over the local coding agents
-    version: "0.0.38"  # renovate: datasource=github-releases depName=pingdotgg/t3code
+    version: "0.0.40"  # renovate: datasource=github-releases depName=pingdotgg/t3code
 
 # Installed via their upstream installers. Bumping one changes the
 # install script's hash, so `chezmoi apply` reinstalls the new version.
