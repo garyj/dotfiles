@@ -36,7 +36,7 @@ coding_agents:
   opencode: "1.18.29"   # renovate: datasource=github-releases depName=anomalyco/opencode
   # grok installs from the raw x.ai binary (mise registry http backend), but xAI
   # publishes @xai-official/grok to npm in version lockstep, so Renovate tracks that.
-  grok: "1.0.13"         # renovate: datasource=npm depName=@xai-official/grok
+  grok: "1.0.25"         # renovate: datasource=npm depName=@xai-official/grok
 
 # Pinned git refs for chezmoi externals (zsh-users cut no releases, so github-tags).
 externals:
