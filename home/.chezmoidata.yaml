@@ -64,7 +64,7 @@ installers:
   uv:
     version: "0.12.18"  # renovate: datasource=github-releases depName=astral-sh/uv
   zed:
-    version: "1.18.1"  # renovate: datasource=github-releases depName=zed-industries/zed
+    version: "1.21.0"  # renovate: datasource=github-releases depName=zed-industries/zed
 
 # Single static binaries pinned from GitHub releases, installed to /usr/local/bin.
 # Off mise so the systemd backup timer finds them on the default PATH.
