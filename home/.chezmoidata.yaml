@@ -46,7 +46,7 @@ externals:
 # GUI apps shipped as .deb on GitHub releases (no apt repo).
 deb_apps:
   handy:  # offline speech-to-text
-    version: "0.9.6"  # renovate: datasource=github-releases depName=cjpais/Handy
+    version: "0.9.7"  # renovate: datasource=github-releases depName=cjpais/Handy
 
 # GUI apps shipped only as an AppImage on GitHub releases (no apt repo, no .deb).
 # Installed as file externals in .chezmoiexternal.toml.tmpl.
