@@ -41,16 +41,12 @@
     refreshPeriod = "24h"
     include = ["*/skills/agent-browser/**"]
 
-# Own repo with no releases: main is the only version there is to track.
-[".local/share/agent-skills/deps-upgrade-report"]
-    type = "archive"
-    url = "https://github.com/garyj/deps-upgrade-report/archive/refs/heads/main.tar.gz"
-    exact = true
-    stripComponents = 3
+# Own repo, cloned so the skill is editable in place; agent-skills/deps-upgrade-report links into it.
+[".local/share/deps-upgrade-report"]
+    type = "git-repo"
+    url = "https://github.com/garyj/deps-upgrade-report.git"
     refreshPeriod = "24h"
-    include = ["*/skills/deps-upgrade-report/**"]
-    # Running the tests here writes __pycache__, which exact then prompts to delete.
-    exclude = ["*/skills/deps-upgrade-report/tests/**"]
+    pull.args = ["--ff-only"]
 
 [".local/share/agent-skills/sentry-cli"]
     type = "archive"
