@@ -97,19 +97,13 @@ prek = ['{{ .tools.prek }}']  # pre-commit reimplemented in Rust (j178); drop-in
 # Python CLI tools from PyPI, via the pipx backend (uvx, per [settings.pipx]).
 # Floating at 'latest' is safe here: minimum_release_age bakes every release and
 # the lockfile records what resolved, so they move only on `mise upgrade`. Tools
-# needing extra packages use uvx_args, the equivalent of `uv tool install --with`.
-"pipx:djlint" = ['latest']
-"pipx:ipython" = ['latest']
-"pipx:jupyter-core" = { version = 'latest', uvx_args = '--with jupyter' }
+# needing extra packages use `with`, not uvx_args, which the lockfile rejects.
 "pipx:mcp-scan" = ['latest']
 "pipx:mitmproxy" = ['latest']
-"pipx:mkdocs" = { version = 'latest', uvx_args = '--with mkdocs-material' }
 "pipx:nbconvert" = ['latest']
-"pipx:openai-whisper" = ['latest']  # provides `whisper`; pulls torch, so upgrades are a large download
-"pipx:pyright" = ['latest']
 # Pinned, not floated: Simon Willison ships llm often and the release notes are
 # worth reading, so bumps arrive as Renovate PRs instead of landing unseen.
-"pipx:llm" = { version = '{{ .tools.llm }}', uvx_args = '--with llm-anthropic --with llm-perplexity --with llm-jq' }
+"pipx:llm" = { version = '{{ .tools.llm }}', with = ['llm-anthropic', 'llm-perplexity', 'llm-jq'] }
 
 [tasks.bootstrap]
 description = "Bootstrap our CLI"
