@@ -1,6 +1,6 @@
 # Cloudflare account switcher, the twin of ~/bin/aws_exp.sh: `cf_exp <account>` exports
 # wrangler's env auth plus CF_PROFILE for the starship prompt; `cf_exp off` clears them.
-# An account is a 1Password item titled "Cloudflare - <Name>" with fields account_id and token (labels ignore case, spaces and underscores, so AccountID works).
+# An account is a 1Password item titled "Cloudflare - <Name>" with fields account_id, token and optional token_note, printed on switch (labels ignore case, spaces and underscores, so AccountID works).
 # <Name> matches case-insensitively with spaces as dashes, so "Cloudflare - Agent Party" is agent-party.
 
 _cf_norm() {
@@ -36,7 +36,8 @@ cf_exp() {
   item=$(op item get "$(printf '%s' "$match" | jq -r .id)" --vault "$(printf '%s' "$match" | jq -r .vault)" \
     --reveal --format json | jq -c '{
       account_id: [.fields[] | select(.label | ascii_downcase | gsub("[^a-z0-9]"; "") == "accountid") | .value][0],
-      token: [.fields[] | select(.label | ascii_downcase | gsub("[^a-z0-9]"; "") == "token") | .value][0]}') || return 1
+      token: [.fields[] | select(.label | ascii_downcase | gsub("[^a-z0-9]"; "") == "token") | .value][0],
+      token_note: [.fields[] | select(.label | ascii_downcase | gsub("[^a-z0-9]"; "") == "tokennote") | .value][0]}') || return 1
   if ! printf '%s' "$item" | jq -e '.account_id and .token' >/dev/null; then
     echo "cf_exp: $(printf '%s' "$match" | jq -r .title) needs account_id and token fields" >&2
     return 1
@@ -46,4 +47,5 @@ cf_exp() {
   export CLOUDFLARE_API_TOKEN CLOUDFLARE_ACCOUNT_ID CF_PROFILE="$name"
   echo "CF_PROFILE=$CF_PROFILE"
   echo "CLOUDFLARE_ACCOUNT_ID=$CLOUDFLARE_ACCOUNT_ID"
+  printf '%s' "$item" | jq -r '.token_note // empty | "📌 token_note: \(.)"'
 }
