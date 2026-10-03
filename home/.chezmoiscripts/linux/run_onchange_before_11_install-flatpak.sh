@@ -23,4 +23,5 @@ flatpak install --user -y --noninteractive flathub \
   org.ferdium.Ferdium \
   md.obsidian.Obsidian \
   org.telegram.desktop \
-  it.mijorus.smile
+  it.mijorus.smile \
+  io.podman_desktop.PodmanDesktop
