@@ -12,7 +12,4 @@ Body: prose paragraphs wrapped at 78 columns, no bullet lists. Explain the
 reasoning a reader at HEAD in six months cannot recover from the diff, such as
 why a package came from mise rather than apt, or which trap a workaround
 avoids. Omit the body entirely for mechanical changes.
-
-Name the affected machine types (personal, ephemeral, headless) only when the
-change is gated on one.
 """

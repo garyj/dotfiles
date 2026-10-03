@@ -1,4 +1,3 @@
-{{ if and (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
 echo -- Running run_onchange_after_configure-ghostty-daemon.sh.tmpl --
@@ -15,4 +14,4 @@ if ! command -v ghostty >/dev/null 2>&1; then
 fi
 
 systemctl --user enable app-com.mitchellh.ghostty.service
-{{ end }}
+

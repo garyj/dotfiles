@@ -1,4 +1,3 @@
-{{ if .personal -}}
 [".oh-my-zsh"]
     type = "archive"
     url = "https://github.com/ohmyzsh/ohmyzsh/archive/master.tar.gz"
@@ -62,12 +61,8 @@
     refreshPeriod = "24h"
     include = ["*/skills/worktrunk/**"]
 
-{{ if eq .chezmoi.arch "amd64" -}}
 # The path is baked into a Cinnamon keybinding (configure-gnome), so it must not carry the version.
 [".local/bin/t3-code"]
     type = "file"
     url = "https://github.com/pingdotgg/t3code/releases/download/v{{ .appimages.t3code.version }}/T3-Code-{{ .appimages.t3code.version }}-x86_64.AppImage"
     executable = true
-{{ end -}}
-
-{{ end -}}

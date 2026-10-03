@@ -1,7 +1,8 @@
 # Repository Guidelines
 
-Chezmoi dotfiles for personal Linux machines. The source directory is `home/`, set by `.chezmoiroot`. Machine detection
-(`personal`, `ephemeral`, `headless`) is defined in `home/.chezmoi.toml.tmpl` and gates most conditionals.
+Chezmoi dotfiles for personal Linux Mint (Cinnamon) desktops. The source directory is `home/`, set by `.chezmoiroot`.
+There is no machine-type detection: every file and script applies to every machine, so do not add `personal`,
+`headless`, OS, or architecture guards.
 
 Hard-won machine and tooling findings live in [GOTCHAS.md](GOTCHAS.md). Read it before debugging desktop,
 terminal, or Docker networking behaviour; several causes there are already diagnosed and expensive to re-derive.
@@ -68,5 +69,4 @@ action-oriented.
 For pull requests, include:
 
 - A brief summary of what changed and why
-- Notes about which machine types are affected (e.g., `personal`, `headless`)
 - Any manual verification steps you performed

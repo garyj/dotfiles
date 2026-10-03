@@ -1,4 +1,3 @@
-{{ if and .personal (or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint")) -}}
 #!/usr/bin/env bash
 #
 # Installed from the pinned upstream GitHub release into /usr/local/bin. Kept off
@@ -46,4 +45,3 @@ bunzip2 "$tmp/$asset"
 sudo install -m 0755 "$tmp/restic_${version}_linux_amd64" /usr/local/bin/restic
 
 echo "[restic] installed: $(restic version)"
-{{ end -}}

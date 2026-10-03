@@ -1,4 +1,3 @@
-{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
 temp_dir=$(mktemp -d)
@@ -10,4 +9,3 @@ sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
 cd -
 
-{{ end -}}

@@ -1,5 +1,3 @@
-{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) .personal -}}
-{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint") -}}
 #!/usr/bin/env bash
 
 # Install flatpak, add Flathub as a per-user remote, and install a curated
@@ -26,5 +24,3 @@ flatpak install --user -y --noninteractive flathub \
   md.obsidian.Obsidian \
   org.telegram.desktop \
   it.mijorus.smile
-{{ end -}}
-{{ end -}}

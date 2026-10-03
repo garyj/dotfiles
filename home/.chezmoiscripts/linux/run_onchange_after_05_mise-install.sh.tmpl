@@ -1,4 +1,3 @@
-{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -18,4 +17,3 @@ set -euo pipefail
 # apply, so the scripts that run after this one still execute.
 mise install || echo "mise install: one or more tools failed to install" >&2
 mise reshim
-{{ end -}}

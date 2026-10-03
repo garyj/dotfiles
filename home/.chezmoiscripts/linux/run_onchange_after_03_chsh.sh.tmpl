@@ -1,8 +1,6 @@
-{{ if .personal -}}
 #!/usr/bin/env bash
 
 set -eufo pipefail
 
 zsh_path="/bin/zsh"
 sudo usermod --shell "${zsh_path}" '{{ .chezmoi.username }}'
-{{ end -}}

@@ -1,4 +1,3 @@
-{{ if and (eq .chezmoi.arch "amd64") (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
 echo -- Running run_onchange_after_configure-gnome.sh.tmpl --
@@ -128,12 +127,10 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.background picture-options 'none'
 
   # Theme
-{{ if eq .osid "linux-linuxmint" -}}
   gsettings set org.cinnamon.theme name 'Mint-Y-Dark'
   gsettings set org.cinnamon.desktop.interface gtk-theme 'Mint-Y-Dark'
   gsettings set org.cinnamon.desktop.interface icon-theme 'Yaru-olive'
   gsettings set org.cinnamon.desktop.interface cursor-theme 'Adwaita'
-{{- end }}
 
   # Interface
   gsettings set org.cinnamon.desktop.interface gtk-color-scheme 'prefer-dark'
@@ -470,4 +467,4 @@ fi
 
 echo "Desktop configuration complete for: $DE"
 
-{{ end }}
+

@@ -106,11 +106,7 @@
 	autocrlf = false
 	eol = lf
 	fileMode = false
-  {{ if not .headless -}}
 	editor = code --profile /tmp -w -n
-  {{ else }}
-  editor = emacs
-  {{ end -}}
 
 [diff]
 	algorithm = histogram

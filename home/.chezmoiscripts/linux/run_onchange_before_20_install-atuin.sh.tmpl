@@ -1,5 +1,3 @@
-{{ if eq .osid "linux-ubuntu" "linux-linuxmint" -}}
-
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -14,4 +12,3 @@ curl --proto '=https' --tlsv1.2 -LsSf \
   https://github.com/atuinsh/atuin/releases/download/v{{ .installers.atuin.version }}/atuin-installer.sh \
   | sh -s -- --no-modify-path
 
-{{end -}}

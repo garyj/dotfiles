@@ -1,4 +1,3 @@
-{{ if not .headless -}}
 #!/usr/bin/env bash
 # Bring a window to focus by class or title, or launch the command if not found.
 # Usage: bringme.sh WINDOW_NAME COMMAND
@@ -38,4 +37,4 @@ bring_x11() {
 }
 
 bring_x11 "$WINDOW_NAME" || bash -c "$COMMAND" &
-{{ end }}
+

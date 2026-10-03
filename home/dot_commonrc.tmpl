@@ -11,12 +11,7 @@ export GITHUB_USER={{ .githubUser }}
 ulimit -S -n 131070
 
 umask 027
-
-{{- if .headless }}
-export EDITOR=emacs
-{{- else }}
 export EDITOR=codium
-{{- end }}
 
 # Topical alias/function files managed by chezmoi
 if [ -d "$HOME/.config/shell" ]; then

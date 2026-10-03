@@ -1,4 +1,3 @@
-{{ if and (not .headless) (not .ephemeral) -}}
 #!/usr/bin/env bash
 
 echo -- Running run_onchange_after_configure-nemo-accels.sh.tmpl --
@@ -22,4 +21,4 @@ sed -i "\|${ACCEL_PATH}|d" "$ACCEL_FILE"
 printf '(gtk_accel_path "%s" "F6")\n' "$ACCEL_PATH" >> "$ACCEL_FILE"
 
 chmod a-w "$ACCEL_FILE"
-{{ end }}
+

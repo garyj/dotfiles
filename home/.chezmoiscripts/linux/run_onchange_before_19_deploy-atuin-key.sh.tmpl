@@ -1,5 +1,3 @@
-{{- if not .ephemeral -}}
-
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -17,4 +15,3 @@ chmod 700 "$KEY_DIR"
 printf '%s' '{{ onepasswordRead "op://Personal/Atuin Config/key_content" | trim }}' > "$KEY_PATH"
 chmod 600 "$KEY_PATH"
 
-{{ end -}}

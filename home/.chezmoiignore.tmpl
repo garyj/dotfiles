@@ -12,18 +12,3 @@ README.md
 .local/bin/nvim
 .local/share/fonts
 {{ end }}
-
-{{ if ne .osid "linux-linuxmint" -}}
-.chezmoiscripts/linux/mint/**
-{{ end }}
-
-{{ if not .personal }}
-.pypirc
-.psqlrc
-.chezmoiscripts/linux/personal/**
-
-{{ end }}
-
-{{ if or .headless .ephemeral }}
-.config/autostart
-{{ end }}

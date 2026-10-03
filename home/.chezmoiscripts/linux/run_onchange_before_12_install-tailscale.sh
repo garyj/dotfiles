@@ -1,5 +1,3 @@
-{{ if and (eq .osid "linux-ubuntu" "linux-linuxmint") .personal -}}
-
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -7,4 +5,3 @@ set -euo pipefail
 
 curl -fsSL https://tailscale.com/install.sh | sh
 
-{{ end -}}

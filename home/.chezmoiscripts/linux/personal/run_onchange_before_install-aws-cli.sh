@@ -1,5 +1,3 @@
-{{ if and (eq .chezmoi.arch "amd64") (not .ephemeral) .personal -}}
-{{ if or (eq .osid "linux-ubuntu") (eq .osid "linux-linuxmint") -}}
 #!/usr/bin/env bash
 
 # AWS CLI v2 via the official zip installer (AWS publishes no apt repo),
@@ -19,5 +17,3 @@ sudo ./aws/install --update
 
 curl -fsSL "https://s3.amazonaws.com/session-manager-downloads/plugin/latest/ubuntu_64bit/session-manager-plugin.deb" -o session-manager-plugin.deb
 sudo dpkg -i session-manager-plugin.deb
-{{ end -}}
-{{ end -}}

@@ -1,4 +1,3 @@
-{{ if .personal -}}
 #!/usr/bin/env bash
 
 echo -- Running run_onchange_after_build-ghostty-nograb.sh.tmpl --
@@ -19,4 +18,4 @@ gcc -shared -fPIC -O2 -Wall -o "$LIB/nograb.so" "$LIB/nograb.c"
 systemctl --user daemon-reload
 echo "nograb.so built; takes effect on the next ghostty daemon start:"
 echo "  systemctl --user restart app-com.mitchellh.ghostty.service   (closes open terminals)"
-{{ end }}
+

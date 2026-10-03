@@ -1,4 +1,3 @@
-{{ if not .headless -}}
 #!/usr/bin/env bash
 # Raise every window that shares the focused window's WM_CLASS, on the current
 # workspace. The originally focused window is re-activated last so it stays on
@@ -58,4 +57,4 @@ done < <(wmctrl -l)
 (( dry )) && exit 0
 
 xdotool windowactivate "$target_dec" || true
-{{ end }}
+

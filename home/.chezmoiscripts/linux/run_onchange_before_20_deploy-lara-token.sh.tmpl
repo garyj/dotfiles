@@ -1,5 +1,3 @@
-{{- if not .ephemeral -}}
-
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -16,4 +14,3 @@ chmod 700 "$TOKEN_DIR"
 printf '%s' '{{ onepasswordRead "op://Personal/Service Account - 1Password/lara" | trim }}' > "$TOKEN_PATH"
 chmod 600 "$TOKEN_PATH"
 
-{{ end -}}
