@@ -94,7 +94,3 @@ plup *plugin:
 [group("plugins")]
 @pll:
     command claude plugin list
-
-# claude-code is pinned in .chezmoidata.yaml (aqua:anthropics/claude-code) - bump it there
-@upgrade:
-    echo "claude-code is pinned in .chezmoidata.yaml (aqua:anthropics/claude-code); bump the version there"

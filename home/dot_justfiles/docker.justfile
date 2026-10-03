@@ -122,8 +122,3 @@ project name:
 [group('meta')]
 @install:
     echo "docker is installed by chezmoi (run_onchange_before_install-docker.sh); nothing to install via just"
-
-# docker engine tracks the vendor apt repo
-[group('meta')]
-@upgrade:
-    echo "docker engine upgrades with apt from the vendor repo; nothing to upgrade via just"

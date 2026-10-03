@@ -43,14 +43,29 @@ HOST := `hostname -s`
 @codex-usage:
     bunx @ccusage/codex@latest
 
-# Upgrade all tools (uv and mise, and all justfiles)
+# Upgrade the whole machine: apt, flatpak, chezmoi, uv tools, mise (firmware stays manual: `just firmware`)
 [group("maintenance")]
 @upgrade:
+    sudo -v
+    sudo mintupdate-cli upgrade --refresh-cache
+    sudo apt autoremove --yes
+    flatpak update --noninteractive
     chezmoi upgrade
-    uv self update
+    chezmoi update
     uv tool upgrade --all
     just mise::upgrade
-    for f in .justfiles/[!_]*.justfile; do echo "\033[1;36m>>> Running upgrade for $f\033[0m"; just -f "$f" upgrade || true; done
+
+# List firmware updates and print the install command; never installs
+[group("maintenance")]
+firmware:
+    #!/usr/bin/env bash
+    fwupdmgr refresh || true
+    fwupdmgr get-updates --no-unreported-check
+    case $? in
+      0) printf '\nTo install, save your work (it may reboot), then run:\n  fwupdmgr update\nOr one device only:\n  fwupdmgr update <device-id>\n' ;;
+      2) echo "No firmware updates." ;;
+      *) echo "fwupdmgr get-updates failed; see above." >&2; exit 1 ;;
+    esac
 
 # Format and overwrite justfile
 [group("utils")]

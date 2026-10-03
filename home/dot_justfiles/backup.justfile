@@ -131,8 +131,3 @@ remote-restore-file file="~/.zshrc":
 [group('meta')]
 @install:
     echo "restic backup is managed by chezmoi; nothing to install via just"
-
-# restic is pinned in .chezmoidata.yaml (github_bins.restic) - bump it there
-[group('meta')]
-@upgrade:
-    echo "restic is pinned in .chezmoidata.yaml (github_bins.restic); bump the version there"
