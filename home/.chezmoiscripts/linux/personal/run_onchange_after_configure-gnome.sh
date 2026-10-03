@@ -396,6 +396,11 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom45/ command 'bringme.sh "[.]Chatgpt" chatgpt'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom45/ name 'Bring ChatGPT'
 
+  # Full WM_CLASS: a bare podman also matches terminal and browser titles.
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom46/ binding "['<Super><Shift>w']"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom46/ command 'bringme.sh podman-desktop.podman-desktop "flatpak run io.podman_desktop.PodmanDesktop"'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom46/ name 'Bring Podman Desktop'
+
   gsettings set org.cinnamon.desktop.keybindings.media-keys calculator "['<Super>c']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys home "['<Super>e']"
   gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "[]"
@@ -446,6 +451,7 @@ if is_cinnamon; then
   'custom43',\
   'custom44',\
   'custom45',\
+  'custom46',\
   '__dummy__'\
   ]"
 
