@@ -31,7 +31,7 @@ tools:
 # AI coding agents, all installed via mise.
 coding_agents:
   claude: "2.1.287"     # renovate: datasource=github-releases depName=anthropics/claude-code
-  codex: "0.159.3"      # renovate: datasource=github-releases depName=openai/codex
+  codex: "0.160.0"      # renovate: datasource=github-releases depName=openai/codex
   copilot: "1.0.91"     # renovate: datasource=github-releases depName=github/copilot-cli
   opencode: "1.18.34"   # renovate: datasource=github-releases depName=anomalyco/opencode
   # grok installs from the raw x.ai binary (mise registry http backend), but xAI
