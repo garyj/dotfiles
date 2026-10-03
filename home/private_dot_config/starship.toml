@@ -5,13 +5,15 @@ scan_timeout = 1000
 [aws]
 disabled = false
 style = "bold #ffb86c"
+symbol = "\ue7ad "
 
 # [aws.region_aliases]
 # us-east-1 = "va"
 
 # Set by cf_exp (~/.config/shell/cloudflare.sh).
 [env_var.CF_PROFILE]
-format = "on [cf:$env_value]($style) "
+symbol = "\ue792 "
+format = "on [$symbol$env_value]($style) "
 style = "bold #f38020"
 
 [battery]
@@ -42,6 +44,10 @@ fish_style_pwd_dir_length = 1
 # # disabled = false
 # # only_with_files = false
 # symbol = "🐳 "
+
+# Shows a bare cloud when the default gcloud config has no account.
+[gcloud]
+disabled = true
 
 [git_branch]
 style = "#ff79c6"
