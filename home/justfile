@@ -1,7 +1,7 @@
 set dotenv-load := false
-set export := true
-set quiet := true
-set unstable := true
+set export
+set quiet
+set unstable
 
 export JUST_UNSTABLE := "true"
 
@@ -56,12 +56,12 @@ outdated:
 # Upgrade the whole machine: apt, flatpak, chezmoi, uv tools, mise (firmware stays manual: `just firmware`)
 [group("maintenance")]
 @upgrade:
+    chezmoi upgrade
+    chezmoi update
     sudo -v
     sudo mintupdate-cli upgrade --refresh-cache
     sudo apt autoremove --yes
     flatpak update --noninteractive
-    chezmoi upgrade
-    chezmoi update
     uv tool upgrade --all
     just mise::upgrade
 
@@ -82,4 +82,3 @@ firmware:
 @fmt:
     just --fmt --unstable
     for f in .justfiles/[!_]*.justfile; do just --fmt --unstable -f "$f"; done
-
