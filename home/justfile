@@ -43,6 +43,16 @@ HOST := `hostname -s`
 @codex-usage:
     bunx @ccusage/codex@latest
 
+# Show what `just upgrade` would change; read-only, no sudo
+[group("maintenance")]
+outdated:
+    #!/usr/bin/env bash
+    echo -e "\033[1;36m>>> apt\033[0m"; mintupdate-cli list
+    echo -e "\n\033[1;36m>>> flatpak\033[0m"; flatpak remote-ls --updates
+    echo -e "\n\033[1;36m>>> chezmoi (incoming commits)\033[0m"; chezmoi git -- fetch -q && chezmoi git -- --no-pager log --oneline HEAD..@{u}
+    echo -e "\n\033[1;36m>>> uv tools\033[0m"; uv tool list --outdated
+    echo -e "\n\033[1;36m>>> mise\033[0m"; mise outdated
+
 # Upgrade the whole machine: apt, flatpak, chezmoi, uv tools, mise (firmware stays manual: `just firmware`)
 [group("maintenance")]
 @upgrade:
