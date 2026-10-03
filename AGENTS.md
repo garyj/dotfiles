@@ -59,6 +59,8 @@ different job.
 
 ## Commit & Pull Request Guidelines
 
+Work directly on `master` in this checkout. Create a worktree or branch only when the user asks for one.
+
 **Do not commit without explicit approval.** Make the edit, show `git diff --staged` (or `chezmoi diff` when relevant),
 and wait for the user to say "commit", invoke `/commit`, or otherwise confirm. The user reviews each change before it
 lands, do not assume a prior "yes" extends to later unrelated edits.
