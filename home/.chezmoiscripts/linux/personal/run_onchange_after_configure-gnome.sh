@@ -388,7 +388,7 @@ if is_cinnamon; then
 
   # Full WM_CLASS: a bare t3code also matches browser tabs titled after the GitHub repo.
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom44/ binding "['<Super>t']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom44/ command 'bringme.sh t3code.t3code t3code'
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom44/ command 'bringme.sh com.t3tools.t3code t3code'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom44/ name 'Bring T3 Code'
 
   # Anchors on the WM_CLASS class field: a bare chatgpt also matches browser tabs titled ChatGPT.
