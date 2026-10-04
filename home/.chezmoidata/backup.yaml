@@ -26,31 +26,33 @@ backup:
   # Paths to back up. A leading ~/ is expanded to your home directory at
   # `chezmoi apply` time.
   sources:
-    - ~/dev
-    - ~/cowork
-    - ~/tries
-    - ~/Documents
-    - ~/Desktop
-    - ~/Pictures
-    - ~/.config
-    - ~/.local/share
-    - ~/.local/bin
-    - ~/.ssh
-    - ~/.gnupg
+    - ~/.agents
+    - ~/.bashrc
     - ~/.claude
     - ~/.claude.json
     - ~/.codex
-    - ~/.agents
-    - ~/.gemini
-    - ~/.grok
-    - ~/.pi
+    - ~/.config
     - ~/.copilot
-    - ~/.zshrc
-    - ~/.bashrc
+    - ~/.gemini
+    - ~/.gnupg
+    - ~/.grok
+    - ~/.local/bin
+    - ~/.local/share
+    - ~/.pi
     - ~/.profile
+    - ~/.ssh
     - ~/.zsh_history
-    - ~/Videos
+    - ~/.zshrc
+    - ~/cowork
+    - ~/Desktop
+    - ~/dev
+    - ~/docs
+    - ~/Documents
     - ~/Music
+    - ~/Pictures
+    - ~/scratch
+    - ~/tries
+    - ~/Videos
 
   # Exclude rules. `**/foo` matches a folder named foo anywhere; `~/foo` is one
   # specific path. These are all regenerable caches / build artefacts.
