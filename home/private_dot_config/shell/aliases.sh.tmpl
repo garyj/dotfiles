@@ -132,7 +132,7 @@ alias ne="nohup nautilus ./ >/dev/null 2>&1 & disown; exit"
 
 alias gt="nohup ghostty --working-directory=./ >/dev/null 2>&1 &"
 
-alias sshp="ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no"
+alias sshp="TERM=xterm-256color ssh -o PreferredAuthentications=keyboard-interactive,password -o PubkeyAuthentication=no"
 
 alias glow="glow -lp"
 
