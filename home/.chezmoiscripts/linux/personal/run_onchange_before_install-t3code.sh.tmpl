@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# T3 Code: desktop GUI over the local coding agents (Codex, Claude, ...).
+# The AppImage's exported ARGV0 makes zsh run mise as T3, so T3 relaunches itself in a loop.
+# Bump the pin in .chezmoidata.yaml (deb_apps.t3code) to upgrade.
+# Reference: https://github.com/pingdotgg/t3code
+
+set -euo pipefail
+
+version="{{ .deb_apps.t3code.version }}"
+url="https://github.com/pingdotgg/t3code/releases/download/v${version}/T3-Code-${version}-amd64.deb"
+
+tmp="$(mktemp -d)"
+trap 'rm -rf "$tmp"' EXIT
+deb="${tmp}/t3code_${version}_amd64.deb"
+
+echo "Downloading T3 Code ${version}..."
+curl -fsSL -o "$deb" "$url"
+
+sudo apt-get update
+sudo apt-get install -y "$deb"

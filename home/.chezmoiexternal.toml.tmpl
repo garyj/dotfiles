@@ -60,9 +60,3 @@
     stripComponents = 3
     refreshPeriod = "24h"
     include = ["*/skills/worktrunk/**"]
-
-# The path is baked into a Cinnamon keybinding (configure-gnome), so it must not carry the version.
-[".local/bin/t3-code"]
-    type = "file"
-    url = "https://github.com/pingdotgg/t3code/releases/download/v{{ .appimages.t3code.version }}/T3-Code-{{ .appimages.t3code.version }}-x86_64.AppImage"
-    executable = true
