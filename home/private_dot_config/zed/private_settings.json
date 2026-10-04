@@ -13,6 +13,7 @@
     "html": true,
     "ini": true,
     "just": true,
+    "make": true,
     "markdown-oxide": true,
     "powershell": true,
     "rainbow-csv": true,
