@@ -104,6 +104,11 @@
     "favorite_models": [],
     "model_parameters": []
   },
+  "edit_predictions": {
+    "provider": "zed",
+    "mode": "eager",
+    "disabled_globs": ["**/.env*", "**/*.pem", "**/*.key"]
+  },
   "git_panel": {
     "dock": "left",
     "entry_primary_click_action": "file_diff"
