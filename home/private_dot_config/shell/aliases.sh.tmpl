@@ -155,9 +155,8 @@ alias dstopall='docker ps -q | xargs -r docker stop'
 alias dcf="docker compose logs -f"
 alias dc="docker compose"
 
-# Python (default version comes from langs.python in .chezmoidata.yaml)
+# Python
 alias nbclean="jupyter-nbconvert --ClearOutputPreprocessor.enabled=True --inplace **/*.ipynb"
-alias py='uv run --python={{ .langs.python }} python3'
 alias uvsa="uv sync --all-extras --all-groups"
 
 # Wireguard networks
