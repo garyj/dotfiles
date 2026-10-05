@@ -1,31 +1,3 @@
-bin/installers/install_aws.sh
-bin/installers/install_docker.sh
-bin/installers/install_signal
-bin/installers
-.justfiles/gemini.justfile
-.justfiles/agent-browser.justfile
-.justfiles/codex.justfile
-.justfiles/copilot.justfile
-.agents/agent-skills-link.sh
-.common_alias
-.functions
-.agents/skills/ast-grep
-.agents/skills/handoff
-.agents/skills/pickup
-.agents/skills/reagents
-.agents/skills/wt-switch-create
-.agents/docs/plans/agents-staleness-prevention.md
-.agents/docs/plans
-
-# Lara's scripts live in ~/bin/agents; ~/.config/gj_agents/lara holds only
-# machine-local state (token, gh/).
-.config/gj_agents/lara/SETUP.md
-.config/gj_agents/lara/gh-token.sh
-.config/gj_agents/lara/git-credential-lara.sh
-.config/gj_agents/lara/verify-lara-op.sh
-.config/gj_agents/lara/bin/gh
-.config/gj_agents/lara/bin
-
 # Sources removed in the 2026-10 simplification; the targets would otherwise linger.
 .xinitrc
 .config/direnv/direnvrc
