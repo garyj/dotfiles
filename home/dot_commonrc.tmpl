@@ -70,11 +70,21 @@ if command -v wt > /dev/null 2>&1; then
   eval "$(wt config shell init $current_shell)";
 fi
 
-# Auto-activate .venv on directory change (no .envrc needed)
+# Auto-activate the nearest .venv, searching upward but never past a repo or worktree root.
 _auto_venv() {
-  if [[ -d .venv ]] && [[ -f .venv/bin/activate ]]; then
-    source .venv/bin/activate
-  elif [[ -n "$VIRTUAL_ENV" ]] && [[ ! -d .venv ]]; then
+  local dir=$PWD
+  while :; do
+    if [ -f "$dir/.venv/bin/activate" ]; then
+      [ "$VIRTUAL_ENV" = "$dir/.venv" ] || source "$dir/.venv/bin/activate"
+      return
+    fi
+    if [ -e "$dir/.git" ] || [ "$dir" = / ]; then
+      break
+    fi
+    dir=${dir%/*}
+    [ -n "$dir" ] || dir=/
+  done
+  if [ -n "$VIRTUAL_ENV" ]; then
     deactivate 2>/dev/null
   fi
 }
