@@ -9,3 +9,5 @@ bin/restic-backup
 .config/systemd/user/restic-backup.service
 .config/systemd/user/restic-backup.timer
 {{- end }}
+
+.oh-my-zsh/cache/**
