@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Writes the servers in ~/.apm/apm.yml into each agent's user-scope MCP config.
+# manifest: {{ include "private_dot_apm/apm.yml" | sha256sum }}
+apm install -g
