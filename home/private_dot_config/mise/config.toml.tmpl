@@ -105,7 +105,3 @@ pulumi = ['{{ .tools.pulumi }}']  # infrastructure as code CLI (pulumi/pulumi)
 # Pinned, not floated: Simon Willison ships llm often and the release notes are
 # worth reading, so bumps arrive as Renovate PRs instead of landing unseen.
 "pipx:llm" = { version = '{{ .tools.llm }}', with = ['llm-anthropic', 'llm-perplexity', 'llm-jq'] }
-
-[tasks.bootstrap]
-description = "Bootstrap our CLI"
-run = "mise upgrade"
