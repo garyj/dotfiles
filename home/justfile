@@ -8,7 +8,6 @@ export JUST_UNSTABLE := "true"
 mod backup '.justfiles/backup.justfile'
 mod claude '.justfiles/claude.justfile'
 mod d '.justfiles/docker.justfile'
-mod mise '.justfiles/mise.justfile'
 mod sentry '.justfiles/sentry.justfile'
 
 HOST := `hostname -s`
@@ -17,16 +16,12 @@ HOST := `hostname -s`
 @default:
     just --list --list-submodules
 
-# Setup mise
-[group("setup")]
-@bootstrap:
-    just mise::bootstrap
-
-# Install everything on a new machine (mise + all CLIs; agent skills + configs come from `chezmoi apply`)
+# Install every mise tool; chezmoi apply already runs this, so use it to repair
 [group("setup")]
 @install:
-    just mise::bootstrap
-    for f in .justfiles/[!_]*.justfile; do echo "\033[1;36m>>> Installing from $f\033[0m"; just -f "$f" install || true; done
+    [ -f ~/.config/mise/mise.lock ] || mise lock --global --platform linux-x64
+    mise install
+    mise reshim
 
 # Install Playwright browsers + system deps for agent-browser (once per machine; prompts for sudo)
 [group("agents")]
@@ -63,7 +58,8 @@ outdated:
     sudo apt autoremove --yes
     flatpak update --noninteractive
     uv tool upgrade --all
-    just mise::upgrade
+    mise upgrade
+    mise reshim
 
 # List firmware updates and print the install command; never installs
 [group("maintenance")]
