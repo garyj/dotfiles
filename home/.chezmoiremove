@@ -25,3 +25,6 @@ bin/installers
 .config/gj_agents/lara/verify-lara-op.sh
 .config/gj_agents/lara/bin/gh
 .config/gj_agents/lara/bin
+
+# Sources removed in the 2026-10 simplification; the targets would otherwise linger.
+.xinitrc
