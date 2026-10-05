@@ -1,0 +1,23 @@
+# Interactive bash only; zsh is the login shell. Shared setup lives in ~/.commonrc.
+case $- in
+*i*) ;;
+*) return ;;
+esac
+
+HISTCONTROL=ignoreboth
+HISTSIZE=50000
+HISTFILESIZE=50000
+shopt -s histappend checkwinsize globstar
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
+
+# Free Ctrl+S for forward history search.
+stty -ixon
+
+eval "$(dircolors -b)"
+alias grep='grep --color=auto'
+
+if ! shopt -oq posix && [ -f /usr/share/bash-completion/bash_completion ]; then
+  . /usr/share/bash-completion/bash_completion
+fi
+
+source "$HOME/.commonrc"
