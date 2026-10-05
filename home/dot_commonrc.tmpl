@@ -3,7 +3,7 @@
 # File is sourced in .bashrc and .zshrc
 #
 
-export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+export GIT_CONFIG_GLOBAL="${XDG_CONFIG_HOME:-$HOME/.config}/git/config"
 
 export USER_EMAIL={{ .email }}
 export GITHUB_USER={{ .githubUser }}
