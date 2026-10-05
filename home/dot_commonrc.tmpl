@@ -30,8 +30,8 @@ if [ -n "$ZSH_VERSION" ]; then
 elif [ -n "$BASH_VERSION" ]; then
     current_shell=bash
 else
-    echo "Unknown shell: direnv hook not loaded"
-    exit 1
+    echo "commonrc: unsupported shell, tool hooks not loaded" >&2
+    return 1
 fi
 
 # Activate mise before the shell-integration hooks below, so tools it manages
@@ -108,11 +108,6 @@ if command -v prek > /dev/null 2>&1; then
 fi
 
 export CURRENT_SHELL=$current_shell
-
-{{ $argComplete := "register-python-argcomplete3" }}
-{{- if lookPath "register-python-argcomplete" }}
-{{ $argComplete = "register-python-argcomplete" }}
-{{- end }}
 
 # Disable the AWS_PAGER to prevent the aws cli from paging output: OMG annoying
 # https://docs.aws.amazon.com/cli/latest/userguide/cli-usage-pagination.html
