@@ -124,10 +124,3 @@ remote-restore-file file="~/.zshrc":
 @prune:
     restic-backup prune
     restic-backup remote prune
-
-# --- meta ---
-
-# backups are provisioned by chezmoi (binary, repo, timer) - nothing to install here
-[group('meta')]
-@install:
-    echo "restic backup is managed by chezmoi; nothing to install via just"

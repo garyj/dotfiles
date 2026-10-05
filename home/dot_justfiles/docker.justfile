@@ -115,10 +115,3 @@ project name:
     read -rp "delete these ${#vols[@]} volumes? [y/N] " reply
     [[ $reply == [yY] ]] || { echo "aborted"; exit 0; }
     docker volume rm "${vols[@]}"
-
-# --- meta ---
-
-# docker engine is installed by chezmoi from the vendor apt repo
-[group('meta')]
-@install:
-    echo "docker is installed by chezmoi (run_onchange_before_install-docker.sh); nothing to install via just"
