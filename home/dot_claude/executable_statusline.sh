@@ -81,7 +81,7 @@ input=$(cat)
 base=$(printf '%s' "$input" \
     | wt list statusline --format=claude-code 2>/dev/null \
     | sed -E -e 's/ \([^)]*context\)//' \
-             -e 's/ +(\x1b\[[0-9;]*m)?[0-9.]+(×|%)\([^)]*\)(\x1b\[[0-9;]*m)?//')
+             -e 's/ +(\x1b\[[0-9;]*m)*[0-9.]+(×|%)\([^)]*\)(\x1b\[[0-9;]*m)*//')
 
 # ─── Extract all augmented fields in one jq call ────────────────────────────
 # One value per line, consumed by `readarray` so empty elements are preserved
