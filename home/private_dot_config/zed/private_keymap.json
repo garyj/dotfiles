@@ -18,7 +18,8 @@
     "context": "Workspace",
     "bindings": {
       "ctrl-shift-alt-b": "agent::ToggleFocus",
-      "ctrl-shift-k w": "git::Worktree"
+      "ctrl-shift-k w": "git::Worktree",
+      "ctrl-shift-x": "outline_panel::ToggleFocus"
     }
   }
 ]
