@@ -20,7 +20,7 @@ tools:
   prek: "0.5.4"        # renovate: datasource=github-releases depName=j178/prek
   rtk: "0.50.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
   yoink: "0.1.0"       # renovate: datasource=github-releases depName=garyj/yoink
-  pulumi: "3.266.0"    # renovate: datasource=github-releases depName=pulumi/pulumi
+  pulumi: "3.268.0"    # renovate: datasource=github-releases depName=pulumi/pulumi
   # These two are pinned so the binary (mise) and its agent skill
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
   agent_browser: "0.38.2"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
