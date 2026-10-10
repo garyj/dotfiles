@@ -90,7 +90,7 @@ base=$(printf '%s' "$input" \
 # empty fields would be treated as ONE separator, sliding every later field up
 # and (e.g.) landing a 65995-token count where seven-day % belongs. All fields
 # use a fallback (numbers → 0, optional fields → "") to guarantee a stable
-# 11-line output regardless of which stdin keys are absent.
+# 13-line output regardless of which stdin keys are absent.
 readarray -t fields < <(
     printf '%s' "$input" | jq -r '[
         (.cost.total_duration_ms // 0),
@@ -103,7 +103,9 @@ readarray -t fields < <(
         (.rate_limits.seven_day.resets_at // ""),
         (.context_window.current_usage.input_tokens // 0),
         (.context_window.current_usage.cache_creation_input_tokens // 0),
-        (.context_window.current_usage.cache_read_input_tokens // 0)
+        (.context_window.current_usage.cache_read_input_tokens // 0),
+        (.effort.level // ""),
+        (.model.display_name // "")
     ] | .[]' 2>/dev/null
 )
 duration_ms=${fields[0]:-0}
@@ -117,6 +119,8 @@ seven_resets=${fields[7]-}
 ctx_input=${fields[8]:-0}
 ctx_cache_create=${fields[9]:-0}
 ctx_cache_read=${fields[10]:-0}
+effort=${fields[11]-}
+model=${fields[12]-}
 
 # ─── ANSI colors ────────────────────────────────────────────────────────────
 DIM=$'\033[2m'
@@ -184,6 +188,10 @@ rate_color() {
 ctx_total=$(( ${ctx_input:-0} + ${ctx_cache_create:-0} + ${ctx_cache_read:-0} ))
 tok_str=$(format_tokens "$ctx_total")
 [ -n "$base" ] && [ -n "$tok_str" ] && base+=" ${DIM}${tok_str}${RESET}"
+
+# Reasoning effort from .effort.level, placed after wt's model label; absent when the model has no effort setting.
+model=${model% (*context)}
+[ -n "$effort" ] && [ -n "$model" ] && base=${base/"$model"/"$model ${DIM}${effort}${RESET}"}
 
 # ─── WIDGET: Session telemetry (duration + cost + burn + lines shipped) ─────
 # Each sub-widget self-skips when its data is zero/missing, so fresh sessions
