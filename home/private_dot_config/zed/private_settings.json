@@ -68,7 +68,6 @@
     "**/.ruff_cache",
     "**/.scrapy",
     "**/.settings",
-    "**/.site",
     "**/.svelte-kit",
     "**/.tox",
     "**/.venv",
@@ -86,7 +85,6 @@
     "**/playwright-report",
     "**/static/build",
     "aws/build",
-    "site",
     "static/_app"
   ],
   "preview_tabs": {
