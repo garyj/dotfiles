@@ -33,7 +33,7 @@ tools:
 coding_agents:
   claude: "2.1.295"     # renovate: datasource=github-releases depName=anthropics/claude-code
   codex: "0.162.0"      # renovate: datasource=github-releases depName=openai/codex
-  copilot: "1.0.91"     # renovate: datasource=github-releases depName=github/copilot-cli
+  copilot: "1.0.95"     # renovate: datasource=github-releases depName=github/copilot-cli
   opencode: "1.18.35"   # renovate: datasource=github-releases depName=anomalyco/opencode
   # grok installs from the raw x.ai binary (mise registry http backend), but xAI
   # publishes @xai-official/grok to npm in version lockstep, so Renovate tracks that.
