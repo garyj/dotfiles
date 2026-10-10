@@ -31,7 +31,10 @@
         }
       ],
       "editor.document_highlight.read_background": "#17E5E626",
-      "editor.document_highlight.write_background": "#17E5E640"
+      "editor.document_highlight.write_background": "#17E5E640",
+      "editor.document_highlight.bracket_background": "#1a5c2a",
+      "search.match_background": "#7a4e00",
+      "search.active_match_background": "#8b1a6b"
     }
   },
   "icon_theme": "VSCode Icons for Zed (Dark)",
