@@ -16,14 +16,15 @@ pgstart() {
 }
 
 pggeostart() {
+  mkdir -p $HOME/.docker_servers_data/postgres_pggis18
   docker run --rm \
     --name postgres \
     --hostname postgres \
     --user "$(id -u):$(id -g)" \
     -p 5432:5432 \
     -e POSTGRES_PASSWORD=postgres \
-    -v $HOME/.docker_servers_data/postgres_pggis:/var/lib/postgresql/data \
-    -d postgis/postgis:15-3.3
+    -v $HOME/.docker_servers_data/postgres_pggis18:/var/lib/postgresql \
+    -d postgis/postgis:18-3.6
 }
 
 # Postgres with pgvector on port 5433
