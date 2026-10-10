@@ -47,7 +47,7 @@ externals:
 # GUI apps shipped as .deb on GitHub releases (no apt repo).
 deb_apps:
   handy:  # offline speech-to-text
-    version: "0.9.7"  # renovate: datasource=github-releases depName=cjpais/Handy
+    version: "0.9.8"  # renovate: datasource=github-releases depName=cjpais/Handy
   t3code:  # T3 Code desktop app, GUI over the local coding agents
     version: "0.0.45"  # renovate: datasource=github-releases depName=pingdotgg/t3code
 
