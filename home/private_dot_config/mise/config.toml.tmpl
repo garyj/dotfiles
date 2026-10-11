@@ -82,7 +82,7 @@ grok = ['{{ .coding_agents.grok }}']
 
 # CLI tools, pinned in .chezmoidata.yaml (audited; bump via Renovate PRs, see renovate.json)
 dust = ['{{ .tools.dust }}']
-worktrunk = ['{{ .tools.worktrunk }}']
+"packslip:github.com/max-sixty/worktrunk" = { version = '{{ .tools.worktrunk }}', workflow = "release.yaml" }  # nothing before 0.80.0 ships a packslip manifest
 ast-grep = ['{{ .tools.ast_grep }}']
 prek = ['{{ .tools.prek }}']  # pre-commit reimplemented in Rust (j178); drop-in pre-commit replacement
 pulumi = ['{{ .tools.pulumi }}']  # infrastructure as code CLI (pulumi/pulumi)
