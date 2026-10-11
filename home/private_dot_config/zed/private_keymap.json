@@ -15,6 +15,13 @@
     }
   },
   {
+    "context": "Editor && mode == full",
+    "bindings": {
+      "alt-left": "pane::GoBack",
+      "alt-right": "pane::GoForward"
+    }
+  },
+  {
     "context": "Workspace",
     "bindings": {
       "ctrl-shift-alt-b": "agent::ToggleFocus",
