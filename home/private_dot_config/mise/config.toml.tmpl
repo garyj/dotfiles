@@ -78,6 +78,7 @@ grok = ['{{ .coding_agents.grok }}']
 "npm:agent-browser" = ['{{ .tools.agent_browser }}']
 "npm:sentry" = ['{{ .tools.sentry }}']  # npm `sentry` (getsentry/cli); NOT aqua sentry-cli, which is a different tool
 "pipx:agentsview" = ['{{ .tools.agentsview }}']  # local web viewer for agent sessions (PyPI via pipx/uvx); drives the av* aliases in agents.sh
+"aqua:herdrdev/herdr" = ['{{ .tools.herdr }}']  # terminal multiplexer for coding agents (herdrdev/herdr)
 
 # CLI tools, pinned in .chezmoidata.yaml (audited; bump via Renovate PRs, see renovate.json)
 dust = ['{{ .tools.dust }}']
