@@ -7,7 +7,9 @@
   "auto_install_extensions": {
     "catppuccin": true,
     "catppuccin-icons": true,
+    "django": true,
     "dockerfile": true,
+    "emmet": true,
     "git-firefly": true,
     "github-dark-default": true,
     "html": true,
