@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+: <<'SETUP'
+Register DaisyUI only in projects that need it.
+Add this entry under dependencies.mcp in the project's apm.yml:
+    - name: daisyui-blueprint
+      registry: false
+      transport: stdio
+      command: daisyui-blueprint
+      env_vars:
+      - DAISYUI_BLUEPRINT_LICENSE
+      - DAISYUI_BLUEPRINT_EMAIL
+
+Add .env to the project's .gitignore, then put your credentials in .env:
+    DAISYUI_BLUEPRINT_LICENSE=your-license-key
+    DAISYUI_BLUEPRINT_EMAIL=your-license-email
+
+Have the project's .envrc load .env:
+    dotenv
+
+Keep credential values out of apm.yml and generated agent configs.
+SETUP
+
+set -euo pipefail
+
+: "${DAISYUI_BLUEPRINT_LICENSE:?daisyui-blueprint: missing DAISYUI_BLUEPRINT_LICENSE; load your project .envrc before starting the agent}"
+: "${DAISYUI_BLUEPRINT_EMAIL:?daisyui-blueprint: missing DAISYUI_BLUEPRINT_EMAIL; load your project .envrc before starting the agent}"
+
+export LICENSE="$DAISYUI_BLUEPRINT_LICENSE"
+export EMAIL="$DAISYUI_BLUEPRINT_EMAIL"
+exec pnpm dlx daisyui-blueprint@latest "$@"
