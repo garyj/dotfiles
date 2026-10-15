@@ -9,18 +9,19 @@
 # ANATOMY OF THE FINAL OUTPUT
 #
 #   ┌── from `wt list statusline --format=claude-code` (+ our tweaks) ┐ ┌─ this script ─┐
-#   ~/d/p/pdj master ?^ ● | Opus 4.7 ○ 4% 130k │ ⏱ 12m $0.42 ($2.02/hr) +85 -12 │ 5h 73% (Sat) 7d 17% (Fri)
+#   Opus 4.7 high ~/d/p/pdj master ?^ ● ○ 4% 130k │ ⏱ 12m $0.42 ($2.02/hr) +85 -12 │ 5h 73% (Sat) 7d 17% (Fri)
 #                                                 │                                │
 #                                             wt base                      session telemetry           rate limits
 #
 # WORKTRUNK BASE (what comes before the first "│")
+#   Opus 4.7 high      Model + effort, bright yellow, moved to the front from wt's
+#                      mid-line label (we strip wt's "(1M context)" suffix)
 #   ~/d/p/pdj          Tilde-compressed worktree path
 #   master             Current branch
 #   ?                  Untracked files present
 #   ^ / ↑              Ahead of default branch (commits not on main)
 #   ! / ⇡              Modified tracked files / ahead of remote (unpushed)
 #   ●                  CI status (green = pass, red = fail, neutral = unknown)
-#   Opus 4.7           Model label (we strip wt's trailing "(1M context)" suffix)
 #   ○                  Moon-phase context gauge (🌑 fresh → 🌕 full)
 #   4%                 Percent of the model's context window used
 #   130k               Input tokens in current context (input + cache_read +
@@ -126,6 +127,7 @@ model=${fields[12]-}
 DIM=$'\033[2m'
 GREEN=$'\033[0;32m'
 YELLOW=$'\033[01;33m'
+BYELLOW=$'\033[93m'
 RED=$'\033[01;31m'
 RESET=$'\033[0m'
 SEP=" ${DIM}│${RESET} "    # Section separator between base, telemetry, rate limits
@@ -189,9 +191,12 @@ ctx_total=$(( ${ctx_input:-0} + ${ctx_cache_create:-0} + ${ctx_cache_read:-0} ))
 tok_str=$(format_tokens "$ctx_total")
 [ -n "$base" ] && [ -n "$tok_str" ] && base+=" ${DIM}${tok_str}${RESET}"
 
-# Reasoning effort from .effort.level, placed after wt's model label; absent when the model has no effort setting.
+# Model and reasoning effort move from wt's mid-line label to the front, in bright yellow.
 model=${model% (*context)}
-[ -n "$effort" ] && [ -n "$model" ] && base=${base/"$model"/"$model ${DIM}${effort}${RESET}"}
+if [ -n "$model" ]; then
+    base=${base/"  $model"/}
+    base="${BYELLOW}${model}${effort:+ $effort}${RESET}${base}"
+fi
 
 # ─── WIDGET: Session telemetry (duration + cost + burn + lines shipped) ─────
 # Each sub-widget self-skips when its data is zero/missing, so fresh sessions
