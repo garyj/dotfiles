@@ -11,6 +11,7 @@
     "dockerfile": true,
     "emmet": true,
     "git-firefly": true,
+    "github-actions": true,
     "github-dark-default": true,
     "html": true,
     "ini": true,
@@ -34,10 +35,16 @@
       ],
       "editor.document_highlight.read_background": "#17E5E626",
       "editor.document_highlight.write_background": "#17E5E640",
-      "editor.document_highlight.bracket_background": "#1a5c2a",
+      "editor.document_highlight.bracket_background": "#6e40c9",
       "search.match_background": "#7a4e00",
-      "search.active_match_background": "#8b1a6b"
+      "search.active_match_background": "#ff0000",
+      "syntax": {
+        "property": { "color": "#7ee787" }
+      }
     }
+  },
+  "file_types": {
+    "GitHub Actions": [".github/workflows/*.yml", ".github/workflows/*.yaml"]
   },
   "icon_theme": "VSCode Icons for Zed (Dark)",
   "ui_font_size": 20,
