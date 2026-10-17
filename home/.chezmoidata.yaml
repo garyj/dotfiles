@@ -4,7 +4,7 @@ agentName: Gary Jarrel [LC]
 agentEmail: lara@jarrel.io  # must stay a verified email on the GitHub account
 githubUser: garyj
 langs:
-  python: "3.14"
+  python: "3.15"
   mongodb: "8.2"
 
 # Pinned CLI tools, installed via mise. The `# renovate:` annotations let
