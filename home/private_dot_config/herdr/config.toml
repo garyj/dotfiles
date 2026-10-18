@@ -9,3 +9,8 @@ enabled = false
 
 [ui.toast]
 delivery = "system"
+
+[keys]
+split_vertical = ["prefix+v", "prefix+/"]
+split_horizontal = ["prefix+minus", "prefix+e"]
+edit_scrollback = "prefix+shift+e"
