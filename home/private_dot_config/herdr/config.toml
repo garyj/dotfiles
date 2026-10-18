@@ -4,6 +4,9 @@ onboarding = false
 name = "catppuccin"
 auto_switch = false
 
+[ui]
+agent_panel_sort = "priority"
+
 [ui.sound]
 enabled = false
 
@@ -14,3 +17,14 @@ delivery = "system"
 split_vertical = ["prefix+v", "prefix+/"]
 split_horizontal = ["prefix+minus", "prefix+e"]
 edit_scrollback = "prefix+shift+e"
+next_agent = "prefix+a"
+previous_agent = "prefix+shift+a"
+# wt owns worktree creation.
+new_worktree = ""
+
+[update]
+# mise pins the version; herdr update would bypass it.
+version_check = false
+
+[experimental]
+pane_history = true
