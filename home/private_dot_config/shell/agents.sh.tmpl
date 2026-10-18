@@ -13,11 +13,25 @@ _agent_guard() {
   fi
 }
 
-# Agent commits carry a distinct author so `git log --author=` can separate them.
+# Agent commits carry a distinct author, named after the agent's command or a leading AGENT_NAME=, so `git log --author=` can separate them.
 _as_agent() {
+  local arg agent=agent
+  for arg in "$@"; do
+    case "$arg" in
+    AGENT_NAME=*)
+      agent=${arg#AGENT_NAME=}
+      break
+      ;;
+    *=*) ;;
+    *)
+      agent=${arg##*/}
+      break
+      ;;
+    esac
+  done
   env GIT_CONFIG_COUNT=2 \
       GIT_CONFIG_KEY_0=user.email GIT_CONFIG_VALUE_0={{ .agentEmail | quote }} \
-      GIT_CONFIG_KEY_1=user.name  GIT_CONFIG_VALUE_1={{ .agentName | quote }} \
+      GIT_CONFIG_KEY_1=user.name  GIT_CONFIG_VALUE_1="{{ .agentName }} ($agent)" \
       "$@"
 }
 
@@ -70,6 +84,7 @@ claude-fireworks() {
   # [1m] enables 1M context on the main model; it must NOT appear on subagent
   # (Claude Code forwards the subagent value verbatim to the provider).
   _as_agent \
+    AGENT_NAME=claude-fireworks \
     ANTHROPIC_BASE_URL=https://api.fireworks.ai/inference \
     ANTHROPIC_API_KEY="$FIREWORKS_API_KEY" \
     ANTHROPIC_AUTH_TOKEN="$FIREWORKS_API_KEY" \
