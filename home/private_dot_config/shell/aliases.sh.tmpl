@@ -1,7 +1,36 @@
 # General aliases and small helpers, sourced by ~/.commonrc for bash and zsh.
 
 alias g=git
-alias h=herdr
+# herdr in the session named by the nearest .herdr-session up to $HOME; an empty file uses its directory's name.
+h() {
+  local arg dir=$PWD name=
+  for arg in "$@"; do
+    case "$arg" in --session | --session=*)
+      herdr "$@"
+      return
+      ;;
+    esac
+  done
+  while :; do
+    if [ -f "$dir/.herdr-session" ]; then
+      read -r name <"$dir/.herdr-session"
+      [ -n "$name" ] || name=${dir##*/}
+      break
+    fi
+    { [ "$dir" = "$HOME" ] || [ -z "$dir" ]; } && break
+    dir=${dir%/*}
+  done
+  if [ -n "$name" ]; then
+    herdr --session "$name" "$@"
+  else
+    herdr "$@"
+  fi
+}
+if [ -n "$ZSH_VERSION" ]; then
+  compdef h=herdr
+elif [ -n "$BASH_VERSION" ] && __load_completion herdr 2>/dev/null; then
+  complete -F _herdr -o bashdefault -o default h
+fi
 # Open the current repo path on GitHub for the branch you're actually on
 # (works from any worktree). If that branch isn't on the remote yet, fall back
 # to the default branch so you land on a real page instead of a 404.
