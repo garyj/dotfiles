@@ -6,6 +6,9 @@ auto_switch = false
 
 [ui]
 agent_panel_sort = "priority"
+tab_bar_right = [
+  { type = "command", command = 'd=${HERDR_SOCKET_PATH%/*}; case $d in */sessions/*) echo "${d##*/}" ;; *) echo default ;; esac', interval_seconds = 31536000, timeout_seconds = 2 },
+]
 
 [ui.sound]
 enabled = false
