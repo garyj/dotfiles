@@ -3,7 +3,7 @@
 alias g=git
 # herdr in the session named by the nearest .herdr-session up to $HOME; an empty file uses its directory's name.
 h() {
-  local arg dir=$PWD name=
+  local arg dir=$PWD name= panes here ws
   for arg in "$@"; do
     case "$arg" in --session | --session=*)
       herdr "$@"
@@ -21,6 +21,16 @@ h() {
     dir=${dir%/*}
   done
   if [ -n "$name" ]; then
+    # Attaching to a running session ignores $PWD, so land on a workspace here first.
+    if [ $# -eq 0 ] && panes=$(herdr --session "$name" pane list 2>/dev/null); then
+      here=$(pwd -P)
+      ws=$(printf '%s' "$panes" | jq -r --arg d "$here" 'first(.result.panes[] | select(.cwd == $d) | .workspace_id) // empty')
+      if [ -n "$ws" ]; then
+        herdr --session "$name" workspace focus "$ws" >/dev/null
+      else
+        herdr --session "$name" workspace create --cwd "$here" --focus >/dev/null
+      fi
+    fi
     herdr --session "$name" "$@"
   else
     herdr "$@"
