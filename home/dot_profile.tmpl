@@ -1,20 +1,18 @@
 # REMEMBER the order is reversed, so the last directory in the list will be added first
-paths=(
-  "/usr/sbin"
-  "/sbin"
-  "$HOME/.cargo/bin"
-  "$HOME/.atuin/bin"
-  "$HOME/.local/share/mise/shims"
-  "$HOME/.local/bin"
-  "$HOME/.npm-global/bin"
-  "$HOME/bin"
-  "$HOME/.cache/.bun/bin"
-)
-
-for dir in "${paths[@]}"; do
-  if [ -d "$dir" ] && [[ ":$PATH:" != *":$dir:"* ]]; then
-    export PATH="$dir:$PATH"
-  fi
+for dir in \
+  "/usr/sbin" \
+  "/sbin" \
+  "$HOME/.cargo/bin" \
+  "$HOME/.atuin/bin" \
+  "$HOME/.local/share/mise/shims" \
+  "$HOME/.local/bin" \
+  "$HOME/.npm-global/bin" \
+  "$HOME/bin" \
+  "$HOME/.cache/.bun/bin"; do
+  case ":$PATH:" in
+  *":$dir:"*) ;;
+  *) [ -d "$dir" ] && export PATH="$dir:$PATH" ;;
+  esac
 done
 
 # Node-version-independent prefix for global npm installs. Without this, npm puts
