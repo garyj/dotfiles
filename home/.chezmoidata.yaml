@@ -13,7 +13,7 @@ langs:
 tools:
   anthropic_cli: "1.42.0"  # renovate: datasource=github-releases depName=anthropics/anthropic-cli
   mise: "2026.10.10"     # renovate: datasource=github-releases depName=jdx/mise
-  ast_grep: "0.50.0"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
+  ast_grep: "0.51.0"   # renovate: datasource=github-releases depName=ast-grep/ast-grep
   worktrunk: "0.80.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   dust: "1.2.6"        # renovate: datasource=github-releases depName=bootandy/dust
   apm: "0.33.0"        # renovate: datasource=github-releases depName=microsoft/apm
