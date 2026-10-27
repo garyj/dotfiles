@@ -20,6 +20,7 @@
     "markdown-oxide": true,
     "powershell": true,
     "rainbow-csv": true,
+    "svelte": true,
     "toml": true,
     "vscode-icons": true,
     "xml": true
