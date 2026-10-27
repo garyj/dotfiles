@@ -101,7 +101,7 @@ starship = ['{{ .tools.starship }}']  # prompt (starship/starship)
 # the lockfile records what resolved, so they move only on `mise upgrade`. Tools
 # needing extra packages use `with`, not uvx_args, which the lockfile rejects.
 "pipx:mcp-scan" = ['latest']
-"pipx:mitmproxy" = ['latest']
+# "pipx:mitmproxy" = ['latest'] # temporarily disable awaiting python 3.15 wheel of brotli
 "pipx:nbconvert" = ['latest']
 # Pinned, not floated: Simon Willison ships llm often and the release notes are
 # worth reading, so bumps arrive as Renovate PRs instead of landing unseen.
