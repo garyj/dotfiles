@@ -55,6 +55,9 @@ def main() -> int:
         "trivia, and platform notes irrelevant to Linux.\n"
         "- If something needs action (a breaking change or migration), call it out "
         "first in **bold**.\n"
+        "- If the notes cover more than one version, follow the TL;DR with one "
+        "`#### <version>` section per version, newest first, each with 1-3 bullets "
+        "on what is worth knowing in that version, or `Nothing relevant.`\n"
         "- If the notes are thin or purely internal, say so in one line rather than "
         "padding.\n"
         "- Be concise and concrete; assume he knows these tools. No em-dashes."
@@ -64,7 +67,7 @@ def main() -> int:
     try:
         response = client.messages.create(
             model=model,
-            max_tokens=1500,
+            max_tokens=4000,
             system=system,
             messages=[{"role": "user", "content": f"PR: {title}\n\nRelease notes:\n\n{body[:60000]}"}],
         )

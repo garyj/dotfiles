@@ -4,10 +4,11 @@ name: Summarize Renovate release notes
 # (renovate.json -> labels), so its PRs are summarized automatically; slap the
 # label on any other PR by hand to summon a summary. Triggers on `opened` and
 # `labeled`; the per-PR concurrency group collapses that pair into one run, and
-# the script updates one comment in place.
+# the script updates one comment in place. `edited` re-runs only on a title
+# change, which is how Renovate signals it moved an open PR to a newer version.
 on:
   pull_request:
-    types: [opened, labeled]
+    types: [opened, labeled, edited]
 
 permissions:
   contents: read # checkout + read the context file
@@ -20,7 +21,9 @@ concurrency:
 
 jobs:
   summarize:
-    if: contains(github.event.pull_request.labels.*.name, 'deps-summary')
+    if: >-
+      contains(github.event.pull_request.labels.*.name, 'deps-summary') &&
+      (github.event.action != 'edited' || github.event.changes.title)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
