@@ -45,7 +45,6 @@ rust = ['latest']
 
 # CLI tools, floated at 'latest' (low-risk fast-movers; the apt version lags far
 # behind upstream or apt doesn't carry them; minimum_release_age bakes each).
-entireio-cli = ['latest']  # tier-2: entireio org includes GitHub CEO (ashtom); fast-moving, floating is defensible
 just = ['latest']
 usage = ['latest']     # required for mise shell completions
 eza = ['latest']       # modern ls replacement (eza-community)
@@ -53,7 +52,9 @@ fd = ['latest']        # find replacement; apt also ships it under the name `fdf
 fzf = ['latest']       # fuzzy finder (junegunn)
 gh = ['latest']        # GitHub CLI (cli/cli)
 glow = ['latest']      # render markdown on the CLI (charmbracelet)
-starship = ['latest']  # prompt (starship/starship)
+dust = ['latest']
+ast-grep = ['latest']
+pulumi = ['latest']  # infrastructure as code CLI (pulumi/pulumi)
 trufflehog = ['latest']  # secret scanner; pre-review gate for the autoreview skill (trufflesecurity)
 wrangler = ['latest']  # Cloudflare Workers CLI (cloudflare/workers-sdk); auth from cf_exp in shell/cloudflare.sh
 "github:yt-dlp/yt-dlp" = { version = "latest", bin = "yt-dlp", minimum_release_age = "3d" }  # Downloader
@@ -81,11 +82,10 @@ grok = ['{{ .coding_agents.grok }}']
 "aqua:herdrdev/herdr" = ['{{ .tools.herdr }}']  # terminal multiplexer for coding agents (herdrdev/herdr)
 
 # CLI tools, pinned in .chezmoidata.yaml (audited; bump via Renovate PRs, see renovate.json)
-dust = ['{{ .tools.dust }}']
 "packslip:github.com/max-sixty/worktrunk" = { version = '{{ .tools.worktrunk }}', workflow = "release.yaml" }  # nothing before 0.80.0 ships a packslip manifest
-ast-grep = ['{{ .tools.ast_grep }}']
 prek = ['{{ .tools.prek }}']  # pre-commit reimplemented in Rust (j178); drop-in pre-commit replacement
-pulumi = ['{{ .tools.pulumi }}']  # infrastructure as code CLI (pulumi/pulumi)
+entireio-cli = ['{{ .tools.entireio_cli }}']  # tier-2: entireio org includes GitHub CEO (ashtom)
+starship = ['{{ .tools.starship }}']  # prompt (starship/starship)
 "github:microsoft/apm" = { version = '{{ .tools.apm }}' }  # Agent Package Manager (Microsoft)
 # RTK (Rust Token Killer): local CLI-output compressor, run by hand (`rtk git
 # status`, `rtk gain`). Manual-trial stage: do not wire the auto-rewrite Claude
