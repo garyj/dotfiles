@@ -11,6 +11,7 @@ mod d '.justfiles/docker.justfile'
 mod sentry '.justfiles/sentry.justfile'
 
 HOST := `hostname -s`
+AGENT_DEBS := "chatgpt claude-desktop grok-bot"
 
 [private]
 @default:
@@ -60,6 +61,12 @@ outdated:
     uv tool upgrade --all
     mise upgrade
     mise reshim
+
+# Upgrade only the agent desktop apps in AGENT_DEBS from their vendor apt repos
+[group("maintenance")]
+@upgrade-agent-apps:
+    sudo apt-get update
+    sudo apt-get install --only-upgrade --yes {{ AGENT_DEBS }}
 
 # List firmware updates and print the install command; never installs
 [group("maintenance")]
