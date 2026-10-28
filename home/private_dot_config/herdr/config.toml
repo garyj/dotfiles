@@ -10,6 +10,12 @@ tab_bar_right = [
   { type = "command", command = 'd=${HERDR_SOCKET_PATH%/*}; case $d in */sessions/*) echo "${d##*/}" ;; *) echo default ;; esac', interval_seconds = 31536000, timeout_seconds = 2 },
 ]
 
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", "workspace", "tab"],
+  ["terminal_title_stripped"],
+]
+
 [ui.sound]
 enabled = false
 
