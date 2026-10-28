@@ -45,7 +45,8 @@
     }
   },
   "file_types": {
-    "GitHub Actions": [".github/workflows/*.yml", ".github/workflows/*.yaml"]
+    "GitHub Actions": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
+    "TOML": ["*.toml.tmpl"]
   },
   "icon_theme": "VSCode Icons for Zed (Dark)",
   "ui_font_size": 20,
