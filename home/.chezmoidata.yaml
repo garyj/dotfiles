@@ -16,7 +16,7 @@ tools:
   worktrunk: "0.80.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   apm: "0.35.0"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.5.7"        # renovate: datasource=github-releases depName=j178/prek
-  rtk: "1.0.1"        # renovate: datasource=github-releases depName=rtk-ai/rtk
+  rtk: "1.1.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
   yoink: "0.1.0"       # renovate: datasource=github-releases depName=garyj/yoink
   herdr: "0.9.5"       # renovate: datasource=github-releases depName=herdrdev/herdr
   starship: "1.27.0"   # renovate: datasource=github-releases depName=starship/starship
