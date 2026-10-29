@@ -95,7 +95,7 @@ copy = "wt step copy-ignored"
 envrc = "if [ -f {{ primary_worktree_path }}/.envrc ] && [ ! -e .envrc ]; then ln -s {{ primary_worktree_path }}/.envrc .envrc; fi"
 
 [[post-start]]
-submodules = "if [ -f .gitmodules ]; then git submodule update --remote; fi"
+submodules = "if [ -f .gitmodules ]; then git submodule update; fi"
 
 [[post-start]]
 uv-sync = "if [ -f pyproject.toml ] && command -v uv >/dev/null 2>&1; then uv sync --all-groups --all-extras; fi"
