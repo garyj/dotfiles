@@ -1,0 +1,4 @@
+# The file-upload skill reads these before falling back to `op read`, which
+# waits on a desktop unlock prompt that unattended agents cannot answer.
+export FILE_HOST_URL="{{ onepasswordRead "op://AGLara/Agent Files Service - Cloudflare/URL" | trim }}"
+export FILE_HOST_TOKEN="{{ onepasswordRead "op://AGLara/Agent Files Service - Cloudflare/password" | trim }}"
