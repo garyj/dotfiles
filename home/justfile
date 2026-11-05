@@ -59,7 +59,13 @@ outdated:
     sudo apt autoremove --yes
     flatpak update --noninteractive
     uv tool upgrade --all
-    mise upgrade
+    # `mise upgrade` can install a pipx tool's dependencies without writing them
+    # to mise.lock; the shell then reports the tool missing. Lock first, then
+    # install what the lock records. Not --locked: it rejects the version-only
+    # entries mise writes when a dependency has no wheel for the current Python.
+    mise lock --global --bump
+    mise install
+    mise prune --tools --yes
     mise reshim
 
 # Upgrade only the agent desktop apps in AGENT_DEBS from their vendor apt repos
