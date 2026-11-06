@@ -39,8 +39,8 @@ AGENT_DEBS := "chatgpt claude-desktop grok-bot"
 @codex-usage:
     bunx @ccusage/codex@latest
 
-# Show what `just upgrade` would change; read-only, no sudo
-[group("maintenance")]
+# Show what `just upgrade-all` would change; read-only, no sudo
+[group("upgrade")]
 outdated:
     #!/usr/bin/env bash
     echo -e "\033[1;36m>>> apt\033[0m"; mintupdate-cli list
@@ -49,14 +49,15 @@ outdated:
     echo -e "\n\033[1;36m>>> uv tools\033[0m"; uv tool list --outdated
     echo -e "\n\033[1;36m>>> mise\033[0m"; mise outdated
 
-# Upgrade the whole machine: apt, flatpak, chezmoi, uv tools, mise (firmware stays manual: `just firmware`)
-[group("maintenance")]
+# Run every upgrade recipe (firmware stays manual: `just firmware`)
+[group("upgrade")]
+@upgrade-all: upgrade upgrade-agent-apps upgrade-system
+
+# Upgrade chezmoi, flatpak apps, uv tools and mise tools; no restart needed
+[group("upgrade")]
 @upgrade:
     chezmoi upgrade
     chezmoi update
-    sudo -v
-    sudo mintupdate-cli upgrade --refresh-cache
-    sudo apt autoremove --yes
     flatpak update --noninteractive
     uv tool upgrade --all
     # `mise upgrade` can install a pipx tool's dependencies without writing them
@@ -69,10 +70,23 @@ outdated:
     mise reshim
 
 # Upgrade only the agent desktop apps in AGENT_DEBS from their vendor apt repos
-[group("maintenance")]
+[group("upgrade")]
 @upgrade-agent-apps:
     sudo apt-get update
     sudo apt-get install --only-upgrade --yes {{ AGENT_DEBS }}
+
+# Upgrade apt packages; says when a new kernel needs a reboot
+[group("upgrade")]
+upgrade-system:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    sudo mintupdate-cli upgrade --refresh-cache
+    sudo apt autoremove --yes
+    newest=$(ls -v /boot/vmlinuz-* | tail -1)
+    newest=${newest#/boot/vmlinuz-}
+    if [ "$newest" != "$(uname -r)" ]; then
+      echo -e "\n\033[1;33mReboot to load kernel $newest (running $(uname -r))\033[0m"
+    fi
 
 # List firmware updates and print the install command; never installs
 [group("maintenance")]
