@@ -154,10 +154,12 @@
 	smudge = git-lfs smudge -- %f
 
 {{- if lookPath "gh" }}
+# The mise shim keeps its path across gh upgrades. The versioned install dir that
+# lookPath returns is deleted when mise prunes the old version.
 [credential "https://github.com"]
 	helper =
-	helper = !{{ lookPath "gh" }} auth git-credential
+	helper = !{{ .chezmoi.homeDir }}/.local/share/mise/shims/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !{{ lookPath "gh" }} auth git-credential
+	helper = !{{ .chezmoi.homeDir }}/.local/share/mise/shims/gh auth git-credential
 {{- end }}

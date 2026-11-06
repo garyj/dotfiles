@@ -27,12 +27,6 @@ in `~/.config/gj_agents/<agent>/`:
     token       the 1Password service-account token, written by `chezmoi apply`
     gh/         whatever gh writes for this identity
 
-## Do not run `chezmoi apply` from inside an agent
-
-`lib/shim` is on `PATH` for the whole agent process tree, so chezmoi's `lookPath "gh"`
-resolves to the shim and bakes its path into your personal git config. Run chezmoi
-from your own shell.
-
 ## Adding another agent
 
 Copy `lara`, change the five `AGENT_*` values, add a deploy script for its token
