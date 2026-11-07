@@ -9,9 +9,12 @@ set -euo pipefail
 # config: {{ include "private_dot_config/mise/config.toml.tmpl" | sha256sum }}
 # pins:   {{ include ".chezmoidata.yaml" | sha256sum }}
 
-# Pinned pypi/npm tools install under a lock-derived path mise can't find without a lockfile.
-[ -f ~/.config/mise/mise.lock ] || mise lock --global --platform linux-x64 \
-  || echo "mise lock: global lockfile not created" >&2
+# Pinned pypi/npm tools install under a path derived from their mise.lock
+# entry, so a new pin needs its entry before it installs. See GOTCHAS.md.
+# --bump would upgrade every tool floated at 'latest' on each apply.
+# Without --platform, a new lockfile records every OS.
+mise lock --global --platform linux-x64 \
+  || echo "mise lock: global lockfile not updated" >&2
 
 # A tool build failure (e.g. a compiled runtime) warns but does not abort the
 # apply, so the scripts that run after this one still execute.

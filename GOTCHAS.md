@@ -95,3 +95,22 @@ git checkout chore/ghostty-latency-probe -- \
 Remove it again afterwards; it costs about 39ms on every keypress. Editing the
 Super+Return binding needs a `custom-list` toggle to take effect, or Cinnamon
 silently keeps running the old command.
+
+## mise installs a new npm or pipx pin where the shell never looks
+
+With `lockfile = true`, mise installs a pinned npm or pipx tool into a directory
+named after its `mise.lock` entry, such as
+`installs/npm-agent-browser/0.41.1~aube~4477ce3bc2ac3a98`. If `mise install`
+runs before the lock has an entry for a new pin, mise installs to the plain
+`0.41.1` directory and writes the entry afterwards. Every shell after that looks
+for the hashed directory, finds nothing, and prints
+`mise WARN  missing: npm:agent-browser@0.41.1`. `mise ls` then lists the version
+twice, once marked `(missing)`.
+
+Run `mise lock --global --platform linux-x64` before every `mise install`.
+Without `--bump`, the lock moves only the entries whose pins changed and keeps
+tools floated at `latest` where they are. Without `--platform`, a new lockfile
+records every OS. `run_onchange_after_05_mise-install.sh.tmpl`, which runs on
+`chezmoi apply` after a pin changes, and `just upgrade` both lock first. To
+repair a machine that already warns, run `mise install`. The entry exists by
+then, so mise installs to the hashed directory.
