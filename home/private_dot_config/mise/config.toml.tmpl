@@ -93,7 +93,8 @@ starship = ['{{ .tools.starship }}']  # prompt (starship/starship)
 "aqua:rtk-ai/rtk" = ['{{ .tools.rtk }}']
 
 # A GUI app in mise: upstream ships a release tarball, no .deb or AppImage.
-# The shim path is baked into a Cinnamon keybinding and the autostart entry.
+# The autostart entry runs its shim, and a Cinnamon keybinding runs
+# installs/github-garyj-yoink/latest/yoink.
 "github:garyj/yoink" = { version = '{{ .tools.yoink }}' }
 
 # Python CLI tools from PyPI, via the pipx backend (uvx, per [settings.pipx]).

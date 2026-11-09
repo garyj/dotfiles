@@ -381,9 +381,10 @@ if is_cinnamon; then
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom42/ command 'rofi -show window -matching fuzzy'
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom42/ name 'Window search'
 
-  # Running the binary again toggles the window.
+  # Running the binary again toggles the window. The installs/latest link skips
+  # the mise shim, which would run mise on every press before yoink starts.
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ binding "['<Super>v']"
-  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ command "$HOME/.local/share/mise/shims/yoink"
+  gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ command "$HOME/.local/share/mise/installs/github-garyj-yoink/latest/yoink"
   gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/custom43/ name 'yoink clipboard history'
 
   # Full WM_CLASS: a bare t3code also matches browser tabs titled after the GitHub repo.
