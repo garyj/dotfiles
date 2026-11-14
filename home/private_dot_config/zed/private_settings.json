@@ -27,6 +27,7 @@
   },
   "theme": "GitHub Dark Default",
   "selection_highlight": true,
+  "wrap_guides": [120],
   "theme_overrides": {
     "GitHub Dark Default": {
       "players": [
@@ -40,6 +41,8 @@
       "search.match_background": "#7a4e00",
       "search.active_match_background": "#ff0000",
       "tab.active_background": "#264f78",
+      "editor.wrap_guide": "#15272c",
+      "editor.active_wrap_guide": "#15272c",
       "syntax": {
         "property": { "color": "#7ee787" }
       }
