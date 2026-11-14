@@ -26,7 +26,7 @@ tools:
   agent_browser: "0.41.2"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
   sentry: "0.45.0"         # renovate: datasource=github-releases depName=getsentry/cli
   # These two install via mise's pipx backend (PyPI), not GitHub releases.
-  agentsview: "0.46.1"     # renovate: datasource=pypi depName=agentsview
+  agentsview: "0.47.0"     # renovate: datasource=pypi depName=agentsview
   llm: "0.37.1"            # renovate: datasource=pypi depName=llm
 
 # AI coding agents, all installed via mise.
