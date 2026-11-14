@@ -4,6 +4,7 @@
     "bindings": {
       "ctrl-alt-c": "workspace::CopyPath",
       "ctrl-shift-alt-c": "workspace::CopyRelativePath",
+      "ctrl-shift-v": "editor::Paste",
       "ctrl-?": [
         "workspace::MoveItemToPaneInDirection",
         { "direction": "right", "focus": true }
