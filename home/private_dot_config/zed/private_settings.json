@@ -10,6 +10,7 @@
     "django": true,
     "dockerfile": true,
     "emmet": true,
+    "env": true,
     "git-firefly": true,
     "github-actions": true,
     "github-dark-default": true,
@@ -20,6 +21,7 @@
     "markdown-oxide": true,
     "powershell": true,
     "rainbow-csv": true,
+    "scss": true,
     "svelte": true,
     "toml": true,
     "vscode-icons": true,
@@ -50,7 +52,8 @@
   },
   "file_types": {
     "GitHub Actions": [".github/workflows/*.yml", ".github/workflows/*.yaml"],
-    "TOML": ["*.toml.tmpl"]
+    "TOML": ["*.toml.tmpl"],
+    "Django": ["**/templates/**/*.html"]
   },
   "icon_theme": "VSCode Icons for Zed (Dark)",
   "ui_font_size": 20,
@@ -119,6 +122,12 @@
     "dock": "left"
   },
   "agent": {
+    "default_model": {
+      "provider": "x_ai_subscribed",
+      "model": "grok-4.7",
+      "enable_thinking": true,
+      "effort": "medium"
+    },
     "dock": "right",
     "favorite_models": [],
     "model_parameters": []
