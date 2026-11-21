@@ -10,6 +10,7 @@
   "commitMessageAction": "bump",
   "commitMessageTopic": "{{depName}}",
   "commitMessageExtra": "to {{newValue}}",
+  "prConcurrentLimit": 20,
   "customManagers": [
     {
       "customType": "regex",
