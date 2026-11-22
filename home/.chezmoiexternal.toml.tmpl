@@ -40,6 +40,13 @@
     refreshPeriod = "24h"
     include = ["*/skills/agent-browser/**"]
 
+[".local/share/agent-skills/agent-desktop"]
+    type = "archive"
+    url = "https://github.com/vercel-labs/agent-desktop/archive/refs/tags/v{{ .tools.agent_desktop }}.tar.gz"
+    stripComponents = 3
+    refreshPeriod = "24h"
+    include = ["*/skills/agent-desktop/**"]
+
 # Own repo, cloned so the skill is editable in place; agent-skills/deps-upgrade-report links into it.
 [".local/share/deps-upgrade-report"]
     type = "git-repo"

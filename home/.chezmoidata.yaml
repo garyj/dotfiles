@@ -21,9 +21,10 @@ tools:
   herdr: "0.9.5"       # renovate: datasource=github-releases depName=herdrdev/herdr
   starship: "1.27.0"   # renovate: datasource=github-releases depName=starship/starship
   entireio_cli: "0.13.4"  # renovate: datasource=github-releases depName=entireio/cli
-  # These two are pinned so the binary (mise) and its agent skill
+  # These three are pinned so the binary (mise) and its agent skill
   # (.chezmoiexternal.toml.tmpl) install from the same release, like worktrunk.
   agent_browser: "0.43.0"  # renovate: datasource=github-releases depName=vercel-labs/agent-browser
+  agent_desktop: "1.3.1"   # renovate: datasource=github-releases depName=vercel-labs/agent-desktop
   sentry: "0.45.0"         # renovate: datasource=github-releases depName=getsentry/cli
   # These two install via mise's pipx backend (PyPI), not GitHub releases.
   agentsview: "0.47.0"     # renovate: datasource=pypi depName=agentsview
