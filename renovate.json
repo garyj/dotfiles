@@ -38,7 +38,8 @@
         "anthropics/claude-code",
         "openai/codex",
         "github/copilot-cli",
-        "anomalyco/opencode"
+        "anomalyco/opencode",
+        "google-antigravity/antigravity-cli"
       ],
       "minimumReleaseAge": "1 day"
     },

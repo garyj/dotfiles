@@ -33,6 +33,9 @@ uvx = true
 [settings.ruby]
 compile = false
 
+[env]
+AGY_CLI_DISABLE_AUTO_UPDATE = "true"  # the CLI ignores "1"
+
 # Registry of available tools: https://mise.jdx.dev/registry.html
 [tools]
 # Languages & runtimes
@@ -75,6 +78,11 @@ wrangler = ['latest']  # Cloudflare Workers CLI (cloudflare/workers-sdk); auth f
 # The pin only holds while auto_update stays false in ~/.grok/config.toml
 # (seeded by run_onchange_after_30_configure-grok.sh).
 grok = ['{{ .coding_agents.grok }}']
+# Antigravity CLI. The tarball's executable is named `antigravity`, which would
+# shadow the desktop IDE's /usr/bin/antigravity; symlink_bins exposes only `agy`.
+# The pin only holds while AGY_CLI_DISABLE_AUTO_UPDATE stays set in [env]: the
+# CLI otherwise replaces its own binary in the install directory.
+"aqua:google-antigravity/antigravity-cli" = { version = '{{ .coding_agents.agy }}', symlink_bins = true }
 
 # Agent tooling (not agents themselves), pinned in .chezmoidata.yaml.
 "aqua:anthropics/anthropic-cli" = ['{{ .tools.anthropic_cli }}']
