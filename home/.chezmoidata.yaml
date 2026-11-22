@@ -13,7 +13,7 @@ langs:
 tools:
   anthropic_cli: "2.9.0"  # renovate: datasource=github-releases depName=anthropics/anthropic-cli
   mise: "2026.11.9"     # renovate: datasource=github-releases depName=jdx/mise
-  worktrunk: "0.81.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
+  worktrunk: "0.82.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
   apm: "0.36.1"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.5.10"        # renovate: datasource=github-releases depName=j178/prek
   rtk: "1.2.0"        # renovate: datasource=github-releases depName=rtk-ai/rtk
