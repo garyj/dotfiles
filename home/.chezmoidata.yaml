@@ -14,7 +14,7 @@ tools:
   anthropic_cli: "2.14.0"  # renovate: datasource=github-releases depName=anthropics/anthropic-cli
   mise: "2026.11.14"     # renovate: datasource=github-releases depName=jdx/mise
   worktrunk: "0.83.0"  # renovate: datasource=github-releases depName=max-sixty/worktrunk
-  apm: "0.38.1"        # renovate: datasource=github-releases depName=microsoft/apm
+  apm: "v0.39.1"        # renovate: datasource=github-releases depName=microsoft/apm
   prek: "0.5.11"        # renovate: datasource=github-releases depName=j178/prek
   rtk: "1.2.1"        # renovate: datasource=github-releases depName=rtk-ai/rtk
   yoink: "0.3.1"       # renovate: datasource=github-releases depName=garyj/yoink
