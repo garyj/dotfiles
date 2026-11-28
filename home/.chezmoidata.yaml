@@ -39,7 +39,7 @@ coding_agents:
   # grok installs from the raw x.ai binary (mise registry http backend), but xAI
   # publishes @xai-official/grok to npm in version lockstep, so Renovate tracks that.
   grok: "1.0.92"         # renovate: datasource=npm depName=@xai-official/grok
-  agy: "1.5.13"          # renovate: datasource=github-releases depName=google-antigravity/antigravity-cli
+  agy: "1.5.18"          # renovate: datasource=github-releases depName=google-antigravity/antigravity-cli
 
 # Pinned git refs for chezmoi externals (zsh-users cut no releases, so github-tags).
 externals:
