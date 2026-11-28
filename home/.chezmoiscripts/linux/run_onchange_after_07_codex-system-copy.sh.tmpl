@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# autoreview runs Codex tools in a sandbox that reads only system roots such as
+# /usr, so the mise install under $HOME cannot start there. ~/bin/autoreview
+# uses this root-owned copy of the pinned release instead.
+version="{{ .coding_agents.codex }}"
+src="$(mise where "aqua:openai/codex@${version}")"
+dest=/usr/local/lib/codex
+
+sudo rm -rf "${dest}.new"
+sudo cp -a "$src" "${dest}.new"
+sudo chown -R root:root "${dest}.new"
+sudo chmod -R u=rwX,go=rX "${dest}.new"
+sudo rm -rf "$dest"
+sudo mv "${dest}.new" "$dest"

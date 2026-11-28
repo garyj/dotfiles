@@ -6,6 +6,12 @@ set -euo pipefail
 
 SKILL="$HOME/.agents/skills/autoreview/scripts/autoreview"
 
+# Written by run_onchange_after_07_codex-system-copy.sh, which says why.
+system_codex=/usr/local/lib/codex/bin/codex
+if [[ -z ${CODEX_BIN:-} && -x $system_codex ]]; then
+  export CODEX_BIN=$system_codex
+fi
+
 have_priority=0
 have_target=0
 for a in "$@"; do

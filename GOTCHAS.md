@@ -114,3 +114,27 @@ records every OS. `run_onchange_after_05_mise-install.sh.tmpl`, which runs on
 `chezmoi apply` after a pin changes, and `just upgrade` both lock first. To
 repair a machine that already warns, run `mise install`. The entry exists by
 then, so mise installs to the hashed directory.
+
+## autoreview cannot run the mise Codex inside its review sandbox
+
+`autoreview` reports Codex as unavailable:
+
+```
+Codex tool sandbox preflight failed: the selected installation cannot execute
+inside the read-only review sandbox.
+```
+
+Codex runs each reviewer tool call by starting itself again inside a bwrap
+sandbox. The autoreview profile can read only system roots (`/bin`, `/sbin`,
+`/usr`, `/etc`, `/lib`, `/lib64`, `/nix/store`), so the mise install under
+`~/.local/share/mise` does not exist in there. A symlink from `/usr` does not
+help, because bwrap cannot follow it back into `$HOME`. Older autoreview
+versions did not check this. Their reviews ran, but the reviewer could see only
+the diff and could not open any file.
+
+`run_onchange_after_07_codex-system-copy.sh.tmpl` copies the pinned mise Codex
+to `/usr/local/lib/codex` as root, and `~/bin/autoreview` sets `CODEX_BIN` to
+that copy. mise still installs and pins Codex. The copy changes only when the
+`coding_agents.codex` pin changes, and that `chezmoi apply` asks for sudo. Do
+not widen the autoreview sandbox to reach the mise directory: the upstream
+skill documents against it.
