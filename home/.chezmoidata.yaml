@@ -69,4 +69,4 @@ installers:
 # Off mise so the systemd backup timer finds them on the default PATH.
 github_bins:
   restic:  # backup engine
-    version: "0.19.1"  # renovate: datasource=github-releases depName=restic/restic
+    version: "0.20.0"  # renovate: datasource=github-releases depName=restic/restic
